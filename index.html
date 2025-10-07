@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MRT Assistant (Live API Edition)</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom, #0f172a, #1e293b);
+      color: white;
+      margin: 0; padding: 0;
+    }
+    header {
+      text-align: center;
+      padding: 20px;
+      background: #1e293b;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    h1 { margin: 0; font-size: 2rem; }
+    nav { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+    nav button {
+      background: #334155; border: none; color: white;
+      padding: 8px 16px; border-radius: 12px; cursor: pointer;
+    }
+    nav button.active { background: #2563eb; }
+    main { max-width: 900px; margin: 20px auto; padding: 20px; }
+    section {
+      display: none;
+      background: rgba(255,255,255,0.05);
+      padding: 20px; border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+    section.active { display: block; }
+    select, input {
+      background: #1e293b; color: white;
+      border: 1px solid #475569;
+      border-radius: 8px; padding: 6px 10px; margin: 4px;
+    }
+    button.small {
+      background: #475569; border: none;
+      color: white; padding: 6px 12px;
+      border-radius: 8px; cursor: pointer;
+    }
+    ul { list-style: none; padding: 0; }
+    li { margin: 4px 0; }
+    footer {
+      text-align: center; font-size: 0.8rem;
+      color: #94a3b8; padding: 20px;
+      border-top: 1px solid #334155;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>MRT Assistant</h1>
+    <p>Now powered by real LTA DataMall APIs</p>
+    <nav>
+      <button class="tab-btn active" data-tab="live">Live Info</button>
+      <button class="tab-btn" data-tab="crowd">Crowd Levels</button>
+      <button class="tab-btn" data-tab="bus">Bus Arrivals</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Train Service Alerts -->
+    <section id="live" class="active">
+      <h2>Train Service Alerts</h2>
+      <p>Shows real-time disruption messages from LTA.</p>
+      <button class="small" onclick="fetchTrainAlerts()">Refresh Alerts</button>
+      <div id="alertOutput" style="margin-top:10px;"></div>
+    </section>
+
+    <!-- Crowd Levels -->
+    <section id="crowd">
+      <h2>Station Crowd Density</h2>
+      <p>Shows real-time crowd levels by MRT line.</p>
+      <label>Train Line:</label>
+      <select id="crowdLine">
+        <option value="NSL">North South Line (NSL)</option>
+        <option value="EWL">East West Line (EWL)</option>
+        <option value="DTL">Downtown Line (DTL)</option>
+        <option value="CCL">Circle Line (CCL)</option>
+        <option value="NEL">North East Line (NEL)</option>
+        <option value="TEL">Thomson-East Coast Line (TEL)</option>
+      </select>
+      <button class="small" onclick="fetchCrowd()">Check Crowd</button>
+      <div id="crowdOutput" style="margin-top:10px;"></div>
+    </section>
+
+    <!-- Bus Arrival -->
+    <section id="bus">
+      <h2>Bus Arrival (Example)</h2>
+      <p>Pulls next 3 bus arrivals at any bus stop (for integration reference).</p>
+      <label>Bus Stop Code:</label>
+      <input id="busStopInput" placeholder="e.g. 83139" />
+      <button class="small" onclick="fetchBusArrivals()">Get Bus Info</button>
+      <div id="busOutput" style="margin-top:10px;"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Powered by LTA DataMall | Replace API key in code to use</p>
+  </footer>
+
+  <script>
+    // CORS Proxy to bypass browser restrictions
+    const PROXY = "https://corsproxy.io/?";
+    const API_BASE = "https://datamall2.mytransport.sg/ltaodataservice";
+    
+    // ⚠️ REPLACE THIS WITH YOUR ACTUAL LTA API KEY
+    const ACCOUNT_KEY = "YOUR_API_KEY_HERE";
+
+    // Switch Tabs
+    const tabs = document.querySelectorAll('.tab-btn');
+    const sections = document.querySelectorAll('section');
+    tabs.forEach(btn => {
+      btn.addEventListener('click', () => {
+        tabs.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        sections.forEach(s => s.classList.remove('active'));
+        document.getElementById(btn.dataset.tab).classList.add('active');
+      });
+    });
+
+    // ----------------- 1. TRAIN SERVICE ALERTS -----------------
+    async function fetchTrainAlerts() {
+      const out = document.getElementById("alertOutput");
+      out.textContent = "Fetching latest alerts...";
+      try {
+        const url = `${PROXY}${encodeURIComponent(API_BASE + "/TrainServiceAlerts")}`;
+        const res = await fetch(url, {
+          headers: { AccountKey: ACCOUNT_KEY, accept: "application/json" }
+        });
+        const data = await res.json();
+        
+        // Debug: log the response structure
+        console.log("API Response:", data);
+        
+        // Handle different possible response structures
+        let alerts = [];
+        if (Array.isArray(data)) {
+          alerts = data;
+        } else if (data.value && Array.isArray(data.value)) {
+          alerts = data.value;
+        } else if (data.Value && Array.isArray(data.Value)) {
+          alerts = data.Value;
+        }
+        
+        if (alerts.length === 0) {
+          out.innerHTML = "✅ All train lines operating normally.";
+        } else {
+          out.innerHTML = alerts.map(a =>
+            `<div style='border:1px solid #475569; border-radius:8px; padding:8px; margin:6px 0;'>
+              <b>${a.Line || a.line || 'Unknown Line'}</b> – ${a.Status == 2 ? "⚠️ Disrupted" : "✅ Normal"}<br>
+              <small>${a.Message || a.message || 'No details available'}</small>
+            </div>`
+          ).join("");
+        }
+      } catch (err) {
+        out.innerHTML = `<div style="color:#ef4444;">Error: ${err.message}</div><div style="font-size:0.8em;margin-top:8px;">Check console for details (F12)</div>`;
+        console.error("Full error:", err);
+      }
+    }
+
+    // ----------------- 2. STATION CROWD DENSITY -----------------
+    async function fetchCrowd() {
+      const line = document.getElementById("crowdLine").value;
+      const out = document.getElementById("crowdOutput");
+      out.textContent = "Loading crowd data...";
+      try {
+        const url = `${PROXY}${encodeURIComponent(API_BASE + "/PCDRealTime?TrainLine=" + line)}`;
+        const res = await fetch(url, {
+          headers: { AccountKey: ACCOUNT_KEY, accept: "application/json" }
+        });
+        const data = await res.json();
+        console.log("Crowd API Response:", data);
+        
+        let list = [];
+        if (Array.isArray(data)) {
+          list = data;
+        } else if (data.value && Array.isArray(data.value)) {
+          list = data.value;
+        } else if (data.Value && Array.isArray(data.Value)) {
+          list = data.Value;
+        }
+        
+        if (list.length === 0) {
+          out.innerHTML = "No crowd data available.";
+          return;
+        }
+        out.innerHTML = "<ul>" + list.map(s => {
+          const lvl = (s.CrowdLevel || s.crowdLevel || 'N/A').toUpperCase();
+          const color =
+            lvl === "H" ? "#ef4444" :
+            lvl === "M" ? "#f59e0b" :
+            lvl === "L" ? "#22c55e" : "#64748b";
+          return `<li><b>${s.Station || s.station || 'Unknown'}</b> — <span style="color:${color}">${lvl}</span></li>`;
+        }).join("") + "</ul>";
+      } catch (err) {
+        out.innerHTML = `<div style="color:#ef4444;">Error: ${err.message}</div>`;
+        console.error("Full error:", err);
+      }
+    }
+
+    // ----------------- 3. BUS ARRIVAL (EXAMPLE) -----------------
+    async function fetchBusArrivals() {
+      const code = document.getElementById("busStopInput").value.trim();
+      const out = document.getElementById("busOutput");
+      if (!code) return out.textContent = "Enter a bus stop code.";
+      out.textContent = "Loading...";
+      try {
+        const url = `${PROXY}${encodeURIComponent(API_BASE + "/v3/BusArrival?BusStopCode=" + code)}`;
+        const res = await fetch(url, {
+          headers: { AccountKey: ACCOUNT_KEY, accept: "application/json" }
+        });
+        const data = await res.json();
+        console.log("Bus API Response:", data);
+        
+        const services = data.Services || data.services || [];
+        if (!services || services.length === 0) {
+          out.innerHTML = "No active buses found for this stop.";
+          return;
+        }
+        out.innerHTML = services.map(s => {
+          const next = s.NextBus?.EstimatedArrival ?
+            new Date(s.NextBus.EstimatedArrival).toLocaleTimeString() : "—";
+          const load = s.NextBus?.Load || "N/A";
+          return `<div style="margin:4px 0;">
+            <b>Service ${s.ServiceNo || s.serviceNo || '?'}</b> — next: ${next}, load: ${load}
+          </div>`;
+        }).join("");
+      } catch (err) {
+        out.innerHTML = `<div style="color:#ef4444;">Error: ${err.message}</div>`;
+        console.error("Full error:", err);
+      }
+    }
+
+    // Auto-load alerts at startup
+    fetchTrainAlerts();
+  </script>
+</body>
+</html>
