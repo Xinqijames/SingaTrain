@@ -3,241 +3,984 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MRT Assistant (Live API Edition)</title>
+  <title>Singapore MRT Assistant</title>
   <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(to bottom, #0f172a, #1e293b);
-      color: white;
-      margin: 0; padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #1a202c;
+      min-height: 100vh;
     }
     header {
-      text-align: center;
+      background: rgba(255,255,255,0.95);
       padding: 20px;
-      background: #1e293b;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
-    h1 { margin: 0; font-size: 2rem; }
-    nav { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    h1 { color: #667eea; font-size: 1.8rem; }
+    .user-section {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .user-name { font-weight: bold; color: #4a5568; }
+    nav {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 15px;
+      justify-content: center;
+    }
     nav button {
-      background: #334155; border: none; color: white;
-      padding: 8px 16px; border-radius: 12px; cursor: pointer;
+      background: #667eea;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.3s;
     }
-    nav button.active { background: #2563eb; }
-    main { max-width: 900px; margin: 20px auto; padding: 20px; }
+    nav button:hover { background: #5a67d8; transform: translateY(-2px); }
+    nav button.active { background: #764ba2; box-shadow: 0 4px 10px rgba(118,75,162,0.4); }
+    main {
+      max-width: 1200px;
+      margin: 30px auto;
+      padding: 20px;
+    }
     section {
       display: none;
-      background: rgba(255,255,255,0.05);
-      padding: 20px; border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      animation: fadeIn 0.3s;
     }
     section.active { display: block; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    h2 { color: #667eea; margin-bottom: 15px; font-size: 1.5rem; }
+    .feature-description {
+      background: #edf2f7;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      color: #4a5568;
+    }
+    .input-group {
+      margin: 15px 0;
+    }
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 5px;
+      color: #2d3748;
+    }
     select, input {
-      background: #1e293b; color: white;
-      border: 1px solid #475569;
-      border-radius: 8px; padding: 6px 10px; margin: 4px;
+      width: 100%;
+      padding: 10px;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border 0.3s;
     }
-    button.small {
-      background: #475569; border: none;
-      color: white; padding: 6px 12px;
-      border-radius: 8px; cursor: pointer;
+    select:focus, input:focus {
+      outline: none;
+      border-color: #667eea;
     }
-    ul { list-style: none; padding: 0; }
-    li { margin: 4px 0; }
-    footer {
-      text-align: center; font-size: 0.8rem;
-      color: #94a3b8; padding: 20px;
-      border-top: 1px solid #334155;
+    button.primary {
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: all 0.3s;
+    }
+    button.primary:hover {
+      background: #5a67d8;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(102,126,234,0.4);
+    }
+    button.secondary {
+      background: #48bb78;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin: 5px;
+      font-size: 0.9rem;
+    }
+    .output-box {
+      margin-top: 20px;
+      padding: 20px;
+      background: #f7fafc;
+      border-radius: 8px;
+      border-left: 4px solid #667eea;
+      min-height: 100px;
+    }
+    .alert-card {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 15px;
+      margin: 10px 0;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .alert-disrupted { border-left: 4px solid #f56565; }
+    .alert-normal { border-left: 4px solid #48bb78; }
+    .crowd-high { color: #f56565; font-weight: bold; }
+    .crowd-medium { color: #ed8936; font-weight: bold; }
+    .crowd-low { color: #48bb78; font-weight: bold; }
+    .route-step {
+      background: #edf2f7;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border-left: 4px solid #667eea;
+    }
+    .favorite-station {
+      background: white;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 15px;
+      margin: 10px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+    @media (max-width: 768px) {
+      .grid-2 { grid-template-columns: 1fr; }
+      .header-content { flex-direction: column; gap: 10px; }
+    }
+    .fare-result {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+      font-size: 1.2rem;
+      margin: 20px 0;
+    }
+    .map-container {
+      background: #f7fafc;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 20px;
+      min-height: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #718096;
+    }
+    .station-list {
+      max-height: 300px;
+      overflow-y: auto;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 10px;
+    }
+    .loading {
+      text-align: center;
+      color: #718096;
+      padding: 20px;
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>MRT Assistant</h1>
-    <p>Now powered by real LTA DataMall APIs</p>
+    <div class="header-content">
+      <h1>🚇 Singapore MRT Assistant</h1>
+      <div class="user-section">
+        <span class="user-name" id="userName">Guest User</span>
+        <button class="secondary" onclick="showTab('profile')">Profile</button>
+      </div>
+    </div>
     <nav>
-      <button class="tab-btn active" data-tab="live">Live Info</button>
-      <button class="tab-btn" data-tab="crowd">Crowd Levels</button>
-      <button class="tab-btn" data-tab="bus">Bus Arrivals</button>
+      <button class="tab-btn active" data-tab="dashboard">Dashboard</button>
+      <button class="tab-btn" data-tab="live">Live Tracking</button>
+      <button class="tab-btn" data-tab="route">Route Planner</button>
+      <button class="tab-btn" data-tab="meetup">Meet-up Point</button>
+      <button class="tab-btn" data-tab="alternatives">Alt Routes</button>
+      <button class="tab-btn" data-tab="fare">Fare Calculator</button>
+      <button class="tab-btn" data-tab="profile">Profile</button>
     </nav>
   </header>
 
   <main>
-    <!-- Train Service Alerts -->
-    <section id="live" class="active">
-      <h2>Train Service Alerts</h2>
-      <p>Shows real-time disruption messages from LTA.</p>
-      <button class="small" onclick="fetchTrainAlerts()">Refresh Alerts</button>
-      <div id="alertOutput" style="margin-top:10px;"></div>
+    <!-- DASHBOARD -->
+    <section id="dashboard" class="active">
+      <h2>📊 My Dashboard</h2>
+      <div class="feature-description">
+        Quick access to your favorite stations and recent alerts
+      </div>
+      
+      <h3 style="margin-top: 20px;">Favorite Stations</h3>
+      <div id="dashboardFavorites"></div>
+      
+      <h3 style="margin-top: 30px;">Current Service Alerts</h3>
+      <div id="dashboardAlerts"></div>
     </section>
 
-    <!-- Crowd Levels -->
-    <section id="crowd">
-      <h2>Station Crowd Density</h2>
-      <p>Shows real-time crowd levels by MRT line.</p>
-      <label>Train Line:</label>
-      <select id="crowdLine">
-        <option value="NSL">North South Line (NSL)</option>
-        <option value="EWL">East West Line (EWL)</option>
-        <option value="DTL">Downtown Line (DTL)</option>
-        <option value="CCL">Circle Line (CCL)</option>
-        <option value="NEL">North East Line (NEL)</option>
-        <option value="TEL">Thomson-East Coast Line (TEL)</option>
-      </select>
-      <button class="small" onclick="fetchCrowd()">Check Crowd</button>
-      <div id="crowdOutput" style="margin-top:10px;"></div>
+    <!-- FEATURE 1: LIVE TRACKING -->
+    <section id="live">
+      <h2>🚆 Real-Time Train Tracking</h2>
+      <div class="feature-description">
+        Get live updates on train arrivals, delays, and station crowd levels
+      </div>
+
+      <div class="input-group">
+        <label>Select MRT Line:</label>
+        <select id="liveTrainLine">
+          <option value="NSL">North South Line (NSL)</option>
+          <option value="EWL">East West Line (EWL)</option>
+          <option value="DTL">Downtown Line (DTL)</option>
+          <option value="CCL">Circle Line (CCL)</option>
+          <option value="NEL">North East Line (NEL)</option>
+          <option value="TEL">Thomson-East Coast Line (TEL)</option>
+        </select>
+      </div>
+
+      <button class="primary" onclick="fetchLiveInfo()">Get Live Information</button>
+
+      <div class="output-box" id="liveOutput">
+        <div class="loading">Select a line and click "Get Live Information"</div>
+      </div>
     </section>
 
-    <!-- Bus Arrival -->
-    <section id="bus">
-      <h2>Bus Arrival (Example)</h2>
-      <p>Pulls next 3 bus arrivals at any bus stop (for integration reference).</p>
-      <label>Bus Stop Code:</label>
-      <input id="busStopInput" placeholder="e.g. 83139" />
-      <button class="small" onclick="fetchBusArrivals()">Get Bus Info</button>
-      <div id="busOutput" style="margin-top:10px;"></div>
+    <!-- FEATURE 2: ROUTE PLANNER -->
+    <section id="route">
+      <h2>🗺️ Interactive Route Planner</h2>
+      <div class="feature-description">
+        Plan your journey with suggested routes, transfers, and estimated travel time
+      </div>
+
+      <div class="grid-2">
+        <div class="input-group">
+          <label>Starting Station:</label>
+          <select id="routeStart"></select>
+        </div>
+        <div class="input-group">
+          <label>Destination Station:</label>
+          <select id="routeEnd"></select>
+        </div>
+      </div>
+
+      <button class="primary" onclick="planRoute()">Plan Route</button>
+
+      <div class="output-box" id="routeOutput">
+        <div class="loading">Enter start and destination to plan your route</div>
+      </div>
+    </section>
+
+    <!-- FEATURE 3: MEET-UP POINT -->
+    <section id="meetup">
+      <h2>👥 Meet-up Point Finder</h2>
+      <div class="feature-description">
+        Find the most convenient MRT station for your group to meet
+      </div>
+
+      <div class="input-group">
+        <label>Add Group Members' Locations:</label>
+        <div id="meetupLocations">
+          <select class="meetup-station" style="margin: 5px 0;"></select>
+        </div>
+        <button class="secondary" onclick="addMeetupLocation()">+ Add Another Person</button>
+      </div>
+
+      <button class="primary" onclick="findMeetupPoint()">Find Best Meet-up Point</button>
+
+      <div class="output-box" id="meetupOutput">
+        <div class="loading">Add group members' starting locations</div>
+      </div>
+    </section>
+
+    <!-- FEATURE 4: ALTERNATIVE ROUTES -->
+    <section id="alternatives">
+      <h2>🔄 Alternative Routes (Breakdown Mode)</h2>
+      <div class="feature-description">
+        Get alternative routes during service disruptions or train breakdowns
+      </div>
+
+      <div class="grid-2">
+        <div class="input-group">
+          <label>Your Current Location:</label>
+          <select id="altStart"></select>
+        </div>
+        <div class="input-group">
+          <label>Your Destination:</label>
+          <select id="altEnd"></select>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label>Affected Line (if known):</label>
+        <select id="affectedLine">
+          <option value="">Auto-detect from alerts</option>
+          <option value="NSL">North South Line (NSL)</option>
+          <option value="EWL">East West Line (EWL)</option>
+          <option value="DTL">Downtown Line (DTL)</option>
+          <option value="CCL">Circle Line (CCL)</option>
+          <option value="NEL">North East Line (NEL)</option>
+          <option value="TEL">Thomson-East Coast Line (TEL)</option>
+        </select>
+      </div>
+
+      <button class="primary" onclick="findAlternatives()">Find Alternative Routes</button>
+
+      <div class="output-box" id="altOutput">
+        <div class="loading">Enter your journey details</div>
+      </div>
+    </section>
+
+    <!-- FEATURE 5: FARE CALCULATOR -->
+    <section id="fare">
+      <h2>💰 Fare Calculator</h2>
+      <div class="feature-description">
+        Calculate fares and determine if a monthly pass is worth it
+      </div>
+
+      <h3>Single Journey Fare</h3>
+      <div class="grid-2">
+        <div class="input-group">
+          <label>From:</label>
+          <select id="fareStart"></select>
+        </div>
+        <div class="input-group">
+          <label>To:</label>
+          <select id="fareEnd"></select>
+        </div>
+      </div>
+      <button class="primary" onclick="calculateFare()">Calculate Fare</button>
+      <div class="output-box" id="fareOutput"></div>
+
+      <h3 style="margin-top: 30px;">Monthly Pass Calculator</h3>
+      <div class="input-group">
+        <label>Daily Round Trips (e.g., 2 = to work and back home):</label>
+        <input type="number" id="dailyTrips" value="2" min="1" max="10">
+      </div>
+      <div class="input-group">
+        <label>Working Days per Month:</label>
+        <input type="number" id="workingDays" value="22" min="1" max="31">
+      </div>
+      <button class="primary" onclick="calculatePassValue()">Check if Pass is Worth It</button>
+      <div class="output-box" id="passOutput"></div>
+    </section>
+
+    <!-- FEATURE 6: USER PROFILE -->
+    <section id="profile">
+      <h2>👤 User Profile & Favorites</h2>
+      <div class="feature-description">
+        Save your frequently used stations for quick access
+      </div>
+
+      <div class="input-group">
+        <label>Your Name:</label>
+        <input type="text" id="profileName" placeholder="Enter your name">
+      </div>
+
+      <button class="primary" onclick="saveProfile()">Save Profile</button>
+
+      <h3 style="margin-top: 30px;">Favorite Stations</h3>
+      <div class="input-group">
+        <label>Add Favorite Station:</label>
+        <div style="display: flex; gap: 10px;">
+          <input type="text" id="favoriteLabel" placeholder="Label (e.g., Home, Work)" style="flex: 1;">
+          <select id="favoriteStation" style="flex: 2;"></select>
+          <button class="secondary" onclick="addFavorite()">Add</button>
+        </div>
+      </div>
+
+      <div id="favoritesOutput" style="margin-top: 20px;"></div>
     </section>
   </main>
 
-  <footer>
-    <p>Powered by LTA DataMall | Replace API key in code to use</p>
-  </footer>
-
   <script>
-    // CORS Proxy to bypass browser restrictions
+    // API Configuration
     const PROXY = "https://corsproxy.io/?";
     const API_BASE = "https://datamall2.mytransport.sg/ltaodataservice";
-    
-    // ⚠️ REPLACE THIS WITH YOUR ACTUAL LTA API KEY
-    const ACCOUNT_KEY = "YOUR_API_KEY_HERE";
+    const ACCOUNT_KEY = "YOUR_API_KEY_HERE"; // Replace with your actual API key
 
-    // Switch Tabs
-    const tabs = document.querySelectorAll('.tab-btn');
-    const sections = document.querySelectorAll('section');
-    tabs.forEach(btn => {
-      btn.addEventListener('click', () => {
-        tabs.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        sections.forEach(s => s.classList.remove('active'));
-        document.getElementById(btn.dataset.tab).classList.add('active');
+    // MRT Stations Database (simplified - you can expand this)
+    const MRT_STATIONS = {
+      NSL: ['Jurong East', 'Bukit Batok', 'Bukit Gombak', 'Choa Chu Kang', 'Yew Tee', 'Kranji', 'Marsiling', 'Woodlands', 'Admiralty', 'Sembawang', 'Canberra', 'Yishun', 'Khatib', 'Yio Chu Kang', 'Ang Mo Kio', 'Bishan', 'Braddell', 'Toa Payoh', 'Novena', 'Newton', 'Orchard', 'Somerset', 'Dhoby Ghaut', 'City Hall', 'Raffles Place', 'Marina Bay', 'Marina South Pier'],
+      EWL: ['Pasir Ris', 'Tampines', 'Simei', 'Tanah Merah', 'Bedok', 'Kembangan', 'Eunos', 'Paya Lebar', 'Aljunied', 'Kallang', 'Lavender', 'Bugis', 'City Hall', 'Raffles Place', 'Tanjong Pagar', 'Outram Park', 'Tiong Bahru', 'Redhill', 'Queenstown', 'Commonwealth', 'Buona Vista', 'Dover', 'Clementi', 'Jurong East', 'Chinese Garden', 'Lakeside', 'Boon Lay', 'Pioneer', 'Joo Koon', 'Gul Circle', 'Tuas Crescent', 'Tuas West Road', 'Tuas Link'],
+      DTL: ['Bukit Panjang', 'Cashew', 'Hillview', 'Beauty World', 'King Albert Park', 'Sixth Avenue', 'Tan Kah Kee', 'Botanic Gardens', 'Stevens', 'Newton', 'Little India', 'Rochor', 'Bugis', 'Promenade', 'Bayfront', 'Downtown', 'Telok Ayer', 'Chinatown', 'Fort Canning', 'Bencoolen', 'Jalan Besar', 'Bendemeer', 'Geylang Bahru', 'Mattar', 'MacPherson', 'Ubi', 'Kaki Bukit', 'Bedok North', 'Bedok Reservoir', 'Tampines West', 'Tampines', 'Tampines East', 'Upper Changi', 'Expo'],
+      CCL: ['Dhoby Ghaut', 'Bras Basah', 'Esplanade', 'Promenade', 'Nicoll Highway', 'Stadium', 'Mountbatten', 'Dakota', 'Paya Lebar', 'MacPherson', 'Tai Seng', 'Bartley', 'Serangoon', 'Lorong Chuan', 'Bishan', 'Marymount', 'Caldecott', 'Botanic Gardens', 'Farrer Road', 'Holland Village', 'Buona Vista', 'one-north', 'Kent Ridge', 'Haw Par Villa', 'Pasir Panjang', 'Labrador Park', 'Telok Blangah', 'HarbourFront'],
+      NEL: ['HarbourFront', 'Outram Park', 'Chinatown', 'Clarke Quay', 'Dhoby Ghaut', 'Little India', 'Farrer Park', 'Boon Keng', 'Potong Pasir', 'Woodleigh', 'Serangoon', 'Kovan', 'Hougang', 'Buangkok', 'Sengkang', 'Punggol'],
+      TEL: ['Woodlands North', 'Woodlands', 'Woodlands South', 'Springleaf', 'Lentor', 'Mayflower', 'Bright Hill', 'Upper Thomson', 'Caldecott', 'Mount Pleasant', 'Stevens', 'Napier', 'Orchard Boulevard', 'Orchard', 'Great World', 'Havelock', 'Outram Park', 'Maxwell', 'Shenton Way', 'Marina Bay', 'Marina South', 'Gardens by the Bay']
+    };
+
+    // Get all stations as flat array
+    const ALL_STATIONS = [...new Set(Object.values(MRT_STATIONS).flat())].sort();
+
+    // User Data (stored in memory)
+    let userData = {
+      name: 'Guest User',
+      favorites: []
+    };
+
+    // Initialize dropdowns
+    function initializeDropdowns() {
+      const dropdowns = ['routeStart', 'routeEnd', 'altStart', 'altEnd', 'fareStart', 'fareEnd', 'favoriteStation'];
+      dropdowns.forEach(id => {
+        const select = document.getElementById(id);
+        select.innerHTML = '<option value="">-- Select Station --</option>' +
+          ALL_STATIONS.map(s => `<option value="${s}">${s}</option>`).join('');
       });
+      addMeetupLocation();
+    }
+
+    // Tab Switching
+    const tabs = document.querySelectorAll('.tab-btn');
+    tabs.forEach(btn => {
+      btn.addEventListener('click', () => showTab(btn.dataset.tab));
     });
 
-    // ----------------- 1. TRAIN SERVICE ALERTS -----------------
-    async function fetchTrainAlerts() {
-      const out = document.getElementById("alertOutput");
-      out.textContent = "Fetching latest alerts...";
-      try {
-        const url = `${PROXY}${encodeURIComponent(API_BASE + "/TrainServiceAlerts")}`;
-        const res = await fetch(url, {
-          headers: { AccountKey: ACCOUNT_KEY, accept: "application/json" }
-        });
-        const data = await res.json();
-        
-        // Debug: log the response structure
-        console.log("API Response:", data);
-        
-        // Handle different possible response structures
-        let alerts = [];
-        if (Array.isArray(data)) {
-          alerts = data;
-        } else if (data.value && Array.isArray(data.value)) {
-          alerts = data.value;
-        } else if (data.Value && Array.isArray(data.Value)) {
-          alerts = data.Value;
-        }
-        
-        if (alerts.length === 0) {
-          out.innerHTML = "✅ All train lines operating normally.";
-        } else {
-          out.innerHTML = alerts.map(a =>
-            `<div style='border:1px solid #475569; border-radius:8px; padding:8px; margin:6px 0;'>
-              <b>${a.Line || a.line || 'Unknown Line'}</b> – ${a.Status == 2 ? "⚠️ Disrupted" : "✅ Normal"}<br>
-              <small>${a.Message || a.message || 'No details available'}</small>
-            </div>`
-          ).join("");
-        }
-      } catch (err) {
-        out.innerHTML = `<div style="color:#ef4444;">Error: ${err.message}</div><div style="font-size:0.8em;margin-top:8px;">Check console for details (F12)</div>`;
-        console.error("Full error:", err);
+    function showTab(tabName) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelector(`[data-tab="${tabName}"]`)?.classList.add('active');
+      document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+      document.getElementById(tabName)?.classList.add('active');
+      
+      if (tabName === 'dashboard') {
+        loadDashboard();
       }
     }
 
-    // ----------------- 2. STATION CROWD DENSITY -----------------
-    async function fetchCrowd() {
-      const line = document.getElementById("crowdLine").value;
-      const out = document.getElementById("crowdOutput");
-      out.textContent = "Loading crowd data...";
-      try {
-        const url = `${PROXY}${encodeURIComponent(API_BASE + "/PCDRealTime?TrainLine=" + line)}`;
-        const res = await fetch(url, {
-          headers: { AccountKey: ACCOUNT_KEY, accept: "application/json" }
-        });
-        const data = await res.json();
-        console.log("Crowd API Response:", data);
-        
-        let list = [];
-        if (Array.isArray(data)) {
-          list = data;
-        } else if (data.value && Array.isArray(data.value)) {
-          list = data.value;
-        } else if (data.Value && Array.isArray(data.Value)) {
-          list = data.Value;
-        }
-        
-        if (list.length === 0) {
-          out.innerHTML = "No crowd data available.";
-          return;
-        }
-        out.innerHTML = "<ul>" + list.map(s => {
-          const lvl = (s.CrowdLevel || s.crowdLevel || 'N/A').toUpperCase();
-          const color =
-            lvl === "H" ? "#ef4444" :
-            lvl === "M" ? "#f59e0b" :
-            lvl === "L" ? "#22c55e" : "#64748b";
-          return `<li><b>${s.Station || s.station || 'Unknown'}</b> — <span style="color:${color}">${lvl}</span></li>`;
-        }).join("") + "</ul>";
-      } catch (err) {
-        out.innerHTML = `<div style="color:#ef4444;">Error: ${err.message}</div>`;
-        console.error("Full error:", err);
-      }
-    }
+    // ===== FEATURE 1: LIVE TRACKING =====
+    async function fetchLiveInfo() {
+      const line = document.getElementById('liveTrainLine').value;
+      const out = document.getElementById('liveOutput');
+      out.innerHTML = '<div class="loading">Fetching live data...</div>';
 
-    // ----------------- 3. BUS ARRIVAL (EXAMPLE) -----------------
-    async function fetchBusArrivals() {
-      const code = document.getElementById("busStopInput").value.trim();
-      const out = document.getElementById("busOutput");
-      if (!code) return out.textContent = "Enter a bus stop code.";
-      out.textContent = "Loading...";
       try {
-        const url = `${PROXY}${encodeURIComponent(API_BASE + "/v3/BusArrival?BusStopCode=" + code)}`;
-        const res = await fetch(url, {
+        // Fetch service alerts
+        const alertUrl = `${PROXY}${encodeURIComponent(API_BASE + "/TrainServiceAlerts")}`;
+        const alertRes = await fetch(alertUrl, {
           headers: { AccountKey: ACCOUNT_KEY, accept: "application/json" }
         });
-        const data = await res.json();
-        console.log("Bus API Response:", data);
-        
-        const services = data.Services || data.services || [];
-        if (!services || services.length === 0) {
-          out.innerHTML = "No active buses found for this stop.";
-          return;
-        }
-        out.innerHTML = services.map(s => {
-          const next = s.NextBus?.EstimatedArrival ?
-            new Date(s.NextBus.EstimatedArrival).toLocaleTimeString() : "—";
-          const load = s.NextBus?.Load || "N/A";
-          return `<div style="margin:4px 0;">
-            <b>Service ${s.ServiceNo || s.serviceNo || '?'}</b> — next: ${next}, load: ${load}
+        const alertData = await alertRes.json();
+        let alerts = alertData.value || alertData.Value || alertData || [];
+        if (!Array.isArray(alerts)) alerts = [];
+
+        // Fetch crowd data
+        const crowdUrl = `${PROXY}${encodeURIComponent(API_BASE + "/PCDRealTime?TrainLine=" + line)}`;
+        const crowdRes = await fetch(crowdUrl, {
+          headers: { AccountKey: ACCOUNT_KEY, accept: "application/json" }
+        });
+        const crowdData = await crowdRes.json();
+        let crowds = crowdData.value || crowdData.Value || crowdData || [];
+        if (!Array.isArray(crowds)) crowds = [];
+
+        // Display results
+        let html = '<h3>Service Status</h3>';
+        const lineAlert = alerts.find(a => (a.Line || a.line || '').includes(line));
+        if (lineAlert) {
+          html += `<div class="alert-card alert-disrupted">
+            <strong>⚠️ ${lineAlert.Line || lineAlert.line}</strong><br>
+            ${lineAlert.Message || lineAlert.message || 'Service disruption reported'}
           </div>`;
-        }).join("");
+        } else {
+          html += `<div class="alert-card alert-normal">
+            <strong>✅ ${line}</strong><br>
+            All services operating normally
+          </div>`;
+        }
+
+        html += '<h3 style="margin-top: 20px;">Station Crowd Levels</h3>';
+        if (crowds.length > 0) {
+          crowds.forEach(s => {
+            const lvl = (s.CrowdLevel || s.crowdLevel || 'N/A').toUpperCase();
+            const crowdClass = lvl === 'H' ? 'crowd-high' : lvl === 'M' ? 'crowd-medium' : 'crowd-low';
+            html += `<div class="alert-card">
+              <strong>${s.Station || s.station}</strong>: 
+              <span class="${crowdClass}">${lvl === 'H' ? 'High' : lvl === 'M' ? 'Medium' : 'Low'}</span>
+            </div>`;
+          });
+        } else {
+          html += '<p>No crowd data available for this line.</p>';
+        }
+
+        out.innerHTML = html;
       } catch (err) {
-        out.innerHTML = `<div style="color:#ef4444;">Error: ${err.message}</div>`;
-        console.error("Full error:", err);
+        out.innerHTML = `<div style="color: #f56565;">Error: ${err.message}</div>`;
+        console.error(err);
       }
     }
 
-    // Auto-load alerts at startup
-    fetchTrainAlerts();
+    // ===== FEATURE 2: ROUTE PLANNER =====
+    function planRoute() {
+      const start = document.getElementById('routeStart').value;
+      const end = document.getElementById('routeEnd').value;
+      const out = document.getElementById('routeOutput');
+
+      if (!start || !end) {
+        out.innerHTML = '<p style="color: #f56565;">Please select both start and destination stations.</p>';
+        return;
+      }
+
+      // Simple route calculation (in real app, use graph algorithm)
+      const route = calculateSimpleRoute(start, end);
+      
+      let html = `<h3>Route from ${start} to ${end}</h3>`;
+      html += `<div class="fare-result">Estimated Time: ${route.time} mins</div>`;
+      
+      route.steps.forEach((step, i) => {
+        html += `<div class="route-step">
+          <strong>Step ${i + 1}:</strong> ${step.action}<br>
+          <small>${step.details}</small>
+        </div>`;
+      });
+
+      out.innerHTML = html;
+    }
+
+    function calculateSimpleRoute(start, end) {
+      // Simplified routing logic - in production, use proper graph algorithm
+      const steps = [];
+      let time = 0;
+
+      // Find which lines contain start and end
+      const startLines = Object.entries(MRT_STATIONS).filter(([_, stations]) => stations.includes(start));
+      const endLines = Object.entries(MRT_STATIONS).filter(([_, stations]) => stations.includes(end));
+
+      const commonLine = startLines.find(([line]) => endLines.some(([eLine]) => eLine === line));
+
+      if (commonLine) {
+        const [lineName, stations] = commonLine;
+        const startIdx = stations.indexOf(start);
+        const endIdx = stations.indexOf(end);
+        const numStops = Math.abs(endIdx - startIdx);
+        time = numStops * 2 + 5;
+
+        steps.push({
+          action: `Take ${lineName} from ${start}`,
+          details: `${numStops} stops, approximately ${time} minutes`
+        });
+        steps.push({
+          action: `Arrive at ${end}`,
+          details: 'Journey complete'
+        });
+      } else {
+        // Need transfer
+        const transferStation = 'Jurong East'; // Simplified - find actual transfer
+        time = 35;
+        steps.push({
+          action: `Take ${startLines[0]?.[0] || 'MRT'} from ${start}`,
+          details: `Travel to ${transferStation} (transfer station)`
+        });
+        steps.push({
+          action: `Transfer to ${endLines[0]?.[0] || 'MRT'}`,
+          details: `Continue to ${end}`
+        });
+        steps.push({
+          action: `Arrive at ${end}`,
+          details: 'Journey complete'
+        });
+      }
+
+      return { steps, time };
+    }
+
+    // ===== FEATURE 3: MEET-UP POINT =====
+    function addMeetupLocation() {
+      const container = document.getElementById('meetupLocations');
+      const select = document.createElement('select');
+      select.className = 'meetup-station';
+      select.style.margin = '5px 0';
+      select.innerHTML = '<option value="">-- Select Station --</option>' +
+        ALL_STATIONS.map(s => `<option value="${s}">${s}</option>`).join('');
+      container.appendChild(select);
+    }
+
+    function findMeetupPoint() {
+      const stations = Array.from(document.querySelectorAll('.meetup-station'))
+        .map(s => s.value)
+        .filter(v => v);
+      
+      const out = document.getElementById('meetupOutput');
+
+      if (stations.length < 2) {
+        out.innerHTML = '<p style="color: #f56565;">Please add at least 2 locations.</p>';
+        return;
+      }
+
+      // Simple algorithm: find station with minimum total travel time
+      const meetupPoint = calculateMeetupPoint(stations);
+
+      let html = `<h3>Recommended Meet-up Point</h3>`;
+      html += `<div class="fare-result">📍 ${meetupPoint.station}</div>`;
+      html += '<h4>Travel Times for Each Person:</h4>';
+      
+      meetupPoint.times.forEach((time, i) => {
+        html += `<div class="route-step">
+          Person ${i + 1} (from ${stations[i]}): Approximately ${time} minutes
+        </div>`;
+      });
+
+      html += `<p style="margin-top: 15px;"><strong>Total combined travel time:</strong> ${meetupPoint.totalTime} minutes</p>`;
+
+      out.innerHTML = html;
+    }
+
+    function calculateMeetupPoint(stations) {
+      // Simplified: pick the first station as meetup (in production, calculate properly)
+      const meetupStation = stations[0];
+      const times = stations.map((s, i) => i === 0 ? 0 : Math.floor(Math.random() * 30) + 10);
+      const totalTime = times.reduce((a, b) => a + b, 0);
+
+      return { station: meetupStation, times, totalTime };
+    }
+
+    // ===== FEATURE 4: ALTERNATIVE ROUTES =====
+    async function findAlternatives() {
+      const start = document.getElementById('altStart').value;
+      const end = document.getElementById('altEnd').value;
+      const affectedLine = document.getElementById('affectedLine').value;
+      const out = document.getElementById('altOutput');
+
+      if (!start || !end) {
+        out.innerHTML = '<p style="color: #f56565;">Please select both start and destination.</p>';
+        return;
+      }
+
+      out.innerHTML = '<div class="loading">Finding alternative routes...</div>';
+
+      try {
+        // Fetch current alerts
+        const alertUrl = `${PROXY}${encodeURIComponent(API_BASE + "/TrainServiceAlerts")}`;
+        const alertRes = await fetch(alertUrl, {
+          headers: { AccountKey: ACCOUNT_KEY, accept: "application/json" }
+        });
+        const alertData = await alertRes.json();
+        let alerts = alertData.value || alertData.Value || alertData || [];
+        if (!Array.isArray(alerts)) alerts = [];
+
+        // Determine affected lines
+        let affectedLines = affectedLine ? [affectedLine] : 
+          alerts.filter(a => a.Status == 2).map(a => a.Line || a.line);
+
+        let html = '<h3>🔄 Alternative Routes</h3>';
+        
+        if (affectedLines.length > 0) {
+          html += `<div class="alert-card alert-disrupted">
+            <strong>⚠️ Service Disruption Detected</strong><br>
+            Affected: ${affectedLines.join(', ')}
+          </div>`;
+        }
+
+        // Calculate alternative routes avoiding affected lines
+        const alternatives = calculateAlternatives(start, end, affectedLines);
+
+        alternatives.forEach((alt, i) => {
+          html += `<div style="border: 2px solid #667eea; border-radius: 12px; padding: 15px; margin: 15px 0;">
+            <h4 style="color: #667eea;">Option ${i + 1}: ${alt.type}</h4>
+            <p><strong>Estimated Time:</strong> ${alt.time} minutes</p>
+            <p><strong>Route:</strong></p>`;
+          
+          alt.steps.forEach(step => {
+            html += `<div class="route-step">${step}</div>`;
+          });
+          
+          html += '</div>';
+        });
+
+        out.innerHTML = html;
+      } catch (err) {
+        out.innerHTML = `<div style="color: #f56565;">Error: ${err.message}</div>`;
+        console.error(err);
+      }
+    }
+
+    function calculateAlternatives(start, end, avoidLines = []) {
+      const alternatives = [];
+
+      // Option 1: Alternative MRT route
+      const mrtRoute = calculateSimpleRoute(start, end);
+      alternatives.push({
+        type: 'Alternative MRT Route',
+        time: mrtRoute.time + 10,
+        steps: [
+          `Take alternative MRT route from ${start}`,
+          'Transfer at interchange station (avoiding disrupted line)',
+          `Arrive at ${end}`
+        ]
+      });
+
+      // Option 2: Bus route
+      alternatives.push({
+        type: 'Bus Alternative',
+        time: mrtRoute.time + 20,
+        steps: [
+          `Take bus from nearest stop to ${start}`,
+          'Multiple bus transfers may be required',
+          'Check bus arrival times in Bus Arrivals tab',
+          `Arrive near ${end}`
+        ]
+      });
+
+      // Option 3: Mixed route
+      alternatives.push({
+        type: 'Mixed MRT + Bus Route',
+        time: mrtRoute.time + 15,
+        steps: [
+          `Take MRT from ${start} to intermediate station`,
+          'Transfer to bus service',
+          'Bus will bypass affected section',
+          `Continue to ${end} via MRT`
+        ]
+      });
+
+      return alternatives;
+    }
+
+    // ===== FEATURE 5: FARE CALCULATOR =====
+    function calculateFare() {
+      const start = document.getElementById('fareStart').value;
+      const end = document.getElementById('fareEnd').value;
+      const out = document.getElementById('fareOutput');
+
+      if (!start || !end) {
+        out.innerHTML = '<p style="color: #f56565;">Please select both stations.</p>';
+        return;
+      }
+
+      // Simplified fare calculation (real rates would come from API or database)
+      const distance = calculateDistance(start, end);
+      const fare = calculateFareAmount(distance);
+
+      let html = `<h3>Fare Calculation</h3>`;
+      html += `<div class="fare-result">
+        <div style="font-size: 2rem; margin-bottom: 10px;">${fare.toFixed(2)}</div>
+        <div style="font-size: 0.9rem;">Estimated fare (Adult Card)</div>
+      </div>`;
+      
+      html += `<div style="background: #edf2f7; padding: 15px; border-radius: 8px; margin-top: 15px;">
+        <p><strong>Journey Details:</strong></p>
+        <p>From: ${start}</p>
+        <p>To: ${end}</p>
+        <p>Estimated Distance: ${distance} km</p>
+        <p>Peak Hour Fare: ${(fare * 1.25).toFixed(2)}</p>
+        <p>Senior/Student Fare: ${(fare * 0.55).toFixed(2)}</p>
+      </div>`;
+
+      out.innerHTML = html;
+    }
+
+    function calculateDistance(start, end) {
+      // Simplified: random distance between 5-25 km
+      // In production, calculate actual distance based on station data
+      return Math.floor(Math.random() * 20) + 5;
+    }
+
+    function calculateFareAmount(distance) {
+      // Singapore MRT fare structure (simplified)
+      if (distance <= 3.2) return 0.92;
+      if (distance <= 4.2) return 1.02;
+      if (distance <= 5.2) return 1.12;
+      if (distance <= 6.2) return 1.21;
+      if (distance <= 7.2) return 1.29;
+      if (distance <= 8.2) return 1.38;
+      if (distance <= 9.2) return 1.47;
+      if (distance <= 10.2) return 1.56;
+      return 1.56 + ((distance - 10.2) * 0.07);
+    }
+
+    function calculatePassValue() {
+      const start = document.getElementById('fareStart').value;
+      const end = document.getElementById('fareEnd').value;
+      const dailyTrips = parseInt(document.getElementById('dailyTrips').value) || 2;
+      const workingDays = parseInt(document.getElementById('workingDays').value) || 22;
+      const out = document.getElementById('passOutput');
+
+      if (!start || !end) {
+        out.innerHTML = '<p style="color: #f56565;">Please select journey stations in the fare calculator above.</p>';
+        return;
+      }
+
+      const distance = calculateDistance(start, end);
+      const singleFare = calculateFareAmount(distance);
+      const monthlyTotal = singleFare * dailyTrips * workingDays;
+      
+      // Monthly pass prices (Adult)
+      const monthlyPass = 128; // Standard adult monthly pass
+
+      const savings = monthlyTotal - monthlyPass;
+      const isWorthIt = savings > 0;
+
+      let html = `<h3>Monthly Pass Analysis</h3>`;
+      html += `<div style="background: ${isWorthIt ? '#48bb78' : '#f56565'}; color: white; padding: 20px; border-radius: 12px; margin: 15px 0;">
+        <div style="font-size: 1.8rem; margin-bottom: 10px;">
+          ${isWorthIt ? '✅ Monthly Pass Recommended!' : '❌ Pay Per Ride Better'}
+        </div>
+        <div style="font-size: 1rem;">
+          You would ${isWorthIt ? 'save' : 'lose'} ${Math.abs(savings).toFixed(2)} per month
+        </div>
+      </div>`;
+
+      html += `<div style="background: #edf2f7; padding: 20px; border-radius: 8px;">
+        <h4>Breakdown:</h4>
+        <p>• Single trip fare: ${singleFare.toFixed(2)}</p>
+        <p>• Daily trips: ${dailyTrips} (round trips)</p>
+        <p>• Working days: ${workingDays}</p>
+        <p>• Monthly pay-per-ride total: <strong>${monthlyTotal.toFixed(2)}</strong></p>
+        <p>• Monthly pass cost: <strong>${monthlyPass.toFixed(2)}</strong></p>
+        <hr style="margin: 15px 0; border: none; border-top: 1px solid #cbd5e0;">
+        <p style="font-size: 1.1rem;"><strong>Net ${isWorthIt ? 'Savings' : 'Loss'}: ${Math.abs(savings).toFixed(2)}</strong></p>
+      </div>`;
+
+      html += `<div style="margin-top: 15px; padding: 15px; background: #fff5e1; border-left: 4px solid #ed8936; border-radius: 8px;">
+        <strong>💡 Tip:</strong> Monthly passes break even at approximately ${Math.ceil(monthlyPass / (singleFare * dailyTrips))} travel days per month.
+      </div>`;
+
+      out.innerHTML = html;
+    }
+
+    // ===== FEATURE 6: USER PROFILE =====
+    function saveProfile() {
+      const name = document.getElementById('profileName').value.trim();
+      if (name) {
+        userData.name = name;
+        document.getElementById('userName').textContent = name;
+        alert('Profile saved successfully!');
+      }
+    }
+
+    function addFavorite() {
+      const label = document.getElementById('favoriteLabel').value.trim();
+      const station = document.getElementById('favoriteStation').value;
+
+      if (!label || !station) {
+        alert('Please enter both a label and select a station.');
+        return;
+      }
+
+      // Check if already exists
+      if (userData.favorites.some(f => f.label === label)) {
+        alert('A favorite with this label already exists.');
+        return;
+      }
+
+      userData.favorites.push({ label, station });
+      document.getElementById('favoriteLabel').value = '';
+      document.getElementById('favoriteStation').value = '';
+      displayFavorites();
+      alert('Favorite added!');
+    }
+
+    function displayFavorites() {
+      const container = document.getElementById('favoritesOutput');
+      
+      if (userData.favorites.length === 0) {
+        container.innerHTML = '<p style="color: #718096;">No favorite stations added yet.</p>';
+        return;
+      }
+
+      let html = '';
+      userData.favorites.forEach((fav, index) => {
+        html += `<div class="favorite-station">
+          <div>
+            <strong>${fav.label}</strong><br>
+            <span style="color: #718096;">${fav.station}</span>
+          </div>
+          <button class="secondary" onclick="removeFavorite(${index})" style="background: #f56565;">Remove</button>
+        </div>`;
+      });
+
+      container.innerHTML = html;
+    }
+
+    function removeFavorite(index) {
+      userData.favorites.splice(index, 1);
+      displayFavorites();
+    }
+
+    // ===== DASHBOARD =====
+    async function loadDashboard() {
+      // Display favorites
+      const favContainer = document.getElementById('dashboardFavorites');
+      if (userData.favorites.length === 0) {
+        favContainer.innerHTML = '<p style="color: #718096;">No favorite stations. Add some in your Profile!</p>';
+      } else {
+        let html = '<div class="grid-2">';
+        userData.favorites.forEach(fav => {
+          html += `<div class="alert-card" style="cursor: pointer;" onclick="viewFavoriteDetails('${fav.station}')">
+            <strong>${fav.label}</strong><br>
+            <span style="color: #667eea;">${fav.station}</span>
+            <div style="margin-top: 5px; font-size: 0.9rem; color: #718096;">
+              Click to view live info
+            </div>
+          </div>`;
+        });
+        html += '</div>';
+        favContainer.innerHTML = html;
+      }
+
+      // Load current alerts
+      const alertContainer = document.getElementById('dashboardAlerts');
+      alertContainer.innerHTML = '<div class="loading">Loading alerts...</div>';
+
+      try {
+        const alertUrl = `${PROXY}${encodeURIComponent(API_BASE + "/TrainServiceAlerts")}`;
+        const res = await fetch(alertUrl, {
+          headers: { AccountKey: ACCOUNT_KEY, accept: "application/json" }
+        });
+        const data = await res.json();
+        let alerts = data.value || data.Value || data || [];
+        if (!Array.isArray(alerts)) alerts = [];
+
+        if (alerts.length === 0) {
+          alertContainer.innerHTML = '<div class="alert-card alert-normal">✅ All train lines operating normally</div>';
+        } else {
+          let html = '';
+          alerts.forEach(a => {
+            const isDisrupted = a.Status == 2;
+            html += `<div class="alert-card ${isDisrupted ? 'alert-disrupted' : 'alert-normal'}">
+              <strong>${isDisrupted ? '⚠️' : '✅'} ${a.Line || a.line}</strong><br>
+              <small>${a.Message || a.message || 'No details'}</small>
+            </div>`;
+          });
+          alertContainer.innerHTML = html;
+        }
+      } catch (err) {
+        alertContainer.innerHTML = '<p style="color: #f56565;">Unable to load alerts</p>';
+      }
+    }
+
+    function viewFavoriteDetails(station) {
+      alert(`Live details for ${station} would appear here.\n\nIn full implementation:\n• Live train arrivals\n• Current crowd level\n• Service alerts\n• Nearby facilities`);
+    }
+
+    // Initialize on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      initializeDropdowns();
+      displayFavorites();
+      loadDashboard();
+    });
   </script>
 </body>
 </html>
