@@ -713,100 +713,238 @@
     }
 
     // ====== FARES ======
-    const fareBandsAdult = [
-      { max: 3.2, fare: 0.92 }, { max: 4.2, fare: 1.02 }, { max: 5.2, fare: 1.12 },
-      { max: 6.2, fare: 1.21 }, { max: 7.2, fare: 1.29 }, { max: 8.2, fare: 1.38 },
-      { max: 9.2, fare: 1.47 }, { max: 10.2, fare: 1.56 }, { max: 11.2, fare: 1.61 },
-      { max: 12.2, fare: 1.65 }, { max: 13.2, fare: 1.69 }, { max: 14.2, fare: 1.73 },
-      { max: 15.2, fare: 1.78 }, { max: 16.2, fare: 1.82 }, { max: 17.2, fare: 1.86 },
-      { max: 18.2, fare: 1.90 }, { max: 19.2, fare: 1.94 }, { max: 20.2, fare: 1.97 },
-      { max: Infinity, fare: 1.97 }
-    ];
-    const monthlyPassPrices = {
-      "adult": 128.00, "primary": 39.00, "secondary": 49.00, "polytechnic": 49.00,
-      "university": 81.00, "senior": 58.00, "disability": 58.00, "ns": 81.00, "workfare": 96.00
-    };
-    const concessionRates = { // approx multipliers vs adult
-      "primary": 0.35, "secondary": 0.40, "polytechnic": 0.45, "university": 0.60,
-      "senior": 0.44, "disability": 0.44, "ns": 0.60, "workfare": 0.75
-    };
+    // --- Adult (Card) ---
+const fareBandsAdult = [
+  { max: 3.2, fare: 1.19 }, { max: 4.2, fare: 1.29 }, { max: 5.2, fare: 1.40 },
+  { max: 6.2, fare: 1.50 }, { max: 7.2, fare: 1.59 }, { max: 8.2, fare: 1.66 },
+  { max: 9.2, fare: 1.73 }, { max: 10.2, fare: 1.77 }, { max: 11.2, fare: 1.81 },
+  { max: 12.2, fare: 1.85 }, { max: 13.2, fare: 1.89 }, { max: 14.2, fare: 1.93 },
+  { max: 15.2, fare: 1.98 }, { max: 16.2, fare: 2.02 }, { max: 17.2, fare: 2.06 },
+  { max: 18.2, fare: 2.10 }, { max: 19.2, fare: 2.14 }, { max: 20.2, fare: 2.17 },
+  { max: 21.2, fare: 2.20 }, { max: 22.2, fare: 2.23 }, { max: 23.2, fare: 2.26 },
+  { max: 24.2, fare: 2.28 }, { max: 25.2, fare: 2.30 }, { max: 26.2, fare: 2.32 },
+  { max: 27.2, fare: 2.33 }, { max: 28.2, fare: 2.34 }, { max: 29.2, fare: 2.35 },
+  { max: 30.2, fare: 2.36 }, { max: 31.2, fare: 2.37 }, { max: 32.2, fare: 2.38 },
+  { max: 33.2, fare: 2.39 }, { max: 34.2, fare: 2.40 }, { max: 35.2, fare: 2.41 },
+  { max: 36.2, fare: 2.42 }, { max: 37.2, fare: 2.43 }, { max: 38.2, fare: 2.44 },
+  { max: 39.2, fare: 2.45 }, { max: 40.2, fare: 2.46 }, { max: Infinity, fare: 2.47 }
+];
 
-    function fareForDistanceAdult(km){
-      for(const b of fareBandsAdult){ if(km<=b.max) return b.fare; }
-      return fareBandsAdult[fareBandsAdult.length-1].fare;
-    }
-    function fareByType(km, type="adult"){
-      const base = fareForDistanceAdult(km);
-      if(type==="adult") return base;
-      const mult = concessionRates[type] || 1;
-      return +(base * mult).toFixed(2);
-    }
+// --- Student (Card) ---
+const fareBandsStudent = [
+  { max: 3.2, fare: 0.52 }, { max: 4.2, fare: 0.57 }, { max: 5.2, fare: 0.63 },
+  { max: 6.2, fare: 0.68 }, { max: 7.2, fare: 0.71 }, { max: Infinity, fare: 0.74 }
+];
+
+// --- Senior Citizens / Persons with Disabilities (Card) ---
+const fareBandsSenior = [
+  { max: 3.2, fare: 0.69 }, { max: 4.2, fare: 0.76 }, { max: 5.2, fare: 0.84 },
+  { max: 6.2, fare: 0.91 }, { max: 7.2, fare: 0.97 }, { max: Infinity, fare: 1.03 }
+];
+
+// --- Workfare Transport Concession (Card) ---
+const fareBandsWorkfare = [
+  { max: 3.2, fare: 0.78 }, { max: 4.2, fare: 0.86 }, { max: 5.2, fare: 0.95 },
+  { max: 6.2, fare: 1.03 }, { max: 7.2, fare: 1.10 }, { max: 8.2, fare: 1.16 },
+  { max: 9.2, fare: 1.22 }, { max: 10.2, fare: 1.25 }, { max: 11.2, fare: 1.28 },
+  { max: 12.2, fare: 1.31 }, { max: 13.2, fare: 1.34 }, { max: 14.2, fare: 1.37 },
+  { max: 15.2, fare: 1.40 }, { max: 16.2, fare: 1.43 }, { max: 17.2, fare: 1.46 },
+  { max: 18.2, fare: 1.49 }, { max: 19.2, fare: 1.52 }, { max: 20.2, fare: 1.55 },
+  { max: 21.2, fare: 1.58 }, { max: 22.2, fare: 1.61 }, { max: 23.2, fare: 1.64 },
+  { max: 24.2, fare: 1.66 }, { max: 25.2, fare: 1.67 }, { max: 26.2, fare: 1.68 },
+  { max: 27.2, fare: 1.69 }, { max: 28.2, fare: 1.70 }, { max: 29.2, fare: 1.71 },
+  { max: 30.2, fare: 1.72 }, { max: 31.2, fare: 1.73 }, { max: 32.2, fare: 1.74 },
+  { max: 33.2, fare: 1.75 }, { max: 34.2, fare: 1.76 }, { max: 35.2, fare: 1.77 },
+  { max: 36.2, fare: 1.78 }, { max: 37.2, fare: 1.79 }, { max: 38.2, fare: 1.80 },
+  { max: 39.2, fare: 1.81 }, { max: 40.2, fare: 1.82 }, { max: Infinity, fare: 1.83 }
+];
+
+
+
+    // ====== Monthly Pass Tables (LTA Dec 2024) ======
+const monthlyPasses = {
+  // --- Train-only passes ---
+  train: {
+    primary: 21.00,
+    secondary: 26.50,
+    polytechnic: 26.50,
+    university: 48.00,
+    ns: 48.00,
+    senior: 58.00,
+    disability: 58.00,
+    workfare: 96.00,
+    adult: 128.00
+  },
+
+  // --- Bus-only passes ---
+  bus: {
+    primary: 24.00,
+    secondary: 29.00,
+    polytechnic: 29.00,
+    university: 55.50,
+    ns: 55.50,
+    senior: 58.00,
+    disability: 58.00,
+    workfare: 96.00,
+    adult: 128.00
+  },
+
+  // --- Hybrid (Bus + Train) passes ---
+  hybrid: {
+    primary: 39.00,
+    secondary: 49.00,
+    polytechnic: 49.00,
+    university: 81.00,
+    ns: 81.00,
+    senior: 58.00,
+    disability: 58.00,
+    workfare: 96.00,
+    adult: 128.00
+  }
+};
+
+
+function fareByType(km, type = "adult") {
+  let bands;
+
+  switch (type) {
+    // 🧒 Students up to Polytechnic → Student table
+    case "primary":
+    case "secondary":
+    case "polytechnic":
+      bands = fareBandsStudent;
+      break;
+
+    // 👴 Seniors & PWD → Senior table
+    case "senior":
+    case "disability":
+      bands = fareBandsSenior;
+      break;
+
+    // 🧑‍🏭 Workfare → Workfare table
+    case "workfare":
+      bands = fareBandsWorkfare;
+      break;
+
+    // 🎓 University & NS use the same fare as Adults
+    case "university":
+    case "ns":
+    case "adult":
+    default:
+      bands = fareBandsAdult;
+  }
+
+  for (const b of bands) {
+    if (km <= b.max) return b.fare;
+  }
+  return bands[bands.length - 1].fare;
+}
+   
+    
     function calculateFare(){
-      const start = document.getElementById('fareStart').value;
-      const end = document.getElementById('fareEnd').value;
-      const type = document.getElementById('commuterType').value;
-      const out = document.getElementById('fareOutput');
-      if(!start || !end){ out.innerHTML = '<span class="text-danger">Please select both stations.</span>'; return; }
+  const start = document.getElementById('fareStart').value;
+  const end = document.getElementById('fareEnd').value;
+  const type = document.getElementById('commuterType').value;
+  const out = document.getElementById('fareOutput');
 
-      const p = shortestPath(start, end);
-      if(!p){ out.innerHTML = '<span class="text-danger">No route found.</span>'; return; }
-      const km = estimateDistanceKm(p.totalWeight);
-      const fare = fareByType(km, type);
+  if(!start || !end){
+    out.innerHTML = '<span class="text-danger">Please select both stations.</span>';
+    return;
+  }
 
-      const typeText = document.querySelector(`#commuterType option[value="${type}"]`).textContent;
+  const p = shortestPath(start, end);
+  if(!p){
+    out.innerHTML = '<span class="text-danger">No route found.</span>';
+    return;
+  }
 
-      let html = `<h5>Fare Calculation</h5>`;
-      html += `<div class="fare-result">
-        <div class="fs-3 mb-1">$${fare.toFixed(2)}</div>
-        <div class="small">Estimated fare (${typeText})</div>
-      </div>`;
-      html += `<div class="border rounded p-3 bg-light">
-        <p class="mb-1"><strong>Journey:</strong> ${start} → ${end}</p>
-        <p class="mb-1"><strong>Approx Distance:</strong> ${km} km (stops-based estimate)</p>
-      </div>`;
-      out.innerHTML = html;
-    }
+  const km = estimateDistanceKm(p.totalWeight);
+  const fare = fareByType(km, type);
+  const typeText = document.querySelector(`#commuterType option[value="${type}"]`).textContent;
 
-    function calculatePassValue(){
-      const start = document.getElementById('fareStart').value;
-      const end = document.getElementById('fareEnd').value;
-      const dailyTrips = parseInt(document.getElementById('dailyTrips').value)||2;
-      const workingDays = parseInt(document.getElementById('workingDays').value)||22;
-      const type = document.getElementById('commuterType').value;
-      const out = document.getElementById('passOutput');
+  let html = `<h5>Fare Calculation</h5>`;
+  html += `<div class="fare-result">
+    <div class="fs-3 mb-1">$${fare.toFixed(2)}</div>
+    <div class="small">Estimated fare (${typeText})</div>
+  </div>`;
+  html += `<div class="border rounded p-3 bg-light">
+    <p class="mb-1"><strong>Journey:</strong> ${start} → ${end}</p>
+    <p class="mb-1"><strong>Approx Distance:</strong> ${km} km (stops-based estimate)</p>
+  </div>`;
+  out.innerHTML = html;
+}
 
-      if(!start || !end){ out.innerHTML = '<span class="text-danger">Select journey in the fare calculator above.</span>'; return; }
+    function calculatePassValue() {
+  const start = document.getElementById('fareStart').value;
+  const end = document.getElementById('fareEnd').value;
+  const type = document.getElementById('commuterType').value;
+  const dailyTrips = parseInt(document.getElementById('dailyTrips').value) || 2;
+  const workingDays = parseInt(document.getElementById('workingDays').value) || 22;
+  const out = document.getElementById('passOutput');
 
-      const p = shortestPath(start, end);
-      if(!p){ out.innerHTML = '<span class="text-danger">No route found.</span>'; return; }
+  if (!start || !end) {
+    out.innerHTML = '<span class="text-danger">Select journey in the fare calculator above.</span>';
+    return;
+  }
 
-      const km = estimateDistanceKm(p.totalWeight);
-      const singleFare = fareByType(km, type);
-      const monthlyTotal = singleFare * dailyTrips * workingDays;
-      const monthlyPass = monthlyPassPrices[type] ?? monthlyPassPrices["adult"];
-      const savings = monthlyTotal - monthlyPass;
-      const isWorthIt = savings > 0;
-      const typeText = document.querySelector(`#commuterType option[value="${type}"]`).textContent;
+  const path = shortestPath(start, end);
+  if (!path) {
+    out.innerHTML = '<span class="text-danger">No route found.</span>';
+    return;
+  }
 
-      let html = `<h5>Monthly Pass Analysis</h5>
-      <div class="p-3 rounded ${isWorthIt ? 'bg-success text-white':'bg-danger text-white'}">
-        <div class="fs-4 mb-1">${isWorthIt ? '✅ Recommended!' : '❌ Pay-Per-Ride Cheaper'}</div>
-        <div>You would ${isWorthIt?'save':'lose'} $${Math.abs(savings).toFixed(2)} per month (${typeText})</div>
-      </div>
-      <div class="border rounded p-3 bg-light mt-2">
-        <p class="mb-1">• Single trip fare: $${singleFare.toFixed(2)}</p>
-        <p class="mb-1">• Daily trips: ${dailyTrips}</p>
-        <p class="mb-1">• Working days: ${workingDays}</p>
-        <p class="mb-1">• Monthly pay-per-ride total: <strong>$${monthlyTotal.toFixed(2)}</strong></p>
-        <p class="mb-1">• Monthly pass cost: <strong>$${monthlyPass.toFixed(2)}</strong></p>
-        <hr>
-        <p class="mb-0"><strong>Net ${isWorthIt?'Savings':'Loss'}: $${Math.abs(savings).toFixed(2)}</strong></p>
-      </div>
-      <div class="alert alert-warning mt-2">
-        💡 Break-even ≈ ${Math.ceil(monthlyPass / (singleFare * dailyTrips))} commute days / month.
-      </div>`;
-      out.innerHTML = html;
-    }
+  // Estimate trip fare
+  const km = estimateDistanceKm(path.totalWeight);
+  const singleFare = fareByType(km, type);
+  const monthlyTotal = singleFare * dailyTrips * workingDays;
+
+  // Decide relevant pass types
+  const travelModes = ["train", "bus", "hybrid"];
+  const results = [];
+
+  for (const mode of travelModes) {
+    const passPrice = monthlyPasses[mode][type] ?? monthlyPasses[mode]["adult"];
+    const savings = monthlyTotal - passPrice;
+    const worth = savings > 0;
+    results.push({ mode, passPrice, savings, worth });
+  }
+
+  // Render output
+  let html = `<h5>Monthly Pass Analysis</h5>`;
+  html += `<div class="border rounded p-3 bg-light mb-3">
+    <p><strong>Single Trip Fare:</strong> $${singleFare.toFixed(2)}</p>
+    <p><strong>Daily Trips:</strong> ${dailyTrips}</p>
+    <p><strong>Working Days:</strong> ${workingDays}</p>
+    <p><strong>Estimated Monthly Spend (Pay-Per-Ride):</strong> $${monthlyTotal.toFixed(2)}</p>
+  </div>`;
+
+  html += `<div class="table-responsive">
+    <table class="table table-striped align-middle">
+      <thead class="table-danger text-center">
+        <tr>
+          <th>Pass Type</th>
+          <th>Price ($)</th>
+          <th>Net Savings / Loss ($)</th>
+          <th>Recommendation</th>
+        </tr>
+      </thead>
+      <tbody class="text-center">`;
+
+  for (const r of results) {
+    html += `<tr>
+      <td class="text-capitalize">${r.mode}</td>
+      <td>${r.passPrice.toFixed(2)}</td>
+      <td class="${r.worth ? 'text-success' : 'text-danger'}">
+        ${r.worth ? '+' : '−'}${Math.abs(r.savings).toFixed(2)}
+      </td>
+      <td>${r.worth ? '✅ Worth It' : '❌ Not Worth It'}</td>
+    </tr>`;
+  }
+
+  html += `</tbody></table></div>`;
+
+  out.innerHTML = html;
+}
 
     // ====== PROFILE / FAVORITES ======
     function saveProfile(){
