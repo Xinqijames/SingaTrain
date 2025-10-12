@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Singapore MRT Assistant</title>
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.js"></script>
+  <link href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css" rel="stylesheet" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -236,6 +238,13 @@
       <h2>📊 My Dashboard</h2>
       <div class="feature-description">
         Quick access to your favorite stations and recent alerts
+      </div>
+      
+      <!-- Singapore MRT Map -->
+      <div style="margin: 20px 0;">
+        <h3>🗺️ Singapore MRT Network</h3>
+        <div id="singaporeMap" style="width: 100%; height: 400px; background: #e0e0e0; border-radius: 12px; border: 1px solid #ddd;">
+        </div>
       </div>
       
       <h3 style="margin-top: 20px;">Favorite Stations</h3>
@@ -478,23 +487,49 @@
       out.innerHTML = '<div class="loading">Fetching live data...</div>';
 
       try {
-        // Fetch service alerts
-        const alertUrl = `${PROXY}${encodeURIComponent(API_BASE + "/TrainServiceAlerts")}`;
-        const alertRes = await fetch(alertUrl, {
-          headers: { AccountKey: ACCOUNT_KEY, accept: "application/json" }
-        });
-        const alertData = await alertRes.json();
-        let alerts = alertData.value || alertData.Value || alertData || [];
-        if (!Array.isArray(alerts)) alerts = [];
+        // Fetch service alerts (with error handling)
+        let alerts = [];
+        try {
+          const alertUrl = `${PROXY}${encodeURIComponent(API_BASE + "/TrainServiceAlerts")}`;
+          const alertRes = await fetch(alertUrl, {
+            headers: { AccountKey: ACCOUNT_KEY, accept: "application/json" }
+          });
+          if (alertRes.ok) {
+            const alertData = await alertRes.json();
+            alerts = alertData.value || alertData.Value || alertData || [];
+            if (!Array.isArray(alerts)) alerts = [];
+          } else {
+            console.warn('Service alerts API not available:', alertRes.status);
+          }
+        } catch (alertError) {
+          console.warn('Service alerts API error:', alertError.message);
+          // Use mock data for demo
+          alerts = [
+            { Message: "Demo: All train services operating normally", Line: "All Lines" }
+          ];
+        }
 
-        // Fetch crowd data
-        const crowdUrl = `${PROXY}${encodeURIComponent(API_BASE + "/PCDRealTime?TrainLine=" + line)}`;
-        const crowdRes = await fetch(crowdUrl, {
-          headers: { AccountKey: ACCOUNT_KEY, accept: "application/json" }
-        });
-        const crowdData = await crowdRes.json();
-        let crowds = crowdData.value || crowdData.Value || crowdData || [];
-        if (!Array.isArray(crowds)) crowds = [];
+        // Fetch crowd data (with error handling)
+        let crowds = [];
+        try {
+          const crowdUrl = `${PROXY}${encodeURIComponent(API_BASE + "/PCDRealTime?TrainLine=" + line)}`;
+          const crowdRes = await fetch(crowdUrl, {
+            headers: { AccountKey: ACCOUNT_KEY, accept: "application/json" }
+          });
+          if (crowdRes.ok) {
+            const crowdData = await crowdRes.json();
+            crowds = crowdData.value || crowdData.Value || crowdData || [];
+            if (!Array.isArray(crowds)) crowds = [];
+          } else {
+            console.warn('Crowd data API not available:', crowdRes.status);
+          }
+        } catch (crowdError) {
+          console.warn('Crowd data API error:', crowdError.message);
+          // Use mock data for demo
+          crowds = [
+            { Station: "Demo Station", CrowdLevel: "Moderate", Line: line }
+          ];
+        }
 
         // Display results
         let html = '<h3>Service Status</h3>';
@@ -975,11 +1010,386 @@
       alert(`Live details for ${station} would appear here.\n\nIn full implementation:\n• Live train arrivals\n• Current crowd level\n• Service alerts\n• Nearby facilities`);
     }
 
+    // Singapore MRT Map with stations
+    function initMap() {
+      mapboxgl.accessToken = 'pk.eyJ1IjoiY2hlZWF1biIsImEiOiJja2NydG83cWMwaGJsMnBqdjR5aHc3MzdlIn0.YGTZpi7JQMquEOv9E8K_bg';
+      const map = new mapboxgl.Map({
+        container: 'singaporeMap',
+        style: 'mapbox://styles/cheeaun/clagddy23000y14saafbh02a8',
+        center: [103.8475, 1.3011],
+        zoom: 11,
+        bounds: [103.59, 1.23, 104.05, 1.475],
+        renderWorldCopies: false
+      });
+      
+      map.addControl(new mapboxgl.NavigationControl());
+      
+      // Load MRT stations when map is ready
+      map.on('load', async () => {
+        try {
+          console.log('Map loaded, fetching MRT data...');
+          const response = await fetch('./map/src/sg-rail.geo.json');
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          const data = await response.json();
+          console.log('MRT data loaded:', data.features.length, 'features');
+          
+          // Add rail data source
+          map.addSource('mrt-stations', {
+            type: 'geojson',
+            data: data
+          });
+          
+          // Add MRT lines first (so they appear behind stations)
+          map.addLayer({
+            id: 'mrt-lines',
+            source: 'mrt-stations',
+            filter: ['==', ['geometry-type'], 'LineString'],
+            type: 'line',
+            paint: {
+              'line-width': [
+                'interpolate',
+                ['linear'],
+                ['zoom'],
+                10, 2,
+                16, 6
+              ],
+              'line-color': [
+                'match',
+                ['get', 'line_color'],
+                'orangered', '#d42e12',
+                'mediumseagreen', '#009645',
+                'orange', '#fa9e0d',
+                'saddlebrown', '#9D5B25',
+                'darkmagenta', '#9900aa',
+                'darkslateblue', '#005ec4',
+                'gray', '#748477',
+                '#748477'
+              ],
+              'line-opacity': 0.8
+            },
+            layout: {
+              'line-cap': 'round',
+              'line-join': 'round'
+            }
+          });
+
+          // Add station markers
+          map.addLayer({
+            id: 'stations',
+            source: 'mrt-stations',
+            filter: ['==', ['get', 'stop_type'], 'station'],
+            type: 'circle',
+            paint: {
+              'circle-radius': 6,
+              'circle-color': [
+                'match',
+                ['get', 'station_colors'],
+                'red', '#d42e12',
+                'green', '#009645', 
+                'orange', '#fa9e0d',
+                'brown', '#9D5B25',
+                'purple', '#9900aa',
+                'blue', '#005ec4',
+                '#748477'
+              ],
+              'circle-stroke-color': '#fff',
+              'circle-stroke-width': 2
+            }
+          });
+          
+          // Add station labels
+          map.addLayer({
+            id: 'station-labels',
+            source: 'mrt-stations',
+            filter: ['==', ['get', 'stop_type'], 'station'],
+            type: 'symbol',
+            layout: {
+              'text-field': ['get', 'name'],
+              'text-size': 12,
+              'text-anchor': 'bottom',
+              'text-offset': [0, -1]
+            },
+            paint: {
+              'text-halo-color': '#fff',
+              'text-halo-width': 2
+            }
+          });
+          
+          // Make stations clickable
+          map.on('click', 'stations', (e) => {
+            // Close any existing popup first
+            const existingPopups = document.querySelectorAll('.mapboxgl-popup');
+            existingPopups.forEach(popup => popup.remove());
+            
+            const station = e.features[0];
+            const props = station.properties;
+            const name = props.name;
+            const codes = props.station_codes;
+            const colors = props.station_colors;
+            const nameZh = props['name_zh-Hans'] || '';
+            const nameTa = props.name_ta || '';
+            
+            // Determine line name from station color
+            const lineName = {
+              'red': 'North-South Line (NSL)',
+              'green': 'East-West Line (EWL)', 
+              'orange': 'Circle Line (CCL)',
+              'brown': 'Downtown Line (DTL)',
+              'purple': 'North East Line (NEL)',
+              'blue': 'Thomson-East Coast Line (TEL)',
+              'gray': 'LRT Line'
+            }[colors] || 'Unknown Line';
+            
+            // Create detailed popup
+            new mapboxgl.Popup({
+              maxWidth: '300px',
+              closeButton: true,
+              closeOnClick: false
+            })
+              .setLngLat(e.lngLat)
+              .setHTML(`
+                <div style="padding: 15px; font-family: 'Segoe UI', sans-serif;">
+                  <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                    <div style="width: 20px; height: 20px; background-color: ${colors === 'red' ? '#d42e12' : colors === 'green' ? '#009645' : colors === 'orange' ? '#fa9e0d' : colors === 'brown' ? '#9D5B25' : colors === 'purple' ? '#9900aa' : colors === 'blue' ? '#005ec4' : '#748477'}; border-radius: 50%; margin-right: 10px;"></div>
+                    <h3 style="margin: 0; color: #333; font-size: 18px;">${name}</h3>
+                  </div>
+                  
+                  <div style="margin-bottom: 8px;">
+                    <strong style="color: #555;">Station Code:</strong> 
+                    <span style="color: #667eea; font-weight: bold;">${codes}</span>
+                  </div>
+                  
+                  <div style="margin-bottom: 8px;">
+                    <strong style="color: #555;">Line:</strong> 
+                    <span style="color: #333;">${lineName}</span>
+                  </div>
+                  
+                  ${nameZh ? `
+                  <div style="margin-bottom: 8px;">
+                    <strong style="color: #555;">Chinese:</strong> 
+                    <span style="color: #333;">${nameZh}</span>
+                  </div>
+                  ` : ''}
+                  
+                  ${nameTa ? `
+                  <div style="margin-bottom: 8px;">
+                    <strong style="color: #555;">Tamil:</strong> 
+                    <span style="color: #333;">${nameTa}</span>
+                  </div>
+                  ` : ''}
+                  
+                  <div style="margin-top: 12px; padding-top: 10px; border-top: 1px solid #eee;">
+                    <button onclick="alert('Live train arrivals, crowd levels, and service alerts would be shown here!')" 
+                            style="background: #667eea; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 14px; width: 100%;">
+                      View Live Info
+                    </button>
+                  </div>
+                </div>
+              `)
+              .addTo(map);
+          });
+          
+          // Change cursor on hover
+          map.on('mouseenter', 'stations', () => {
+            map.getCanvas().style.cursor = 'pointer';
+          });
+          map.on('mouseleave', 'stations', () => {
+            map.getCanvas().style.cursor = '';
+          });
+          
+        } catch (error) {
+          console.error('Error loading MRT data:', error);
+          
+          // Create fallback stations for testing
+          const fallbackData = {
+            type: 'FeatureCollection',
+            features: [
+              {
+                type: 'Feature',
+                properties: {
+                  name: 'City Hall',
+                  station_codes: 'NS25-EW13',
+                  station_colors: 'red',
+                  'name_zh-Hans': '政府大厦',
+                  name_ta: 'சிட்டி ஹால்'
+                },
+                geometry: {
+                  type: 'Point',
+                  coordinates: [103.8523, 1.2931]
+                }
+              },
+              {
+                type: 'Feature',
+                properties: {
+                  name: 'Raffles Place',
+                  station_codes: 'NS26-EW14',
+                  station_colors: 'green',
+                  'name_zh-Hans': '莱佛士坊',
+                  name_ta: 'ராஃபிள்ஸ் பிளேஸ்'
+                },
+                geometry: {
+                  type: 'Point',
+                  coordinates: [103.8514, 1.2834]
+                }
+              },
+              {
+                type: 'Feature',
+                properties: {
+                  name: 'Marina Bay',
+                  station_codes: 'NS27-CC4-TE2',
+                  station_colors: 'orange',
+                  'name_zh-Hans': '滨海湾',
+                  name_ta: 'மரினா பே'
+                },
+                geometry: {
+                  type: 'Point',
+                  coordinates: [103.8546, 1.2767]
+                }
+              }
+            ]
+          };
+          
+          console.log('Using fallback data with', fallbackData.features.length, 'stations');
+          
+          // Add fallback data
+          map.addSource('mrt-stations', {
+            type: 'geojson',
+            data: fallbackData
+          });
+          
+          // Add station markers
+          map.addLayer({
+            id: 'stations',
+            source: 'mrt-stations',
+            type: 'circle',
+            paint: {
+              'circle-radius': 8,
+              'circle-color': [
+                'match',
+                ['get', 'station_colors'],
+                'red', '#d42e12',
+                'green', '#009645', 
+                'orange', '#fa9e0d',
+                'brown', '#9D5B25',
+                'purple', '#9900aa',
+                'blue', '#005ec4',
+                '#748477'
+              ],
+              'circle-stroke-color': '#fff',
+              'circle-stroke-width': 2
+            }
+          });
+          
+          // Add station labels
+          map.addLayer({
+            id: 'station-labels',
+            source: 'mrt-stations',
+            type: 'symbol',
+            layout: {
+              'text-field': ['get', 'name'],
+              'text-size': 12,
+              'text-anchor': 'bottom',
+              'text-offset': [0, -1]
+            },
+            paint: {
+              'text-halo-color': '#fff',
+              'text-halo-width': 2
+            }
+          });
+          
+          // Make stations clickable
+          map.on('click', 'stations', (e) => {
+            // Close any existing popup first
+            const existingPopups = document.querySelectorAll('.mapboxgl-popup');
+            existingPopups.forEach(popup => popup.remove());
+            
+            const station = e.features[0];
+            const props = station.properties;
+            const name = props.name;
+            const codes = props.station_codes;
+            const colors = props.station_colors;
+            const nameZh = props['name_zh-Hans'] || '';
+            const nameTa = props.name_ta || '';
+            
+            // Determine line name from station color
+            const lineName = {
+              'red': 'North-South Line (NSL)',
+              'green': 'East-West Line (EWL)', 
+              'orange': 'Circle Line (CCL)',
+              'brown': 'Downtown Line (DTL)',
+              'purple': 'North East Line (NEL)',
+              'blue': 'Thomson-East Coast Line (TEL)',
+              'gray': 'LRT Line'
+            }[colors] || 'Unknown Line';
+            
+            // Create detailed popup
+            new mapboxgl.Popup({
+              maxWidth: '300px',
+              closeButton: true,
+              closeOnClick: false
+            })
+              .setLngLat(e.lngLat)
+              .setHTML(`
+                <div style="padding: 15px; font-family: 'Segoe UI', sans-serif;">
+                  <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                    <div style="width: 20px; height: 20px; background-color: ${colors === 'red' ? '#d42e12' : colors === 'green' ? '#009645' : colors === 'orange' ? '#fa9e0d' : colors === 'brown' ? '#9D5B25' : colors === 'purple' ? '#9900aa' : colors === 'blue' ? '#005ec4' : '#748477'}; border-radius: 50%; margin-right: 10px;"></div>
+                    <h3 style="margin: 0; color: #333; font-size: 18px;">${name}</h3>
+                  </div>
+                  
+                  <div style="margin-bottom: 8px;">
+                    <strong style="color: #555;">Station Code:</strong> 
+                    <span style="color: #667eea; font-weight: bold;">${codes}</span>
+                  </div>
+                  
+                  <div style="margin-bottom: 8px;">
+                    <strong style="color: #555;">Line:</strong> 
+                    <span style="color: #333;">${lineName}</span>
+                  </div>
+                  
+                  ${nameZh ? `
+                  <div style="margin-bottom: 8px;">
+                    <strong style="color: #555;">Chinese:</strong> 
+                    <span style="color: #333;">${nameZh}</span>
+                  </div>
+                  ` : ''}
+                  
+                  ${nameTa ? `
+                  <div style="margin-bottom: 8px;">
+                    <strong style="color: #555;">Tamil:</strong> 
+                    <span style="color: #333;">${nameTa}</span>
+                  </div>
+                  ` : ''}
+                  
+                  <div style="margin-top: 12px; padding-top: 10px; border-top: 1px solid #eee;">
+                    <button onclick="alert('Live train arrivals, crowd levels, and service alerts would be shown here!')" 
+                            style="background: #667eea; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 14px; width: 100%;">
+                      View Live Info
+                    </button>
+                  </div>
+                </div>
+              `)
+              .addTo(map);
+          });
+          
+          // Change cursor on hover
+          map.on('mouseenter', 'stations', () => {
+            map.getCanvas().style.cursor = 'pointer';
+          });
+          map.on('mouseleave', 'stations', () => {
+            map.getCanvas().style.cursor = '';
+          });
+        }
+      });
+    }
+
     // Initialize on page load
     window.addEventListener('DOMContentLoaded', () => {
       initializeDropdowns();
       displayFavorites();
       loadDashboard();
+      initMap();
     });
   </script>
 </body>
