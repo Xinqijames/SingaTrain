@@ -9,24 +9,99 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
 
+  <!-- Material Design Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  
+  <!-- Premium Typography - Neuralink-inspired fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Animate.css for smooth animations -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  
+  <!-- AOS (Animate On Scroll) for premium animations -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  
   <!-- Mapbox -->
   <script src="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.js"></script>
   <link href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css" rel="stylesheet" />
 
   <style>
     :root {
+  /* Neuralink-inspired color palette - muted and sophisticated */
   --sg-red: #750000;         /* Primary brand red */
   --sg-red-dark: #4d0000;    /* Darker hover red */
   --sg-red-soft: #f8eaea;    /* Light background tint */
   --sg-grey: #6b7280;
   --sg-border: #e5e7eb;
+  
+  /* Premium Neuralink-inspired variables */
+  --primary-gradient: linear-gradient(135deg, #750000 0%, #a00000 100%);
+  --card-shadow: 0 2px 40px rgba(0,0,0,0.04);
+  --card-shadow-hover: 0 8px 60px rgba(0,0,0,0.08);
+  --border-radius: 20px;
+  --border-radius-sm: 12px;
+  --border-radius-lg: 32px;
+  
+  /* Neuralink-inspired muted palette */
+  --neutral-50: #fafafa;
+  --neutral-100: #f5f5f5;
+  --neutral-200: #e5e5e5;
+  --neutral-300: #d4d4d4;
+  --neutral-400: #a3a3a3;
+  --neutral-500: #737373;
+  --neutral-600: #525252;
+  --neutral-700: #404040;
+  --neutral-800: #262626;
+  --neutral-900: #171717;
+  
+  /* Premium accent colors */
+  --accent-blue: #0ea5e9;
+  --accent-green: #10b981;
+  --accent-purple: #8b5cf6;
+  --accent-orange: #f59e0b;
+  
+  /* Typography scale */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
 }
-    * { box-sizing: border-box; }
+    * { 
+      box-sizing: border-box; 
+      margin: 0;
+      padding: 0;
+    }
+    
     body {
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
-       background: linear-gradient(135deg, #ffffff 0%, #fff5f5 40%, #f8eaea 100%);
-      color:#111827;
+      font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+      background: var(--neutral-50);
+      color: var(--neutral-800);
       min-height: 100vh;
+      font-weight: 400;
+      line-height: 1.7;
+      letter-spacing: -0.01em;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    
+    /* Premium typography hierarchy */
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+    
+    .section-title {
+      font-size: var(--text-3xl);
+      font-weight: 600;
+      color: var(--neutral-900);
+      margin-bottom: 0.5rem;
     }
     header{
       background: #fff;
@@ -47,8 +122,37 @@
   background: var(--sg-red-dark);
 }
     .section-card{
-      background:#fff; border:1px solid var(--sg-border);
-      border-radius:16px; padding:24px; box-shadow:0 10px 24px rgba(0,0,0,.06);
+      background: #ffffff;
+      border: 1px solid var(--neutral-200);
+      border-radius: var(--border-radius);
+      padding: 48px;
+      box-shadow: var(--card-shadow);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+    }
+    
+    .section-card:hover {
+      box-shadow: var(--card-shadow-hover);
+      transform: translateY(-4px);
+      border-color: var(--neutral-300);
+    }
+    
+    .section-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--sg-red) 0%, var(--accent-blue) 100%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    .section-card:hover::before {
+      opacity: 1;
     }
     h2.section-title{ color:var(--sg-red); }
     .feature-description{
@@ -75,8 +179,621 @@
     }
     .mapboxgl-popup-content{ border-radius:12px !important; }
     .station-chip{ font-weight:600; color:var(--sg-red); }
-    .form-select, .form-control{ border:2px solid #e5e7eb; }
-    .form-select:focus, .form-control:focus{ border-color: var(--sg-red); box-shadow: 0 0 0 .2rem rgba(220,38,38,.15); }
+    .form-select, .form-control{ 
+      border:2px solid #e5e7eb; 
+      border-radius: var(--border-radius-sm);
+      padding: 12px 16px;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+    .form-select:focus, .form-control:focus{ 
+      border-color: var(--sg-red); 
+      box-shadow: 0 0 0 .2rem rgba(220,38,38,.15);
+      transform: translateY(-1px);
+    }
+
+    /* Neuralink-inspired Meetup Section */
+    .meetup-container {
+      background: var(--neutral-50);
+      border-radius: var(--border-radius-lg);
+      padding: 40px;
+      margin-bottom: 40px;
+      border: 1px solid var(--neutral-200);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .meetup-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(117, 0, 0, 0.02) 0%, rgba(14, 165, 233, 0.02) 100%);
+      pointer-events: none;
+    }
+    
+    .person-card {
+      background: #ffffff;
+      border: 1px solid var(--neutral-200);
+      border-radius: var(--border-radius);
+      padding: 32px;
+      margin-bottom: 24px;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+    }
+    
+    .person-card:hover {
+      border-color: var(--neutral-300);
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.06);
+      transform: translateY(-3px);
+    }
+    
+    .person-card.active {
+      border-color: var(--sg-red);
+      background: linear-gradient(135deg, #ffffff 0%, rgba(117, 0, 0, 0.02) 100%);
+      box-shadow: 0 8px 40px rgba(117, 0, 0, 0.08);
+    }
+    
+    .person-card.active::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--primary-gradient);
+    }
+    
+    .person-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    
+    .person-avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--sg-red) 0%, var(--accent-blue) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+      font-size: 20px;
+      box-shadow: 0 8px 24px rgba(117, 0, 0, 0.15);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .person-avatar::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%);
+      pointer-events: none;
+    }
+    
+    .person-info h6 {
+      margin: 0;
+      color: var(--neutral-900);
+      font-weight: 600;
+      font-size: var(--text-lg);
+      letter-spacing: -0.01em;
+    }
+    
+    .person-info small {
+      color: var(--neutral-500);
+      font-size: var(--text-sm);
+      font-weight: 400;
+    }
+    
+    .station-selector {
+      position: relative;
+    }
+    
+    .station-selector .form-select {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m1 6 7 7 7-7'/%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 16px 12px;
+      padding-right: 40px;
+    }
+    
+    .meetup-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+      flex-wrap: wrap;
+    }
+    
+    .btn-modern {
+      background: linear-gradient(135deg, var(--sg-red) 0%, var(--sg-red-dark) 100%);
+      border: none;
+      border-radius: var(--border-radius-sm);
+      padding: 16px 32px;
+      font-weight: 500;
+      font-size: var(--text-base);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: white;
+      letter-spacing: -0.01em;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .btn-modern::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+    
+    .btn-modern:hover::before {
+      left: 100%;
+    }
+    
+    .btn-modern:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(117, 0, 0, 0.25);
+      color: white;
+    }
+    
+    .btn-modern.secondary {
+      background: var(--neutral-50);
+      color: var(--neutral-700);
+      border: 1px solid var(--neutral-300);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+    
+    .btn-modern.secondary:hover {
+      background: var(--neutral-100);
+      border-color: var(--sg-red);
+      color: var(--sg-red);
+      box-shadow: 0 8px 24px rgba(117, 0, 0, 0.1);
+    }
+    
+    .meetup-results {
+      background: #ffffff;
+      border: 1px solid var(--neutral-200);
+      border-radius: var(--border-radius);
+      padding: 40px;
+      margin-top: 40px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.06);
+      backdrop-filter: blur(10px);
+    }
+    
+    .meetup-results::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--sg-red) 0%, var(--accent-green) 100%);
+    }
+    
+    .meeting-point {
+      background: linear-gradient(135deg, var(--sg-red) 0%, var(--accent-blue) 100%);
+      color: white;
+      padding: 32px;
+      border-radius: var(--border-radius);
+      text-align: center;
+      margin-bottom: 32px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(117, 0, 0, 0.2);
+    }
+    
+    .meeting-point::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
+      pointer-events: none;
+    }
+    
+    .meeting-point h4 {
+      font-size: var(--text-2xl);
+      font-weight: 600;
+      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+    }
+    
+    .meeting-point p {
+      opacity: 0.9;
+      font-size: var(--text-base);
+      margin: 0;
+    }
+    
+    .travel-times {
+      display: grid;
+      gap: 12px;
+      margin-top: 20px;
+    }
+    
+    .travel-time-item {
+      background: var(--neutral-50);
+      border: 1px solid var(--neutral-200);
+      border-radius: var(--border-radius-sm);
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .travel-time-item:hover {
+      background: #ffffff;
+      border-color: var(--neutral-300);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+      transform: translateY(-2px);
+    }
+    
+    .time-badge {
+      background: linear-gradient(135deg, var(--sg-red) 0%, var(--accent-blue) 100%);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 24px;
+      font-size: var(--text-sm);
+      font-weight: 600;
+      min-width: 80px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(117, 0, 0, 0.15);
+      letter-spacing: -0.01em;
+    }
+    
+    .quick-stations {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+    
+    .quick-station-btn {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 20px;
+      padding: 6px 12px;
+      font-size: 12px;
+      color: #475569;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    
+    .quick-station-btn:hover {
+      background: var(--sg-red);
+      color: white;
+      border-color: var(--sg-red);
+      transform: translateY(-1px);
+    }
+    
+    .floating-action {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 56px;
+      height: 56px;
+      background: var(--primary-gradient);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 24px;
+      box-shadow: 0 8px 25px rgba(117, 0, 0, 0.3);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+    
+    .floating-action:hover {
+      transform: scale(1.1);
+      box-shadow: 0 12px 35px rgba(117, 0, 0, 0.4);
+    }
+    
+    /* Premium Animations */
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    
+    @keyframes slideInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes fadeInScale {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+    
+    /* Map Interaction Animations */
+    @keyframes mapClickRipple {
+      0% {
+        transform: scale(0);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(4);
+        opacity: 0;
+      }
+    }
+    
+    @keyframes stationSelect {
+      0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(117, 0, 0, 0.4);
+      }
+      50% {
+        transform: scale(1.2);
+        box-shadow: 0 0 0 20px rgba(117, 0, 0, 0.1);
+      }
+      100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(117, 0, 0, 0);
+      }
+    }
+    
+    @keyframes loadingPulse {
+      0%, 100% {
+        opacity: 0.4;
+        transform: scale(0.95);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.05);
+      }
+    }
+    
+    @keyframes loadingDots {
+      0%, 20% {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1);
+      }
+      80%, 100% {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+    }
+    
+    @keyframes progressBar {
+      0% {
+        width: 0%;
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      90% {
+        opacity: 1;
+      }
+      100% {
+        width: 100%;
+        opacity: 0;
+      }
+    }
+    
+    @keyframes successCheckmark {
+      0% {
+        transform: scale(0) rotate(0deg);
+        opacity: 0;
+      }
+      50% {
+        transform: scale(1.2) rotate(180deg);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(1) rotate(360deg);
+        opacity: 1;
+      }
+    }
+    
+    .animate-slide-in {
+      animation: slideInUp 0.5s ease-out;
+    }
+    
+    .animate-fade-in-scale {
+      animation: fadeInScale 0.4s ease-out;
+    }
+    
+    /* Map Animation Classes */
+    .map-click-ripple {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(117, 0, 0, 0.3);
+      pointer-events: none;
+      animation: mapClickRipple 0.6s ease-out;
+    }
+    
+    .station-selected {
+      animation: stationSelect 0.8s ease-out;
+    }
+    
+    /* Loading Animation Classes */
+    .loading-pulse {
+      animation: loadingPulse 1.5s ease-in-out infinite;
+    }
+    
+    .loading-dots {
+      display: inline-flex;
+      gap: 4px;
+    }
+    
+    .loading-dots span {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--sg-red);
+      animation: loadingDots 1.4s ease-in-out infinite;
+    }
+    
+    .loading-dots span:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+    
+    .loading-dots span:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+    
+    .progress-bar {
+      position: relative;
+      height: 3px;
+      background: var(--neutral-200);
+      border-radius: 2px;
+      overflow: hidden;
+      margin: 20px 0;
+    }
+    
+    .progress-bar::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      background: linear-gradient(90deg, var(--sg-red) 0%, var(--accent-blue) 100%);
+      border-radius: 2px;
+      animation: progressBar 2s ease-out;
+    }
+    
+    .success-checkmark {
+      animation: successCheckmark 0.8s ease-out;
+    }
+    
+    /* Enhanced hover effects */
+    .person-card:hover .person-avatar {
+      transform: scale(1.1);
+      box-shadow: 0 6px 20px rgba(117, 0, 0, 0.4);
+    }
+    
+    .btn-modern:active {
+      transform: translateY(0);
+    }
+    
+    /* Loading states */
+    .loading-shimmer {
+      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+    }
+    
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+    
+    /* Success states */
+    .success-glow {
+      box-shadow: 0 0 20px rgba(34, 197, 94, 0.3);
+      border-color: #22c55e;
+    }
+    
+    /* Error states */
+    .error-shake {
+      animation: shake 0.5s ease-in-out;
+    }
+    
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+    
+    @media (max-width: 768px) {
+      .meetup-container {
+        padding: 16px;
+      }
+      
+      .person-card {
+        padding: 16px;
+      }
+      
+      .meetup-actions {
+        flex-direction: column;
+      }
+      
+      .btn-modern {
+        width: 100%;
+        justify-content: center;
+      }
+      
+      .floating-action {
+        bottom: 16px;
+        right: 16px;
+      }
+      
+      .travel-times {
+        gap: 8px;
+      }
+      
+      .travel-time-item {
+        padding: 12px;
+      }
+    }
+    
+    @media (max-width: 576px) {
+      .section-card {
+        padding: 20px;
+      }
+      
+      .meetup-container {
+        padding: 12px;
+      }
+      
+      .person-card {
+        padding: 12px;
+      }
+      
+      .quick-stations {
+        gap: 6px;
+      }
+      
+      .quick-station-btn {
+        font-size: 11px;
+        padding: 4px 8px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -178,27 +895,73 @@
 
     <!-- MEETUP -->
     <section id="meetup" class="section-card d-none">
-      <h2 class="section-title mb-2">👥 Meet-up Point Finder</h2>
-      <div class="feature-description p-3 rounded mb-3">Find a fair meet-up station by minimizing total stops (approx time).</div>
-
-      <div class="mb-2">
-        <label class="form-label">Add Group Members’ Locations</label>
-        <div id="meetupLocations" class="d-grid gap-2"></div>
-        <button class="btn btn-success btn-sm mt-2" onclick="addMeetupLocation()">+ Add Another Person</button>
+      <div class="d-flex align-items-center gap-3 mb-6">
+        <div class="person-avatar" style="width: 64px; height: 64px; font-size: 28px;">
+          <span class="material-icons">group</span>
+        </div>
+        <div>
+          <h2 class="section-title mb-2">Meet-up Point Finder</h2>
+          <p class="text-muted mb-0" style="font-size: var(--text-lg); color: var(--neutral-600);">Find the perfect meeting spot that's fair for everyone</p>
+        </div>
       </div>
 
-      <button class="btn btn-primary" onclick="findMeetupPoint()">Find Best Meet-up Point</button>
-      
-      <!-- Map for Meet-up -->
-      <div class="mt-4">
-        <h5 class="mb-2">🗺️ Singapore MRT Network</h5>
-        <div id="meetupMap" style="width:100%;height:400px;border:1px solid var(--sg-border);border-radius:12px;background:#f3f4f6"></div>
+      <div class="meetup-container">
+        <div class="d-flex align-items-center justify-content-between mb-6">
+          <h5 class="mb-0 d-flex align-items-center gap-3" style="font-size: var(--text-xl); color: var(--neutral-900);">
+            <span class="material-icons" style="color: var(--sg-red);">group</span>
+            Group Members
+          </h5>
+          <button class="btn-modern secondary" onclick="addMeetupLocation()">
+            <span class="material-icons">add</span>
+            Add Person
+          </button>
+        </div>
+        
+        <div id="meetupLocations"></div>
+        
+        <div class="quick-stations">
+          <span class="text-muted me-3" style="font-size: var(--text-sm); color: var(--neutral-500);">Quick select:</span>
+          <span class="quick-station-btn" onclick="quickSelectStation('City Hall')">City Hall</span>
+          <span class="quick-station-btn" onclick="quickSelectStation('Orchard')">Orchard</span>
+          <span class="quick-station-btn" onclick="quickSelectStation('Raffles Place')">Raffles Place</span>
+          <span class="quick-station-btn" onclick="quickSelectStation('Marina Bay')">Marina Bay</span>
+          <span class="quick-station-btn" onclick="quickSelectStation('Dhoby Ghaut')">Dhoby Ghaut</span>
+        </div>
       </div>
-      
-      <div class="output-box mt-3" id="meetupOutput">
-        <div class="text-secondary">Add at least two locations.</div>
+
+      <div class="meetup-actions">
+        <button class="btn-modern" onclick="findMeetupPoint()">
+          <span class="material-icons">location_searching</span>
+          Find Best Meeting Point
+        </button>
+        <button class="btn-modern secondary" onclick="clearAllLocations()">
+          <span class="material-icons">clear_all</span>
+          Clear All
+        </button>
       </div>
-    </section>
+     
+     <!-- Map for Meet-up -->
+     <div class="mt-6">
+       <div class="d-flex align-items-center gap-3 mb-4">
+         <span class="material-icons" style="color: var(--sg-red); font-size: 28px;">map</span>
+         <h5 class="mb-0" style="font-size: var(--text-xl); color: var(--neutral-900);">Interactive MRT Network</h5>
+       </div>
+       <div id="meetupMap" style="width:100%;height:500px;border:1px solid var(--neutral-200);border-radius:var(--border-radius);background:var(--neutral-50);box-shadow: 0 4px 20px rgba(0,0,0,0.04);"></div>
+       <div class="mt-3 text-muted" style="font-size: var(--text-sm); color: var(--neutral-500);">
+         <span class="material-icons" style="font-size: 18px; vertical-align: middle; margin-right: 8px;">info</span>
+         Click on stations to add them to your group members
+       </div>
+     </div>
+     
+     <div id="meetupOutput" class="meetup-results d-none">
+       <!-- Results will be populated here -->
+     </div>
+     
+     <!-- Floating Action Button -->
+     <div class="floating-action d-none" id="floatingAction" onclick="addMeetupLocation()">
+       <span class="material-icons">add</span>
+     </div>
+   </section>
 
     <!-- ALTERNATIVES -->
     <section id="alternatives" class="section-card d-none">
@@ -360,8 +1123,22 @@
       document.querySelector(`.nav-link[data-tab="${tabName}"]`)?.classList.add('active');
       document.querySelectorAll('main section').forEach(s=>s.classList.add('d-none'));
       document.getElementById(tabName)?.classList.remove('d-none');
+      
+      // Show/hide floating action button
+      const floatingAction = document.getElementById('floatingAction');
+      if (tabName === 'meetup') {
+        floatingAction?.classList.remove('d-none');
+        initMeetupMap();
+        // Add first person if none exist
+        const existingPersons = document.querySelectorAll('#meetupLocations .person-card');
+        if (existingPersons.length === 0) {
+          addMeetupLocation();
+        }
+      } else {
+        floatingAction?.classList.add('d-none');
+      }
+      
       if(tabName==='dashboard'){ loadDashboard(); }
-      if(tabName==='meetup'){ initMeetupMap(); }
     }
     document.querySelectorAll('.nav-link').forEach(btn=>{
       btn.addEventListener('click', () => setActiveTab(btn.dataset.tab));
@@ -612,53 +1389,312 @@
     // ====== MEET-UP ======
     function addMeetupLocation(){
       const container = document.getElementById('meetupLocations');
-      const row = document.createElement('div');
-      row.className = 'row g-2';
-      row.innerHTML = `
-        <div class="col">
-          <select class="form-select meetup-station">
+      const personNumber = container.children.length + 1;
+      const personCard = document.createElement('div');
+      personCard.className = 'person-card animate__animated animate__fadeInUp';
+      personCard.innerHTML = `
+        <div class="person-header">
+          <div class="person-avatar">${personNumber}</div>
+          <div class="person-info">
+            <h6>Person ${personNumber}</h6>
+            <small>Select their starting station</small>
+          </div>
+        </div>
+        <div class="station-selector">
+          <select class="form-select meetup-station" onchange="updatePersonCard(this)">
             <option value="">-- Select Station --</option>
             ${ALL_STATIONS.map(s=>`<option value="${s}">${s}</option>`).join('')}
           </select>
         </div>
-        <div class="col-auto">
-          <button class="btn btn-outline-danger" onclick="this.closest('.row').remove()">Remove</button>
+        <div class="d-flex justify-content-end mt-3">
+          <button class="btn-modern secondary" onclick="removePersonCard(this)" style="padding: 8px 16px; font-size: 12px;">
+            <span class="material-icons" style="font-size: 16px;">delete</span>
+            Remove
+          </button>
         </div>
       `;
-      container.appendChild(row);
+      container.appendChild(personCard);
+      
+      // Add animation
+      setTimeout(() => {
+        personCard.classList.add('animate__fadeInUp');
+      }, 50);
+    }
+    
+    function updatePersonCard(selectElement) {
+      const personCard = selectElement.closest('.person-card');
+      const station = selectElement.value;
+      
+      if (station) {
+        personCard.classList.add('active');
+        const personInfo = personCard.querySelector('.person-info small');
+        personInfo.textContent = `Starting from ${station}`;
+        
+        // Add success animation
+        personCard.style.animation = 'none';
+        setTimeout(() => {
+          personCard.style.animation = 'pulse 0.6s ease-in-out';
+        }, 10);
+      } else {
+        personCard.classList.remove('active');
+        const personInfo = personCard.querySelector('.person-info small');
+        personInfo.textContent = 'Select their starting station';
+      }
+    }
+    
+    function removePersonCard(button) {
+      const personCard = button.closest('.person-card');
+      personCard.classList.add('animate__fadeOutDown');
+      
+      setTimeout(() => {
+        personCard.remove();
+        updatePersonNumbers();
+      }, 300);
+    }
+    
+    function updatePersonNumbers() {
+      const personCards = document.querySelectorAll('.person-card');
+      personCards.forEach((card, index) => {
+        const personNumber = index + 1;
+        const avatar = card.querySelector('.person-avatar');
+        const title = card.querySelector('.person-info h6');
+        
+        avatar.textContent = personNumber;
+        title.textContent = `Person ${personNumber}`;
+      });
+    }
+    
+    function quickSelectStation(stationName) {
+      const allSelects = document.querySelectorAll('#meetupLocations .meetup-station');
+      let emptySelect = null;
+      
+      // Find first empty dropdown
+      for (let select of allSelects) {
+        if (!select.value || select.value === '') {
+          emptySelect = select;
+          break;
+        }
+      }
+      
+      if (emptySelect) {
+        emptySelect.value = stationName;
+        updatePersonCard(emptySelect);
+        
+        // Add success feedback
+        const quickBtn = event.target;
+        quickBtn.style.background = 'var(--sg-red)';
+        quickBtn.style.color = 'white';
+        setTimeout(() => {
+          quickBtn.style.background = '';
+          quickBtn.style.color = '';
+        }, 1000);
+      } else {
+        // Add new person if no empty slots
+        addMeetupLocation();
+        setTimeout(() => {
+          const newSelects = document.querySelectorAll('#meetupLocations .meetup-station');
+          const newSelect = newSelects[newSelects.length - 1];
+          if (newSelect) {
+            newSelect.value = stationName;
+            updatePersonCard(newSelect);
+          }
+        }, 100);
+      }
+    }
+    
+    function clearAllLocations() {
+      const personCards = document.querySelectorAll('.person-card');
+      personCards.forEach((card, index) => {
+        setTimeout(() => {
+          card.classList.add('animate__fadeOutDown');
+          setTimeout(() => card.remove(), 300);
+        }, index * 100);
+      });
+      
+      // Clear results
+      const output = document.getElementById('meetupOutput');
+      output.classList.add('d-none');
+      
+      showToast('All locations cleared', false);
     }
 
     function findMeetupPoint(){
       const stations = Array.from(document.querySelectorAll('.meetup-station')).map(s=>s.value).filter(Boolean);
       const out = document.getElementById('meetupOutput');
-      if(stations.length<2){ out.innerHTML = '<span class="text-danger">Please add at least 2 locations.</span>'; return; }
+      
+      if(stations.length<2){ 
+        showToast('Please add at least 2 locations to find a meeting point', true);
+        return; 
+      }
 
-      // brute force: evaluate each candidate as meetup, choose minimal totalWeight sum
-      const candidates = ALL_STATIONS;
-      let best = { station:null, sum: Infinity, times:[] };
+      // Show loading state
+      out.classList.remove('d-none');
+      out.innerHTML = `
+        <div class="text-center py-6">
+          <div class="loading-pulse mb-4">
+            <div class="spinner-border text-danger" role="status" style="width: 3rem; height: 3rem;">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+          <h6 class="mb-3" style="color: var(--neutral-800); font-size: var(--text-lg);">Finding the perfect meeting point</h6>
+          <p class="text-muted mb-4" style="font-size: var(--text-sm);">Analyzing ${stations.length} locations across the MRT network</p>
+          
+          <div class="progress-bar"></div>
+          
+          <div class="loading-dots mt-4">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          
+          <div class="mt-4" style="font-size: var(--text-xs); color: var(--neutral-500);">
+            <span class="material-icons" style="font-size: 16px; vertical-align: middle; margin-right: 4px;">schedule</span>
+            Calculating optimal routes and travel times
+          </div>
+        </div>
+      `;
 
-      candidates.forEach(cand=>{
-        let total=0, times=[];
-        for(const s of stations){
-          const p = shortestPath(s, cand);
-          if(!p){ total=Infinity; break; }
-          total += p.totalWeight;
-          times.push(estimateTimeMinutes(p.totalWeight));
+      // Simulate processing time for better UX
+      setTimeout(() => {
+
+        // brute force: evaluate each candidate as meetup, choose minimal totalWeight sum
+        const candidates = ALL_STATIONS;
+        let best = { station:null, sum: Infinity, times:[] };
+
+        candidates.forEach(cand=>{
+          let total=0, times=[];
+          for(const s of stations){
+            const p = shortestPath(s, cand);
+            if(!p){ total=Infinity; break; }
+            total += p.totalWeight;
+            times.push(estimateTimeMinutes(p.totalWeight));
+          }
+          if(total < best.sum){ best = { station:cand, sum:total, times }; }
+        });
+
+        if(!best.station){ 
+          out.innerHTML = `
+            <div class="text-center py-4">
+              <span class="material-icons text-danger mb-2" style="font-size: 48px;">error_outline</span>
+              <h6 class="text-danger">No Meeting Point Found</h6>
+              <p class="text-muted">Unable to find a common reachable station for all locations.</p>
+            </div>
+          `;
+          return; 
         }
-        if(total < best.sum){ best = { station:cand, sum:total, times }; }
-      });
 
-      if(!best.station){ out.innerHTML = '<span class="text-danger">No common reachable station found.</span>'; return; }
+        // Calculate average travel time
+        const avgTime = Math.round(best.times.reduce((a, b) => a + b, 0) / best.times.length);
+        const maxTime = Math.max(...best.times);
+        const minTime = Math.min(...best.times);
 
-      let html = `<h5>Recommended Meet-up Point</h5>
-        <div class="fare-result my-2">📍 ${best.station}</div>
-        <h6>Travel Times:</h6>`;
-      stations.forEach((s, i)=>{
-        html += `<div class="route-step">Person ${i+1} from <strong>${s}</strong>: approx ${best.times[i]} mins</div>`;
-      });
-      html += `<p class="mt-2"><strong>Total combined travel weight:</strong> ${best.sum.toFixed(1)}</p>`;
-      html += `<button class="btn btn-success mt-3" onclick="animateCarsToMeetingPoint('${best.station}')">🚗 Watch Cars Drive to Meeting Point!</button>`;
-      out.innerHTML = html;
+        let html = `
+          <div class="d-flex align-items-center gap-3 mb-6">
+            <span class="material-icons text-success success-checkmark" style="font-size: 40px;">check_circle</span>
+            <h5 class="mb-0 text-success" style="font-size: var(--text-xl);">Perfect Meeting Point Found!</h5>
+          </div>
+          
+          <div class="meeting-point animate-fade-in-scale">
+            <h4 class="mb-2">${best.station}</h4>
+            <p class="mb-0 opacity-75">The most convenient location for everyone</p>
+          </div>
+          
+          <div class="row g-4 mb-6">
+            <div class="col-md-4">
+              <div class="text-center p-4 bg-light rounded" style="border: 1px solid var(--neutral-200);">
+                <div class="h3 text-primary mb-2" style="font-family: 'Playfair Display', serif;">${avgTime}</div>
+                <small class="text-muted" style="font-size: var(--text-sm);">Avg Travel Time (mins)</small>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="text-center p-4 bg-light rounded" style="border: 1px solid var(--neutral-200);">
+                <div class="h3 text-success mb-2" style="font-family: 'Playfair Display', serif;">${minTime}</div>
+                <small class="text-muted" style="font-size: var(--text-sm);">Shortest Time (mins)</small>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="text-center p-4 bg-light rounded" style="border: 1px solid var(--neutral-200);">
+                <div class="h3 text-warning mb-2" style="font-family: 'Playfair Display', serif;">${maxTime}</div>
+                <small class="text-muted" style="font-size: var(--text-sm);">Longest Time (mins)</small>
+              </div>
+            </div>
+          </div>
+          
+          <h6 class="mb-4 d-flex align-items-center gap-3" style="font-size: var(--text-lg); color: var(--neutral-900);">
+            <span class="material-icons" style="color: var(--sg-red);">schedule</span>
+            Individual Travel Times
+          </h6>
+          
+          <div class="travel-times">`;
+
+        stations.forEach((s, i)=>{
+          const personCard = document.querySelectorAll('.person-card')[i];
+          const personName = personCard ? personCard.querySelector('.person-info h6').textContent : `Person ${i+1}`;
+          
+          html += `
+            <div class="travel-time-item animate-slide-in" style="animation-delay: ${i * 0.1}s;">
+              <div class="person-avatar" style="width: 40px; height: 40px; font-size: 16px;">${i+1}</div>
+              <div class="flex-grow-1">
+                <div class="fw-semibold" style="font-size: var(--text-base); color: var(--neutral-900);">${personName}</div>
+                <small class="text-muted" style="font-size: var(--text-sm);">From ${s}</small>
+              </div>
+              <div class="time-badge">${best.times[i]} min</div>
+            </div>`;
+        });
+
+        html += `
+          </div>
+          
+          <div class="d-flex gap-3 mt-6 flex-wrap">
+            <button class="btn-modern" onclick="showMeetingPointInfo('${best.station}')">
+              <span class="material-icons">info</span>
+              Meeting Point Info
+            </button>
+            <button class="btn-modern secondary" onclick="shareMeetingPoint('${best.station}', [${stations.map(s => `'${s}'`).join(',')}])">
+              <span class="material-icons">share</span>
+              Share Meeting Point
+            </button>
+            <button class="btn-modern secondary" onclick="getDirections('${best.station}')">
+              <span class="material-icons">directions</span>
+              Get Directions
+            </button>
+          </div>
+          
+          <div class="mt-4 p-4 bg-light rounded" style="border: 1px solid var(--neutral-200);">
+            <small class="text-muted" style="font-size: var(--text-sm);">
+              <span class="material-icons" style="font-size: 18px; vertical-align: middle; margin-right: 8px;">info</span>
+              This location minimizes total travel time for all group members (${best.sum.toFixed(1)} combined stops)
+            </small>
+          </div>
+        `;
+        
+        out.innerHTML = html;
+        out.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        
+        showToast(`Found perfect meeting point: ${best.station}!`, false);
+      }, 1500);
+    }
+    
+    function shareMeetingPoint(meetingPoint, locations) {
+      const shareText = `Let's meet at ${meetingPoint}! 🚇\n\nOur starting locations:\n${locations.map((loc, i) => `${i+1}. ${loc}`).join('\n')}\n\nFound using SingaTrain Meet-up Finder`;
+      
+      if (navigator.share) {
+        navigator.share({
+          title: 'Meeting Point',
+          text: shareText
+        });
+      } else {
+        // Fallback: copy to clipboard
+        navigator.clipboard.writeText(shareText).then(() => {
+          showToast('Meeting details copied to clipboard!', false);
+        });
+      }
+    }
+    
+    function getDirections(station) {
+      // This would integrate with Google Maps or Apple Maps
+      const mapsUrl = `https://www.google.com/maps/search/${encodeURIComponent(station + ' MRT Station Singapore')}`;
+      window.open(mapsUrl, '_blank');
     }
 
     // ====== ALTERNATIVE ROUTES ======
@@ -1112,6 +2148,18 @@ function fareByType(km, type = "adult") {
             const name = props.name;
             const coordinates = e.lngLat;
             
+            // Create click ripple animation
+            createMapClickRipple(e.point);
+            
+            // Add station selection animation
+            const stationElement = e.originalEvent.target;
+            if (stationElement) {
+              stationElement.classList.add('station-selected');
+              setTimeout(() => {
+                stationElement.classList.remove('station-selected');
+              }, 800);
+            }
+            
             // Get all dropdowns
             const allSelects = document.querySelectorAll('#meetupLocations .meetup-station');
             
@@ -1170,23 +2218,44 @@ function fareByType(km, type = "adult") {
             }
           });
           
+          function createMapClickRipple(point) {
+            const mapContainer = document.getElementById('meetupMap');
+            const ripple = document.createElement('div');
+            ripple.className = 'map-click-ripple';
+            ripple.style.left = point.x + 'px';
+            ripple.style.top = point.y + 'px';
+            ripple.style.width = '20px';
+            ripple.style.height = '20px';
+            ripple.style.marginLeft = '-10px';
+            ripple.style.marginTop = '-10px';
+            
+            mapContainer.appendChild(ripple);
+            
+            setTimeout(() => {
+              ripple.remove();
+            }, 600);
+          }
+          
           function addAvatarMarker(stationName, coordinates, personNumber) {
             // Remove existing marker if any
             removeAvatarMarker(stationName);
             
-            // Create 3D car element
+            // Create simple emoji marker
             const avatarEl = document.createElement('div');
             avatarEl.className = 'avatar-marker';
-            avatarEl.innerHTML = create3DCar(personNumber);
+            avatarEl.innerHTML = getCarEmoji(personNumber);
             avatarEl.style.cssText = `
-              width: 40px;
-              height: 40px;
+              width: 30px;
+              height: 30px;
               display: flex;
               align-items: center;
               justify-content: center;
               cursor: pointer;
-              transform-style: preserve-3d;
-              perspective: 1000px;
+              font-size: 20px;
+              background: white;
+              border-radius: 50%;
+              box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+              border: 2px solid var(--sg-red);
             `;
             
             // Add marker to map
@@ -1197,100 +2266,6 @@ function fareByType(km, type = "adult") {
             avatarMarkers.set(stationName, marker);
           }
           
-          function create3DCar(personNumber) {
-            const colors = ['#ff4444', '#44ff44', '#4444ff', '#ffff44', '#ff44ff', '#44ffff', '#ff8844', '#8844ff', '#44ff88', '#ff4488'];
-            const color = colors[(personNumber - 1) % colors.length];
-            
-            return `
-              <div style="
-                width: 30px;
-                height: 15px;
-                background: ${color};
-                border-radius: 3px;
-                position: relative;
-                transform: rotateX(15deg) rotateY(15deg);
-                box-shadow: 
-                  0 2px 4px rgba(0,0,0,0.3),
-                  inset 0 1px 0 rgba(255,255,255,0.3);
-                animation: carIdle 2s ease-in-out infinite;
-              ">
-                <!-- Car body -->
-                <div style="
-                  position: absolute;
-                  top: -3px;
-                  left: 2px;
-                  width: 26px;
-                  height: 8px;
-                  background: ${color};
-                  border-radius: 2px;
-                  box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
-                "></div>
-                <!-- Windshield -->
-                <div style="
-                  position: absolute;
-                  top: -2px;
-                  left: 20px;
-                  width: 6px;
-                  height: 6px;
-                  background: rgba(135, 206, 235, 0.7);
-                  border-radius: 1px;
-                  transform: skewX(-10deg);
-                "></div>
-                <!-- Wheels -->
-                <div style="
-                  position: absolute;
-                  top: 12px;
-                  left: 3px;
-                  width: 4px;
-                  height: 4px;
-                  background: #333;
-                  border-radius: 50%;
-                  box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
-                "></div>
-                <div style="
-                  position: absolute;
-                  top: 12px;
-                  right: 3px;
-                  width: 4px;
-                  height: 4px;
-                  background: #333;
-                  border-radius: 50%;
-                  box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
-                "></div>
-                <!-- Headlights -->
-                <div style="
-                  position: absolute;
-                  top: 2px;
-                  left: -1px;
-                  width: 2px;
-                  height: 2px;
-                  background: #ffff88;
-                  border-radius: 50%;
-                  box-shadow: 0 0 4px #ffff88;
-                "></div>
-                <div style="
-                  position: absolute;
-                  top: 2px;
-                  right: -1px;
-                  width: 2px;
-                  height: 2px;
-                  background: #ffff88;
-                  border-radius: 50%;
-                  box-shadow: 0 0 4px #ffff88;
-                "></div>
-              </div>
-              <style>
-                @keyframes carIdle {
-                  0%, 100% { transform: rotateX(15deg) rotateY(15deg) translateY(0px); }
-                  50% { transform: rotateX(15deg) rotateY(15deg) translateY(-1px); }
-                }
-                @keyframes carDrive {
-                  0% { transform: rotateX(15deg) rotateY(15deg) translateX(0px); }
-                  100% { transform: rotateX(15deg) rotateY(15deg) translateX(100px); }
-                }
-              </style>
-            `;
-          }
           
           function removeAvatarMarker(stationName) {
             const marker = avatarMarkers.get(stationName);
@@ -1306,70 +2281,18 @@ function fareByType(km, type = "adult") {
           }
           
           // Driving animation functions
-          function animateCarsToMeetingPoint(meetingStation) {
-            const allSelects = document.querySelectorAll('#meetupLocations .meetup-station');
-            const selectedStations = Array.from(allSelects)
-              .map(s => s.value)
-              .filter(Boolean)
-              .filter(station => station !== meetingStation);
+          function showMeetingPointInfo(meetingStation) {
+            showToast(`📍 Meeting Point: ${meetingStation}`, false);
             
-            if (selectedStations.length === 0) {
-              showToast('No cars to animate!', true);
-              return;
+            // Center the map on the meeting point
+            const stationCoords = getStationCoordinates(meetingStation);
+            if (stationCoords) {
+              map.flyTo({
+                center: [stationCoords.lng, stationCoords.lat],
+                zoom: 15,
+                duration: 1000
+              });
             }
-            
-            showToast(`🚗 Cars driving to ${meetingStation}...`, false);
-            
-            // Animate each car
-            selectedStations.forEach((station, index) => {
-              setTimeout(() => {
-                animateCarToStation(station, meetingStation, index + 1);
-              }, index * 1000); // Stagger animations by 1 second
-            });
-          }
-          
-          function animateCarToStation(fromStation, toStation, carNumber) {
-            // Create a temporary moving 3D car marker
-            const carEl = document.createElement('div');
-            carEl.innerHTML = create3DCar(carNumber);
-            carEl.style.cssText = `
-              width: 40px;
-              height: 40px;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              position: relative;
-              z-index: 1000;
-              transform-style: preserve-3d;
-              perspective: 1000px;
-            `;
-            
-            // Get coordinates for from and to stations
-            const fromCoords = getStationCoordinates(fromStation);
-            const toCoords = getStationCoordinates(toStation);
-            
-            if (!fromCoords || !toCoords) {
-              console.log(`Could not find coordinates for ${fromStation} or ${toStation}`);
-              return;
-            }
-            
-            // Create moving marker
-            const movingMarker = new mapboxgl.Marker(carEl)
-              .setLngLat([fromCoords.lng, fromCoords.lat])
-              .addTo(map);
-            
-            // Add driving animation to the car
-            const carElement = carEl.querySelector('div');
-            if (carElement) {
-              carElement.style.animation = 'carDrive 3s linear forwards';
-            }
-            
-            // Animate the car
-            animateMarkerMovement(movingMarker, fromCoords, toCoords, 3000, () => {
-              // Animation complete - remove moving car and show arrival
-              movingMarker.remove();
-              showToast(`🚗 Car ${carNumber} arrived at ${toStation}!`, false);
-            });
           }
           
           function getStationCoordinates(stationName) {
@@ -1388,34 +2311,6 @@ function fareByType(km, type = "adult") {
             };
             
             return sampleCoords[stationName] || null;
-          }
-          
-          function animateMarkerMovement(marker, startCoords, endCoords, duration, onComplete) {
-            const startTime = Date.now();
-            
-            function animate() {
-              const elapsed = Date.now() - startTime;
-              const progress = Math.min(elapsed / duration, 1);
-              
-              // Easing function for smooth animation
-              const easeInOutCubic = progress < 0.5 
-                ? 4 * progress * progress * progress 
-                : 1 - Math.pow(-2 * progress + 2, 3) / 2;
-              
-              // Interpolate coordinates
-              const currentLng = startCoords.lng + (endCoords.lng - startCoords.lng) * easeInOutCubic;
-              const currentLat = startCoords.lat + (endCoords.lat - startCoords.lat) * easeInOutCubic;
-              
-              marker.setLngLat([currentLng, currentLat]);
-              
-              if (progress < 1) {
-                requestAnimationFrame(animate);
-              } else {
-                onComplete();
-              }
-            }
-            
-            animate();
           }
           map.on('mouseenter','stations',()=>map.getCanvas().style.cursor='pointer');
           map.on('mouseleave','stations',()=>map.getCanvas().style.cursor='');
@@ -1529,6 +2424,14 @@ function fareByType(km, type = "adult") {
 
     // ====== ON LOAD ======
     window.addEventListener('DOMContentLoaded', ()=>{
+      // Initialize AOS (Animate On Scroll)
+      AOS.init({
+        duration: 800,
+        easing: 'ease-out-cubic',
+        once: true,
+        offset: 100
+      });
+      
       initializeDropdowns();
       displayFavorites();
       loadDashboard();
