@@ -701,6 +701,258 @@
       animation: successCheckmark 0.8s ease-out;
     }
     
+    /* Capybara Loader Animation - From Uiverse.io by Novaxlo */
+    .capybaraloader {
+      width: 14em;
+      height: 10em;
+      position: relative;
+      z-index: 1;
+      --color: rgb(117, 0, 0);
+      --color2: rgb(77, 0, 0);
+      transform: scale(0.75);
+    }
+    
+    .capybara {
+      width: 100%;
+      height: 7.5em;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .loader {
+      width: 100%;
+      height: 2.5em;
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+    }
+    
+    .capy {
+      width: 85%;
+      height: 100%;
+      background: linear-gradient(var(--color), 90%, var(--color2));
+      border-radius: 45%;
+      position: relative;
+      z-index: 1;
+      animation: movebody 1s linear infinite;
+    }
+    
+    .capyhead {
+      width: 7.5em;
+      height: 7em;
+      bottom: 0em;
+      right: 0em;
+      position: absolute;
+      background-color: var(--color);
+      z-index: 3;
+      border-radius: 3.5em;
+      box-shadow: -1em 0em var(--color2);
+      animation: movebody 1s linear infinite;
+    }
+    
+    .capyear {
+      width: 2em;
+      height: 2em;
+      background: linear-gradient(-45deg, var(--color), 90%, var(--color2));
+      top: 0em;
+      left: 0em;
+      border-radius: 100%;
+      position: absolute;
+      overflow: hidden;
+      z-index: 3;
+    }
+    
+    .capyear:nth-child(2) {
+      left: 5em;
+      background: linear-gradient(25deg, var(--color), 90%, var(--color2));
+    }
+    
+    .capyear2 {
+      width: 100%;
+      height: 1em;
+      background-color: var(--color2);
+      bottom: 0em;
+      left: 0.5em;
+      border-radius: 100%;
+      position: absolute;
+      transform: rotate(-45deg);
+    }
+    
+    .capymouth {
+      width: 3.5em;
+      height: 2em;
+      background-color: var(--color2);
+      position: absolute;
+      bottom: 0em;
+      left: 2.5em;
+      border-radius: 50%;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 0.5em;
+    }
+    
+    .capylips {
+      width: 0.25em;
+      height: 0.75em;
+      border-radius: 100%;
+      transform: rotate(-45deg);
+      background-color: var(--color);
+    }
+    
+    .capylips:nth-child(2) {
+      transform: rotate(45deg);
+    }
+    
+    .capyeye {
+      width: 2em;
+      height: 0.5em;
+      background-color: var(--color2);
+      position: absolute;
+      bottom: 3.5em;
+      left: 1.5em;
+      border-radius: 5em;
+      transform: rotate(45deg);
+    }
+    
+    .capyeye:nth-child(4) {
+      transform: rotate(-45deg);
+      left: 5.5em;
+      width: 1.75em;
+    }
+    
+    .capyleg {
+      width: 6em;
+      height: 5em;
+      bottom: 0em;
+      left: 0em;
+      position: absolute;
+      background: linear-gradient(var(--color), 95%, var(--color2));
+      z-index: 2;
+      border-radius: 2em;
+      animation: movebody 1s linear infinite;
+    }
+    
+    .capyleg2 {
+      width: 1.75em;
+      height: 3em;
+      bottom: 0em;
+      left: 3.25em;
+      position: absolute;
+      background: linear-gradient(var(--color), 80%, var(--color2));
+      z-index: 2;
+      border-radius: 0.75em;
+      box-shadow: inset 0em -0.5em var(--color2);
+      animation: moveleg 1s linear infinite;
+    }
+    
+    .capyleg2:nth-child(3) {
+      width: 1.25em;
+      left: 0.5em;
+      height: 2em;
+      animation: moveleg2 1s linear infinite 0.075s;
+    }
+    
+    @keyframes moveleg {
+      0% {
+        transform: rotate(-45deg) translateX(-5%);
+      }
+      50% {
+        transform: rotate(45deg) translateX(5%);
+      }
+      100% {
+        transform: rotate(-45deg) translateX(-5%);
+      }
+    }
+    
+    @keyframes moveleg2 {
+      0% {
+        transform: rotate(45deg);
+      }
+      50% {
+        transform: rotate(-45deg);
+      }
+      100% {
+        transform: rotate(45deg);
+      }
+    }
+    
+    @keyframes movebody {
+      0% {
+        transform: translateX(0%);
+      }
+      50% {
+        transform: translateX(2%);
+      }
+      100% {
+        transform: translateX(0%);
+      }
+    }
+    
+    .loaderline {
+      width: 50em;
+      height: 0.5em;
+      border-top: 0.5em dashed var(--color2);
+      animation: moveline 10s linear infinite;
+    }
+    
+    @keyframes moveline {
+      0% {
+        transform: translateX(0%);
+        opacity: 0%;
+      }
+      5% {
+        opacity: 100%;
+      }
+      95% {
+        opacity: 100%;
+      }
+      100% {
+        opacity: 0%;
+        transform: translateX(-70%);
+      }
+    }
+    
+    /* Map overlay for capybara loading */
+    .map-loading-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      backdrop-filter: blur(2px);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+    
+    .map-loading-overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .map-loading-content {
+      text-align: center;
+      color: var(--neutral-800);
+    }
+    
+    .map-loading-content h6 {
+      margin-top: 20px;
+      font-size: var(--text-lg);
+      font-weight: 600;
+    }
+    
+    .map-loading-content p {
+      margin-top: 8px;
+      font-size: var(--text-sm);
+      color: var(--neutral-600);
+    }
+    
     /* Enhanced hover effects */
     .person-card:hover .person-avatar {
       transform: scale(1.1);
@@ -1527,32 +1779,8 @@
         return; 
       }
 
-      // Show loading state
-      out.classList.remove('d-none');
-      out.innerHTML = `
-        <div class="text-center py-6">
-          <div class="loading-pulse mb-4">
-            <div class="spinner-border text-danger" role="status" style="width: 3rem; height: 3rem;">
-              <span class="visually-hidden">Loading...</span>
-            </div>
-          </div>
-          <h6 class="mb-3" style="color: var(--neutral-800); font-size: var(--text-lg);">Finding the perfect meeting point</h6>
-          <p class="text-muted mb-4" style="font-size: var(--text-sm);">Analyzing ${stations.length} locations across the MRT network</p>
-          
-          <div class="progress-bar"></div>
-          
-          <div class="loading-dots mt-4">
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
-          
-          <div class="mt-4" style="font-size: var(--text-xs); color: var(--neutral-500);">
-            <span class="material-icons" style="font-size: 16px; vertical-align: middle; margin-right: 4px;">schedule</span>
-            Calculating optimal routes and travel times
-          </div>
-        </div>
-      `;
+      // Show capybara loading animation over the map
+      showMapLoadingAnimation();
 
       // Simulate processing time for better UX
       setTimeout(() => {
@@ -1669,10 +1897,18 @@
         `;
         
         out.innerHTML = html;
-        out.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        out.classList.remove('d-none');
+        
+        // Hide the map loading animation and scroll to results
+        hideMapLoadingAnimation();
+        
+        // Scroll to results after a short delay to ensure elements are restored
+        setTimeout(() => {
+          out.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
         
         showToast(`Found perfect meeting point: ${best.station}!`, false);
-      }, 1500);
+      }, 2000);
     }
     
     function shareMeetingPoint(meetingPoint, locations) {
@@ -1695,6 +1931,122 @@
       // This would integrate with Google Maps or Apple Maps
       const mapsUrl = `https://www.google.com/maps/search/${encodeURIComponent(station + ' MRT Station Singapore')}`;
       window.open(mapsUrl, '_blank');
+    }
+    
+    function createCapybaraLoader() {
+      return `
+        <div class="capybaraloader">
+          <div class="capybara">
+            <div class="capy">
+              <div class="capyhead">
+                <div class="capyear">
+                  <div class="capyear2"></div>
+                </div>
+                <div class="capyear">
+                  <div class="capyear2"></div>
+                </div>
+                <div class="capymouth">
+                  <div class="capylips"></div>
+                  <div class="capylips"></div>
+                </div>
+                <div class="capyeye"></div>
+                <div class="capyeye"></div>
+              </div>
+              <div class="capyleg">
+                <div class="capyleg2"></div>
+                <div class="capyleg2"></div>
+              </div>
+            </div>
+          </div>
+          <div class="loader">
+            <div class="loaderline"></div>
+          </div>
+        </div>
+      `;
+    }
+    
+    function showMapLoadingAnimation() {
+      const mapContainer = document.getElementById('meetupMap');
+      if (!mapContainer) return;
+      
+      // Hide all form elements during loading
+      const meetupSection = document.getElementById('meetup');
+      const formElements = meetupSection.querySelectorAll('.meetup-container, .meetup-actions');
+      const mapSection = meetupSection.querySelector('.mt-6'); // Map container
+      
+      // Store original display states
+      window.meetupFormStates = [];
+      formElements.forEach((element, index) => {
+        window.meetupFormStates[index] = element.style.display;
+        element.style.display = 'none';
+      });
+      
+      // Show only the map section
+      if (mapSection) {
+        mapSection.style.display = 'block';
+        mapSection.style.marginTop = '0';
+      }
+      
+      // Create overlay if it doesn't exist
+      let overlay = mapContainer.querySelector('.map-loading-overlay');
+      if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.className = 'map-loading-overlay';
+        overlay.innerHTML = `
+          <div class="map-loading-content">
+            ${createCapybaraLoader()}
+            <h6>Finding the perfect meeting point</h6>
+            <p>Analyzing locations across the MRT network</p>
+          </div>
+        `;
+        mapContainer.style.position = 'relative';
+        mapContainer.appendChild(overlay);
+      }
+      
+      // Show the overlay
+      setTimeout(() => {
+        overlay.classList.add('show');
+      }, 100);
+    }
+    
+    function hideMapLoadingAnimation() {
+      const mapContainer = document.getElementById('meetupMap');
+      if (!mapContainer) return;
+      
+      const overlay = mapContainer.querySelector('.map-loading-overlay');
+      if (overlay) {
+        overlay.classList.remove('show');
+        // Remove overlay after animation completes
+        setTimeout(() => {
+          if (overlay.parentNode) {
+            overlay.parentNode.removeChild(overlay);
+          }
+        }, 300);
+      }
+      
+      // Restore form elements after loading
+      const meetupSection = document.getElementById('meetup');
+      const formElements = meetupSection.querySelectorAll('.meetup-container, .meetup-actions');
+      const mapSection = meetupSection.querySelector('.mt-6'); // Map container
+      
+      // Restore original display states
+      if (window.meetupFormStates) {
+        formElements.forEach((element, index) => {
+          if (window.meetupFormStates[index] !== undefined) {
+            element.style.display = window.meetupFormStates[index] || '';
+          } else {
+            element.style.display = '';
+          }
+        });
+      }
+      
+      // Restore map section margin
+      if (mapSection) {
+        mapSection.style.marginTop = '';
+      }
+      
+      // Clear stored states
+      window.meetupFormStates = null;
     }
 
     // ====== ALTERNATIVE ROUTES ======
