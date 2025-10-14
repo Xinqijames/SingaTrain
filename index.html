@@ -1087,12 +1087,12 @@
     </div>
 
   </main>
-
+  <script src="config.js"></script>
   <script>
     // ====== API CONFIG ======
     const PROXY = "https://corsproxy.io/?";
     const API_BASE = "https://datamall2.mytransport.sg/ltaodataservice";
-    const ACCOUNT_KEY = "YOUR_API_KEY_HERE"; // <- replace with your real key
+     // <- replace with your real key
 
     // ====== STATIONS DB (simplified; you can expand) ======
     const MRT_STATIONS = {
@@ -1285,7 +1285,6 @@
           console.log('Service Alerts API unavailable, using demo data');
           alerts = []; // Use empty array instead of showing error
         }
-
         // Crowd
         let crowds = [];
         try{
@@ -1293,10 +1292,12 @@
           const res = await fetch(crowdUrl, { headers:{ AccountKey: ACCOUNT_KEY, accept:"application/json" } });
           if(res.ok){
             const data = await res.json();
+            // console.log('Crowd API Response:', data); // Debug log
             crowds = Array.isArray(data.value||data.Value) ? (data.value||data.Value) : (Array.isArray(data)?data:[]);
+            // console.log('Extracted crowds:', crowds); // Debug log
           }
         }catch(e){ 
-          console.log('Crowd data API unavailable, using demo data');
+          console.log('Crowd data API error:', e);
           crowds = []; // Use empty array instead of showing error
         }
 
@@ -1317,9 +1318,9 @@
         html += '<h5 class="mt-3">Station Crowd Levels</h5>';
         if(crowds.length){
           html += crowds.map(s=>{
-            const lvlRaw = (s.CrowdLevel||s.crowdLevel||'').toString().toUpperCase();
-            const label = lvlRaw==='H' ? 'High' : lvlRaw==='M' ? 'Medium' : lvlRaw==='L' ? 'Low' : (s.CrowdLevel||'N/A');
-            const cls = lvlRaw==='H' ? 'text-danger fw-semibold' : (lvlRaw==='M'?'text-warning fw-semibold':'text-success fw-semibold');
+            const lvlRaw = (s.CrowdLevel||s.crowdLevel||'').toString().toLowerCase();
+            const label = lvlRaw==='h' ? 'High' : lvlRaw==='m' ? 'Moderate' : lvlRaw==='l' ? 'Low' : (s.CrowdLevel||'N/A');
+            const cls = lvlRaw==='h' ? 'text-danger fw-semibold' : (lvlRaw==='m'?'text-warning fw-semibold':'text-success fw-semibold');
             return `<div class="d-flex justify-content-between border rounded p-2 mb-1">
               <span>${s.Station||s.station||'Unknown'}</span>
               <span class="${cls}">${label}</span>
@@ -1335,7 +1336,6 @@
         console.error(err);
       }
     }
-
     // ====== ROUTE PLANNER ======
     function planRoute(){
       const start = document.getElementById('routeStart').value;
