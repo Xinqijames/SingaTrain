@@ -14,17 +14,17 @@
   <link href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css" rel="stylesheet" />
 
   <style>
-    :root{
-      --sg-red:#dc2626;     /* main brand red */
-      --sg-red-dark:#b91c1c;
-      --sg-red-soft:#fee2e2;
-      --sg-grey:#6b7280;
-      --sg-border:#e5e7eb;
-    }
+    :root {
+  --sg-red: #750000;         /* Primary brand red */
+  --sg-red-dark: #4d0000;    /* Darker hover red */
+  --sg-red-soft: #f8eaea;    /* Light background tint */
+  --sg-grey: #6b7280;
+  --sg-border: #e5e7eb;
+}
     * { box-sizing: border-box; }
     body {
       font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
-      background: linear-gradient(135deg, #ffffff 0%, #fff 45%, #ffecec 100%);
+       background: linear-gradient(135deg, #ffffff 0%, #fff5f5 40%, #f8eaea 100%);
       color:#111827;
       min-height: 100vh;
     }
@@ -34,13 +34,18 @@
       position: sticky; top:0; z-index:1000;
     }
     .app-title { color: var(--sg-red); }
-    .nav-pills .nav-link{
-      border-radius: 999px;
-      color:#fff;
-      background: var(--sg-red);
-    }
-    .nav-pills .nav-link:not(.active){ background:#ef4444; opacity:.85; }
-    .nav-pills .nav-link:hover{ background: var(--sg-red-dark); }
+    .nav-pills .nav-link {
+  border-radius: 999px;
+  color: #fff;
+  background: var(--sg-red);
+}
+.nav-pills .nav-link:not(.active) {
+  background: #8b0000;
+  opacity: 0.85;
+}
+.nav-pills .nav-link:hover {
+  background: var(--sg-red-dark);
+}
     .section-card{
       background:#fff; border:1px solid var(--sg-border);
       border-radius:16px; padding:24px; box-shadow:0 10px 24px rgba(0,0,0,.06);
@@ -78,7 +83,10 @@
   <!-- HEADER -->
   <header class="py-3">
     <div class="container d-flex flex-wrap align-items-center justify-content-between">
-      <h1 class="h4 m-0 app-title">🚇 SingaTrain</h1>
+      <div class="d-flex align-items-center gap-2">
+  <img src="./singatrainlogo.png" alt="SingaTrain Logo" width="38" height="38" style="border-radius:8px;">
+  <h1 class="h4 m-0 app-title">SingaTrain</h1>
+</div>
       <div class="d-flex align-items-center gap-2">
         <span class="fw-semibold text-secondary" id="userName">Guest User</span>
         <button class="btn btn-outline-danger btn-sm" onclick="showTab('profile')">Profile</button>
