@@ -991,8 +991,414 @@
       25% { transform: translateX(-5px); }
       75% { transform: translateX(5px); }
     }
-    
+
+    /* === WOW-FACTOR ENHANCEMENTS === */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(120deg, rgba(212,46,18,0.15), rgba(0,150,69,0.12), rgba(250,158,13,0.1));
+      background-size: 180% 180%;
+      animation: bg-shift 18s ease infinite;
+      z-index: -2;
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(153,0,170,0.18), transparent 45%),
+        radial-gradient(circle at 80% 30%, rgba(0,94,196,0.18), transparent 50%),
+        radial-gradient(circle at 50% 80%, rgba(255,94,0,0.12), transparent 40%);
+      filter: blur(60px);
+      opacity: 0.9;
+      pointer-events: none;
+      z-index: -1;
+      transition: opacity 0.6s ease;
+    }
+    @keyframes bg-shift {
+      0% { transform: translate3d(0, 0, 0); }
+      50% { transform: translate3d(-4%, -3%, 0); }
+      100% { transform: translate3d(0, 0, 0); }
+    }
+    body.dark-mode {
+      background: var(--neutral-900);
+      color: var(--neutral-100);
+    }
+    body.dark-mode::before {
+      background: linear-gradient(135deg, rgba(117,0,0,0.35), rgba(0,94,196,0.3), rgba(153,0,170,0.25));
+    }
+    body.dark-mode::after {
+      opacity: 0.55;
+    }
+    body.dark-mode .section-card {
+      background: rgba(26, 29, 36, 0.75);
+      border-color: rgba(255,255,255,0.08);
+      box-shadow: 0 14px 32px rgba(0,0,0,0.45);
+    }
+    body.dark-mode .nav-pills .nav-link:not(.active) {
+      background: rgba(255,255,255,0.08);
+    }
+
+    .live-tools {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 20px 24px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.72);
+      border: 1px solid rgba(216,222,233,0.5);
+      box-shadow: var(--card-shadow);
+      backdrop-filter: blur(12px);
+      margin-bottom: 24px;
+    }
+    body.dark-mode .live-tools {
+      background: rgba(19,21,25,0.75);
+      border-color: rgba(255,255,255,0.06);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.45);
+    }
+    .theme-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-radius: 999px;
+      padding: 6px 14px;
+      background: rgba(117,0,0,0.08);
+      color: var(--sg-red);
+      cursor: pointer;
+      transition: background 0.35s ease, color 0.35s ease;
+    }
+    .theme-toggle .material-icons {
+      font-size: 1.2rem;
+    }
+    .theme-toggle.active {
+      background: var(--sg-red);
+      color: #fff;
+      box-shadow: 0 14px 24px rgba(117,0,0,0.35);
+    }
+    body.dark-mode .theme-toggle {
+      background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.82);
+    }
+    .live-clock {
+      font-size: var(--text-lg);
+      font-weight: 600;
+      letter-spacing: 0.08em;
+    }
+    .live-clock span {
+      font-variant-numeric: tabular-nums;
+    }
+    .hover-float {
+      transition: transform 0.45s ease;
+    }
+    .hover-float:hover {
+      transform: translateY(-4px);
+    }
+
+    .live-arrivals-grid {
+      display: grid;
+      gap: 1.5rem;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+    .arrival-card {
+      position: relative;
+      background: rgba(255,255,255,0.82);
+      border-radius: 20px;
+      padding: 24px;
+      border: 1px solid rgba(216, 222, 233, 0.6);
+      box-shadow: var(--card-shadow);
+      overflow: hidden;
+      backdrop-filter: blur(12px);
+      transition: transform 0.45s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.45s ease, border-color 0.45s ease;
+    }
+    .arrival-card:hover {
+      transform: translateY(-6px) scale(1.01);
+      box-shadow: var(--card-shadow-hover);
+      border-color: rgba(117,0,0,0.25);
+    }
+    .arrival-card::after {
+      content: '';
+      position: absolute;
+      inset: -40% 40% 60% -40%;
+      opacity: 0;
+      background: radial-gradient(circle, rgba(255,255,255,0.35), transparent 55%);
+      transform: rotate(15deg);
+      transition: opacity 0.6s ease;
+    }
+    .arrival-card:hover::after {
+      opacity: 1;
+    }
+    body.dark-mode .arrival-card {
+      background: rgba(19,21,25,0.85);
+      border-color: rgba(117,0,0,0.15);
+    }
+    .arrival-card.arriving-soon {
+      animation: pulse-highlight 1.8s ease-in-out infinite;
+    }
+    @keyframes pulse-highlight {
+      0%, 100% { box-shadow: 0 10px 30px rgba(212,46,18,0.25); }
+      50% { box-shadow: 0 18px 40px rgba(212,46,18,0.4); }
+    }
+    .arrival-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      gap: 0.75rem;
+    }
+    .arrival-header .station-name {
+      font-size: var(--text-xl);
+      font-weight: 600;
+    }
+    .arrival-header .tag {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(117,0,0,0.08);
+      color: var(--sg-red);
+    }
+    body.dark-mode .arrival-header .tag {
+      background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.75);
+    }
+    .favorite-toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: rgba(117,0,0,0.08);
+      color: var(--sg-red);
+      transition: transform 0.35s ease, background 0.35s ease, color 0.35s ease;
+    }
+    .favorite-toggle.active {
+      background: var(--sg-red);
+      color: #fff;
+      box-shadow: 0 10px 20px rgba(117,0,0,0.35);
+    }
+    .favorite-toggle:hover {
+      transform: scale(1.1);
+    }
+    body.dark-mode .favorite-toggle {
+      background: rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.75);
+    }
+
+    .line-section {
+      display: grid;
+      gap: 12px;
+      padding-top: 8px;
+    }
+    .line-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 0.75rem;
+      font-weight: 600;
+    }
+    .line-label .subtle {
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      opacity: 0.7;
+    }
+    .arrival-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .arrival-row .train-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      font-size: 1.2rem;
+      background: rgba(117,0,0,0.12);
+      box-shadow: inset 0 0 0 1px rgba(117,0,0,0.18);
+    }
+    .arrival-row .countdown {
+      font-weight: 600;
+      min-width: 78px;
+    }
+    .arrival-row .progress-bar {
+      flex: 1;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(117,0,0,0.1);
+      overflow: hidden;
+      position: relative;
+    }
+    .arrival-row .progress-fill {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      transform-origin: left center;
+      transform: scaleX(0);
+      transition: transform 0.9s ease;
+    }
+    .arrival-row .progress-glow {
+      position: absolute;
+      inset: -40%;
+      opacity: 0.15;
+      background: radial-gradient(circle, currentColor, transparent 65%);
+      filter: blur(10px);
+    }
+
+    .hero {
+      position: relative;
+      padding: 88px 0 72px;
+      display: grid;
+      gap: 48px;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      align-items: center;
+    }
+    .hero-intro h1 {
+      font-size: clamp(2.8rem, 4vw, 3.6rem);
+      margin-bottom: 1.25rem;
+    }
+    .hero-intro p {
+      font-size: var(--text-lg);
+      color: rgba(17, 24, 39, 0.78);
+      max-width: 520px;
+      margin-bottom: 2rem;
+    }
+    body.dark-mode .hero-intro p {
+      color: rgba(255,255,255,0.75);
+    }
+    .hero-cta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+    }
+    .hero-cta .btn {
+      padding: 14px 28px;
+      border-radius: 14px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+    .hero-illustration {
+      position: relative;
+      min-height: 320px;
+      border-radius: 24px;
+      padding: 32px;
+      background: linear-gradient(135deg, rgba(212,46,18,0.35), rgba(0,150,69,0.25), rgba(0,94,196,0.3));
+      box-shadow: 0 24px 60px rgba(117,0,0,0.35);
+      overflow: hidden;
+    }
+    .hero-map {
+      position: absolute;
+      inset: 12%;
+      border-radius: 18px;
+      background: url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=930&q=80') center/cover;
+      filter: grayscale(10%) contrast(105%) brightness(110%);
+      opacity: 0.35;
+    }
+    .hero-train {
+      position: relative;
+      width: 220px;
+      margin: 0 auto;
+      padding: 20px 26px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.9);
+      box-shadow: 0 12px 35px rgba(0,0,0,0.18);
+      text-align: center;
+      animation: float 4.8s ease-in-out infinite;
+    }
+    .hero-train .material-icons {
+      font-size: 42px;
+      color: var(--sg-red);
+      text-shadow: 0 8px 20px rgba(212,46,18,0.45);
+      animation: glow 2.4s ease-in-out infinite alternate;
+    }
+    .hero-train .tagline {
+      font-size: 0.9rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(17,24,39,0.65);
+      margin-top: 18px;
+    }
+    .floating-pill {
+      position: absolute;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 10px 16px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      background: rgba(255,255,255,0.85);
+      color: var(--sg-red);
+      box-shadow: 0 12px 20px rgba(117,0,0,0.15);
+      animation: float 5.2s ease-in-out infinite;
+    }
+    .hero-illustration .floating-pill:nth-of-type(1) { top: 30px; left: 12%; animation-delay: 0.2s; }
+    .hero-illustration .floating-pill:nth-of-type(2) { bottom: 40px; right: 10%; animation-delay: 0.9s; }
+    .hero-illustration .floating-pill:nth-of-type(3) { top: 140px; right: 18%; animation-delay: 1.5s; }
+    body.dark-mode .hero-illustration {
+      background: linear-gradient(135deg, rgba(117,0,0,0.55), rgba(0,94,196,0.45), rgba(153,0,170,0.45));
+      box-shadow: 0 24px 40px rgba(0,0,0,0.55);
+    }
+    body.dark-mode .hero-train {
+      background: rgba(15,17,21,0.85);
+      color: rgba(255,255,255,0.85);
+    }
+    body.dark-mode .floating-pill {
+      background: rgba(15,17,21,0.82);
+      color: rgba(255,255,255,0.82);
+      box-shadow: 0 14px 28px rgba(0,0,0,0.45);
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-12px); }
+    }
+    @keyframes glow {
+      0% { text-shadow: 0 8px 20px rgba(212,46,18,0.45); }
+      100% { text-shadow: 0 16px 35px rgba(212,46,18,0.65); }
+    }
+    .gradient-divider {
+      height: 1px;
+      margin: 28px 0;
+      background: linear-gradient(90deg, transparent, rgba(117,0,0,0.35), rgba(0,94,196,0.35), transparent);
+    }
+
     @media (max-width: 768px) {
+      .arrival-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.4rem;
+      }
+      .arrival-header .station-name {
+        font-size: 1.1rem;
+      }
+      .arrival-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .arrival-row .countdown {
+        min-width: auto;
+      }
+      .arrival-row .progress-bar {
+        width: 100%;
+      }
+      .live-clock {
+        width: 100%;
+        text-align: left;
+      }
+      .hero {
+        padding: 60px 0 48px;
+        gap: 32px;
+      }
+      .hero-illustration {
+        min-height: 260px;
+      }
+      
       .meetup-container {
         padding: 16px;
       }
@@ -1074,6 +1480,35 @@
     </div>
   </header>
 
+  <section class="hero container">
+    <div class="hero-intro" data-aos="fade-right">
+      <span class="pill mb-3">Singapore MRT Companion</span>
+      <h1 class="fw-semibold">Stay Ahead Of Every Train</h1>
+      <p>Experience a commuter dashboard crafted for speed and clarity. Watch live countdowns, favourite your go-to stations, and glide between light and dark modes for the perfect travel briefing.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary btn-lg hover-float" onclick="setActiveTab('live')">
+          <span class="material-icons me-2">bolt</span>
+          Launch Live Tracking
+        </a>
+        <a class="btn btn-outline-danger hover-float" onclick="setActiveTab('dashboard')">
+          <span class="material-icons me-2">dashboard</span>
+          Explore the Dashboard
+        </a>
+      </div>
+    </div>
+    <div class="hero-illustration position-relative" data-aos="fade-left">
+      <div class="hero-map"></div>
+      <div class="floating-pill"><span class="material-icons">rocket_launch</span>Peak-Ready</div>
+      <div class="floating-pill"><span class="material-icons">favorite</span>Personalised</div>
+      <div class="floating-pill"><span class="material-icons">offline_bolt</span>30s Refresh</div>
+      <div class="hero-train">
+        <span class="material-icons">train</span>
+        <div class="tagline">Real-time Confidence</div>
+      </div>
+    </div>
+  </section>
+  <div class="gradient-divider container"></div>
+
   <main class="container my-4">
 
     <!-- DASHBOARD -->
@@ -1101,25 +1536,54 @@
       <h2 class="section-title mb-2">🚆 Real-Time Train Tracking</h2>
       <div class="feature-description p-3 rounded mb-3">Live service alerts and station crowd levels by line.</div>
 
-      <div class="row g-3">
-        <div class="col-sm-6">
-          <label class="form-label">Select MRT Line</label>
-          <select id="liveTrainLine" class="form-select">
-            <option value="NSL">North South Line (NSL)</option>
-            <option value="EWL">East West Line (EWL)</option>
-            <option value="DTL">Downtown Line (DTL)</option>
-            <option value="CCL">Circle Line (CCL)</option>
-            <option value="NEL">North East Line (NEL)</option>
-            <option value="TEL">Thomson-East Coast Line (TEL)</option>
-          </select>
+      <div class="live-tools">
+        <div class="d-flex flex-wrap align-items-center gap-3">
+          <button class="theme-toggle" id="themeToggle">
+            <span class="material-icons">dark_mode</span>
+            <span class="toggle-label">Night Mode</span>
+          </button>
+          <div class="d-flex align-items-center gap-2">
+            <div class="form-check form-switch m-0">
+              <input class="form-check-input" type="checkbox" id="delayToggle" checked onchange="toggleSimulatedDelay(this.checked)">
+              <label class="form-check-label small text-secondary" for="delayToggle">Simulate delays</label>
+            </div>
+            <button class="btn btn-outline-secondary btn-sm hover-float" onclick="manualRefreshArrivals()">
+              <span class="material-icons me-1">refresh</span>
+              Refresh Now
+            </button>
+          </div>
         </div>
-        <div class="col-sm-6 d-flex align-items-end">
-          <button class="btn btn-primary" onclick="fetchLiveInfo()">Get Live Information</button>
+        <div class="live-clock" id="liveClock">
+          <span>--:--:--</span>
         </div>
       </div>
 
+      <div class="row g-3 align-items-end mb-4">
+        <div class="col-lg-8">
+          <label class="form-label">Filter by MRT Line</label>
+          <select id="liveTrainLine" class="form-select">
+            <option value="">Show All Lines</option>
+            <option value="North-South Line">North-South Line (NSL)</option>
+            <option value="East-West Line">East-West Line (EWL)</option>
+            <option value="Circle Line">Circle Line (CCL)</option>
+            <option value="Downtown Line">Downtown Line (DTL)</option>
+            <option value="North-East Line">North East Line (NEL)</option>
+            <option value="Thomson-East Coast Line">Thomson-East Coast Line (TEL)</option>
+            <option value="Jurong Region Line">Jurong Region Line (JRL)</option>
+          </select>
+        </div>
+        <div class="col-lg-4">
+          <label class="form-label">Presentation Mode</label>
+          <button class="btn btn-primary w-100 hover-float" onclick="triggerDemoNarration()">
+            <span class="material-icons me-2">play_circle</span>Suggested Narration
+          </button>
+        </div>
+      </div>
+
+      <div id="liveArrivals" class="live-arrivals-grid"></div>
+
       <div class="output-box mt-3" id="liveOutput">
-        <div class="text-secondary">Select a line and click “Get Live Information”.</div>
+        <div class="text-secondary">Use the filter above or tap a star to personalise the live arrivals showcase.</div>
       </div>
     </section>
 
@@ -1390,7 +1854,14 @@
         floatingAction?.classList.add('d-none');
       }
       
-      if(tabName==='dashboard'){ loadDashboard(); }
+      if(tabName==='dashboard'){
+        loadDashboard();
+      }
+      if(tabName==='live'){
+        startArrivalRenderLoop();
+      }else{
+        stopArrivalRenderLoop();
+      }
     }
     document.querySelectorAll('.nav-link').forEach(btn=>{
       btn.addEventListener('click', () => setActiveTab(btn.dataset.tab));
@@ -2381,11 +2852,13 @@ function fareByType(km, type = "adult") {
       document.getElementById('favoriteLabel').value='';
       document.getElementById('favoriteStation').value='';
       displayFavorites();
+      renderLiveArrivals();
       showToast('Favorite added.', false);
     }
     function removeFavorite(idx){
       userData.favorites.splice(idx,1);
       displayFavorites();
+      renderLiveArrivals();
     }
     function displayFavorites(){
       const container = document.getElementById('favoritesOutput');
@@ -2397,6 +2870,231 @@ function fareByType(km, type = "adult") {
           <div><strong>${f.label}</strong><div class="text-secondary small">${f.station}</div></div>
           <button class="btn btn-outline-danger btn-sm" onclick="removeFavorite(${i})">Remove</button>
         </div>`).join('');
+    }
+    function toggleFavoriteStation(station){
+      const existingIndex = userData.favorites.findIndex(f=>f.station===station);
+      if(existingIndex !== -1){
+        userData.favorites.splice(existingIndex,1);
+        showToast(`Removed ${station} from favorites.`, false);
+      }else{
+        const newEntry = { label: station, station };
+        userData.favorites.push(newEntry);
+        showToast(`Favorited ${station}.`, false);
+      }
+      displayFavorites();
+      renderLiveArrivals();
+    }
+    let arrivalRenderIntervalId = null;
+    let liveClockIntervalId = null;
+    function getStationsForArrivalDisplay(arrivalData){
+      if(!arrivalData) return [];
+      const favoriteStations = Array.isArray(userData?.favorites)
+        ? userData.favorites.map(f=>f.station)
+        : [];
+      const availableStations = Object.keys(arrivalData);
+      const validFavorites = favoriteStations.filter(station=>arrivalData[station]);
+      if(validFavorites.length>0){ return validFavorites; }
+      return availableStations.slice(0, 4);
+    }
+    function formatArrivalCountdown(totalSeconds){
+      if(totalSeconds <= 0){ return 'Arriving'; }
+      const minutes = Math.floor(totalSeconds / 60);
+      const seconds = totalSeconds % 60;
+      if(minutes === 0){ return `${seconds}s`; }
+      return `${minutes}m ${seconds.toString().padStart(2,'0')}s`;
+    }
+    function renderLiveArrivals(){
+      const container = document.getElementById('liveArrivals');
+      if(!container){ return; }
+
+      const simulator = window.trainArrivalSimulator;
+      const delayToggle = document.getElementById('delayToggle');
+      if(delayToggle && simulator?.config?.delay){
+        delayToggle.checked = !!simulator.config.delay.enabled;
+      }
+
+      if(!simulator){
+        container.innerHTML = '<div class="text-secondary">Arrival simulator is still loading…</div>';
+        return;
+      }
+
+      const arrivalData = simulator.getArrivals({ returnSeconds: true });
+      let stations = getStationsForArrivalDisplay(arrivalData);
+      const favoriteStations = Array.isArray(userData?.favorites)
+        ? userData.favorites.map(f=>f.station)
+        : [];
+      const filterLine = document.getElementById('liveTrainLine')?.value || '';
+      if(filterLine){
+        // Extend the station list with any that match the active line filter
+        const filterStations = Object.entries(arrivalData)
+          .filter(([, lineMap]) => lineMap && lineMap[filterLine])
+          .map(([station]) => station);
+        if(filterStations.length){
+          const ordered = [];
+          const seen = new Set();
+          [...stations.filter(st=>filterStations.includes(st)), ...filterStations].forEach((station)=>{
+            if(!seen.has(station)){
+              ordered.push(station);
+              seen.add(station);
+            }
+          });
+          stations = ordered;
+        }
+      }
+
+      if(stations.length === 0){
+        const supported = Object.keys(simulator.config.stationLines || {}).join(', ');
+        container.innerHTML = `<div class="text-secondary">Add a favorite station to see simulated countdowns. Supported demo stations: ${supported || 'loading…'}.</div>`;
+        return;
+      }
+
+      const cards = [];
+      stations.forEach(station=>{
+        const lineMap = arrivalData[station];
+        if(!lineMap) return;
+        let hasMatchingLine = false;
+        let soonestCountdown = Infinity;
+
+        const lineSectionsHtml = Object.entries(lineMap).map(([lineName, arrivals])=>{
+          if(filterLine && lineName !== filterLine){ return ''; }
+          if(!Array.isArray(arrivals) || arrivals.length === 0){ return ''; }
+          hasMatchingLine = true;
+          const lineColor = getLineColor(lineName);
+          const maxSeconds = getLineMaxSeconds(simulator, lineName);
+
+          const rows = arrivals.map((seconds, idx)=>{
+            const label = formatArrivalCountdown(seconds);
+            if(seconds < soonestCountdown){ soonestCountdown = seconds; }
+            // Animate the progress bar so it feels like a live countdown
+            const progress = Math.min(1, Math.max(0, 1 - seconds / maxSeconds));
+            const styleColor = lineColor;
+            const iconStyles = `background:${styleColor}1a;color:${styleColor};box-shadow:inset 0 0 0 1px ${styleColor}55;`;
+            return `<div class="arrival-row">
+                <div class="train-icon" style="${iconStyles}">
+                  <span class="material-icons">${idx === 0 ? 'train' : 'tram'}</span>
+                </div>
+                <div class="countdown">${label}</div>
+                <div class="progress-bar" aria-hidden="true">
+                  <div class="progress-fill" style="background:${styleColor};transform:scaleX(${progress.toFixed(2)});"></div>
+                  <div class="progress-glow" style="color:${styleColor};"></div>
+                </div>
+              </div>`;
+          }).join('');
+
+          return `<div class="line-section">
+              <div class="line-label" style="color:${lineColor}">
+                <span>${lineName}</span>
+                <span class="subtle">Next ${arrivals.length} trains</span>
+              </div>
+              ${rows}
+            </div>`;
+        }).filter(Boolean).join('');
+
+        if(!hasMatchingLine){ return; }
+
+        const isFavorite = favoriteStations.includes(station);
+        const favoriteClass = isFavorite ? 'favorite-toggle active' : 'favorite-toggle';
+        const badgeTone = isFavorite ? 'bg-danger-subtle text-danger' : 'bg-secondary-subtle text-secondary';
+        // Glow the card when a train is under 45 seconds away to mimic platform alerts
+        const soonClass = soonestCountdown <= 45 ? 'arrival-card arriving-soon' : 'arrival-card';
+        const stationForJs = station.replace(/\\/g, '\\\\').replace(/'/g, '\\\'');
+        cards.push(`<div class="${soonClass}">
+            <div class="arrival-header">
+              <div>
+                <div class="station-name">${station}</div>
+                <span class="badge ${badgeTone}">Next trains</span>
+              </div>
+              <button class="${favoriteClass}" type="button" onclick="toggleFavoriteStation('${stationForJs}')">
+                <span class="material-icons">${isFavorite ? 'star' : 'star_border'}</span>
+              </button>
+            </div>
+            ${lineSectionsHtml}
+          </div>`);
+      });
+
+      if(cards.length === 0){
+        container.innerHTML = '<div class="text-secondary">No simulated data available for your selected stations yet.</div>';
+        return;
+      }
+
+      container.innerHTML = cards.join('');
+    }
+    function manualRefreshArrivals(){
+      renderLiveArrivals();
+    }
+    function toggleSimulatedDelay(isEnabled){
+      if(window.trainArrivalSimulator?.config?.delay){
+        window.trainArrivalSimulator.config.delay.enabled = isEnabled;
+        renderLiveArrivals();
+      }
+    }
+    function triggerDemoNarration(){
+      // Quick script cue card for presenters to highlight hero interactions
+      const message = [
+        'Demo Tips:',
+        '1. “Notice how the hero animation feels alive, setting the tone for a high-speed commuter experience.”',
+        '2. “Watch the train cards glow when a service is arriving; it mimics platform announcements.”',
+        '3. “Favorites sync across the dashboard and live view—tap the star to personalize your commute.”',
+        '4. “Light and dark themes keep the UI presentation-ready whether you’re indoors or on the go.”'
+      ].join('\n');
+      alert(message);
+    }
+    function updateLiveClockDisplay(){
+      const clockEl = document.getElementById('liveClock');
+      if(!clockEl) return;
+      const now = new Date();
+      const parts = now.toLocaleTimeString(undefined, { hour12: false });
+      clockEl.innerHTML = `<span>${parts}</span>`;
+    }
+    function startLiveClock(){
+      if(liveClockIntervalId === null){
+        liveClockIntervalId = setInterval(updateLiveClockDisplay, 1000);
+      }
+      updateLiveClockDisplay();
+    }
+    function startArrivalRenderLoop(){
+      if(arrivalRenderIntervalId === null){
+        arrivalRenderIntervalId = setInterval(renderLiveArrivals, 1000);
+      }
+      renderLiveArrivals();
+    }
+    function stopArrivalRenderLoop(){
+      if(arrivalRenderIntervalId !== null){
+        clearInterval(arrivalRenderIntervalId);
+        arrivalRenderIntervalId = null;
+      }
+    }
+    function setTheme(mode){
+      const bodyEl = document.body;
+      const toggleBtn = document.getElementById('themeToggle');
+      // Update global palette and button state, storing preference for later visits
+      if(mode === 'dark'){
+        bodyEl.classList.add('dark-mode');
+        toggleBtn?.classList.add('active');
+        if(toggleBtn){
+          toggleBtn.querySelector('.material-icons').textContent = 'light_mode';
+          toggleBtn.querySelector('.toggle-label').textContent = 'Day Mode';
+        }
+        localStorage.setItem('singatrain-theme', 'dark');
+      }else{
+        bodyEl.classList.remove('dark-mode');
+        toggleBtn?.classList.remove('active');
+        if(toggleBtn){
+          toggleBtn.querySelector('.material-icons').textContent = 'dark_mode';
+          toggleBtn.querySelector('.toggle-label').textContent = 'Night Mode';
+        }
+        localStorage.setItem('singatrain-theme', 'light');
+      }
+    }
+    function initializeThemeToggle(){
+      const saved = localStorage.getItem('singatrain-theme');
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const initialMode = saved || (prefersDark ? 'dark' : 'light');
+      setTheme(initialMode);
+      document.getElementById('themeToggle')?.addEventListener('click', ()=>{
+        const isDark = document.body.classList.contains('dark-mode');
+        setTheme(isDark ? 'light' : 'dark');
+      });
     }
     function loadDashboard(){
       // favorites
@@ -2682,6 +3380,206 @@ function fareByType(km, type = "adult") {
       });
     }
 
+    // ====== TRAIN ARRIVAL SIMULATION ======
+    const TRAIN_STATION_LINES = {
+      'Bishan': ['North-South Line', 'Circle Line'],
+      'Dhoby Ghaut': ['North-South Line', 'North-East Line', 'Circle Line'],
+      'Jurong East': ['North-South Line', 'East-West Line', 'Jurong Region Line'],
+      'Woodlands': ['North-South Line', 'Thomson-East Coast Line'],
+      'Paya Lebar': ['East-West Line', 'Circle Line'],
+      'HarbourFront': ['North-East Line', 'Circle Line']
+    };
+    const LINE_COLOR_MAP = {
+      'North-South Line': '#d42e12',
+      'East-West Line': '#009645',
+      'Circle Line': '#fa9e0d',
+      'Downtown Line': '#005ec4',
+      'North-East Line': '#9900aa',
+      'Thomson-East Coast Line': '#9D5B25',
+      'Jurong Region Line': '#00a0a8',
+      'LRT Line': '#748477'
+    };
+    function getLineColor(lineName){
+      return LINE_COLOR_MAP[lineName] || '#6b7280';
+    }
+    function getLineMaxSeconds(simulator, lineName){
+      const defaultIntervals = DEFAULT_LINE_INTERVALS.default;
+      const lineIntervals = simulator?.config?.lineIntervals?.[lineName] || simulator?.config?.lineIntervals?.default || defaultIntervals;
+      const candidates = [];
+      Object.values(lineIntervals || {}).forEach(range=>{
+        if(Array.isArray(range)){
+          range.forEach((value)=>{
+            if(Number.isFinite(value)) candidates.push(value);
+          });
+        }
+      });
+      if(candidates.length === 0){
+        Object.values(defaultIntervals).forEach(range=>{
+          if(Array.isArray(range)){
+            range.forEach((value)=>{
+              if(Number.isFinite(value)) candidates.push(value);
+            });
+          }
+        });
+      }
+      return candidates.length ? Math.max(...candidates) : 360;
+    }
+
+    const DEFAULT_LINE_INTERVALS = {
+      default: {
+        peak: [60, 180],       // 1-3 minutes during crowded periods
+        shoulder: [120, 240],  // 2-4 minutes during shoulder periods
+        offPeak: [180, 360]    // 3-6 minutes during quieter hours
+      }
+    };
+
+    function createTrainArrivalSimulator(customConfig = {}) {
+      const baseConfig = {
+        stationLines: TRAIN_STATION_LINES,
+        lineIntervals: DEFAULT_LINE_INTERVALS,
+        updateIntervalMs: 30000,
+        trainsPerLine: 3,
+        delay: {
+          enabled: true,
+          probability: 0.2,          // 20% chance once the cycle check is reached
+          checkEvery: 4,             // inspect for delays roughly every 2 minutes
+          durationRangeSeconds: [180, 300] // add 3-5 minutes when a delay is triggered
+        }
+      };
+      const config = {
+        ...baseConfig,
+        ...customConfig,
+        delay: { ...baseConfig.delay, ...(customConfig.delay || {}) }
+      };
+
+      const state = {
+        cycles: 0,
+        arrivals: {}
+      };
+
+      function randomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+
+      function resolveLineInterval(lineName, servicePeriod) {
+        const lineConfig = config.lineIntervals[lineName] || config.lineIntervals.default;
+        const range = lineConfig[servicePeriod] || lineConfig.offPeak;
+        return Array.isArray(range) ? range : config.lineIntervals.default.offPeak;
+      }
+
+      function getServicePeriod(currentDate = new Date()) {
+        const hour = currentDate.getHours();
+        if ((hour >= 7 && hour < 9) || (hour >= 17 && hour < 20)) {
+          return 'peak';
+        }
+        if ((hour >= 6 && hour < 7) || (hour >= 9 && hour < 11) || (hour >= 16 && hour < 17) || (hour >= 20 && hour < 22)) {
+          return 'shoulder';
+        }
+        return 'offPeak';
+      }
+
+      function generateNextArrival(lineName, previousTailSeconds) {
+        const period = getServicePeriod();
+        const [minGap, maxGap] = resolveLineInterval(lineName, period);
+        const gapSeconds = randomInt(minGap, maxGap);
+        return previousTailSeconds + gapSeconds;
+      }
+
+      function seedLine(lineName) {
+        const queue = [];
+        let tail = 0;
+        for (let i = 0; i < config.trainsPerLine; i += 1) {
+          tail = generateNextArrival(lineName, tail);
+          queue.push(tail);
+        }
+        return queue;
+      }
+
+      function initialiseState() {
+        Object.entries(config.stationLines).forEach(([station, lines]) => {
+          state.arrivals[station] = {};
+          lines.forEach((lineName) => {
+            state.arrivals[station][lineName] = seedLine(lineName);
+          });
+        });
+      }
+
+      function applyDelayIfNeeded() {
+        if (!config.delay.enabled) return;
+        if (state.cycles % config.delay.checkEvery !== 0) return;
+        if (Math.random() > config.delay.probability) return;
+
+        const stations = Object.keys(state.arrivals);
+        if (!stations.length) return;
+        const station = stations[randomInt(0, stations.length - 1)];
+        const lines = Object.keys(state.arrivals[station]);
+        if (!lines.length) return;
+        const line = lines[randomInt(0, lines.length - 1)];
+        const queue = state.arrivals[station][line];
+        if (!queue.length) return;
+
+        const [minDelay, maxDelay] = config.delay.durationRangeSeconds;
+        const extraSeconds = randomInt(minDelay, maxDelay);
+        for (let i = 0; i < queue.length; i += 1) {
+          queue[i] += extraSeconds;
+        }
+      }
+
+      function tick() {
+        state.cycles += 1;
+        const deltaSeconds = config.updateIntervalMs / 1000;
+
+        Object.values(state.arrivals).forEach((lineMap) => {
+          Object.entries(lineMap).forEach(([lineName, queue]) => {
+            for (let i = 0; i < queue.length; i += 1) {
+              queue[i] = Math.max(0, queue[i] - deltaSeconds);
+            }
+            while (queue.length && queue[0] <= 0) {
+              queue.shift();
+            }
+            while (queue.length < config.trainsPerLine) {
+              const tail = queue.length ? queue[queue.length - 1] : 0;
+              queue.push(generateNextArrival(lineName, tail));
+            }
+          });
+        });
+
+        applyDelayIfNeeded();
+      }
+
+      function getArrivals(options = {}) {
+        const { returnSeconds = false } = options;
+        const response = {};
+        Object.entries(state.arrivals).forEach(([station, lineMap]) => {
+          response[station] = {};
+          Object.entries(lineMap).forEach(([lineName, queue]) => {
+            response[station][lineName] = queue.map((seconds) => {
+              if (returnSeconds) {
+                return Math.max(0, Math.round(seconds));
+              }
+              return Math.max(0, Math.ceil(seconds / 60));
+            });
+          });
+        });
+        return response;
+      }
+
+      initialiseState();
+
+      const intervalId = setInterval(tick, config.updateIntervalMs);
+
+      return {
+        getArrivals,
+        updateNow: tick,
+        stop: () => clearInterval(intervalId),
+        config
+      };
+    }
+
+    const trainArrivalSimulator = createTrainArrivalSimulator();
+    window.trainArrivalSimulator = trainArrivalSimulator;
+    window.getSimulatedArrivals = () => trainArrivalSimulator.getArrivals();
+
     function initMap(){
       mapboxgl.accessToken = 'pk.eyJ1IjoiY2hlZWF1biIsImEiOiJja2NydG83cWMwaGJsMnBqdjR5aHc3MzdlIn0.YGTZpi7JQMquEOv9E8K_bg';
       const map = new mapboxgl.Map({
@@ -2784,14 +3682,19 @@ function fareByType(km, type = "adult") {
         offset: 100
       });
       
+      initializeThemeToggle();
+      startLiveClock();
       initializeDropdowns();
       displayFavorites();
       loadDashboard();
       initMap();
+      renderLiveArrivals();
+      document.getElementById('liveTrainLine')?.addEventListener('change', renderLiveArrivals);
 
       // make Dashboard default
       setActiveTab('dashboard');
     });
+    
   </script>
 </body>
 </html>
