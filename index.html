@@ -1368,6 +1368,158 @@
       background: linear-gradient(90deg, transparent, rgba(117,0,0,0.35), rgba(0,94,196,0.35), transparent);
     }
 
+    /* ===== AUTH SECTIONS ===== */
+#auth-section,
+#password-reset-section,
+#dashboard-section {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 24px 28px;
+  max-width: 380px;
+  margin: 40px auto;
+  text-align: left;
+  transition: all 0.3s ease;
+}
+
+#auth-section h2,
+#password-reset-section h2,
+#dashboard-section h2 {
+  color: #7A0000; /* MRT red */
+  font-size: 1.5rem;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+#auth-section label,
+#password-reset-section label {
+  display: block;
+  font-weight: 600;
+  margin-top: 10px;
+  color: #333;
+}
+
+#auth-section input,
+#password-reset-section input {
+  width: 100%;
+  padding: 10px 12px;
+  margin-top: 6px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#auth-section input:focus,
+#password-reset-section input:focus {
+  border-color: #7A0000;
+  box-shadow: 0 0 4px rgba(122, 0, 0, 0.3);
+  outline: none;
+}
+
+#auth-section button,
+#password-reset-section button,
+#dashboard-section button {
+  width: 100%;
+  margin-top: 15px;
+  padding: 10px 0;
+  background-color: #7A0000;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+#auth-section button:hover,
+#password-reset-section button:hover,
+#dashboard-section button:hover {
+  background-color: #a40000;
+}
+
+.text-center {
+  text-align: center;
+  margin-top: 12px;
+}
+
+.text-center a {
+  color: #7A0000;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.text-center a:hover {
+  text-decoration: underline;
+}
+
+/* ===== PASSWORD REQUIREMENTS ===== */
+#password-requirements {
+  margin-top: 10px;
+  background: #f9f9f9;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  border-left: 3px solid #7A0000;
+}
+
+#password-requirements p {
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+#password-requirements span {
+  display: block;
+  margin-left: 6px;
+}
+
+.not-met {
+  color: #a40000;
+}
+
+.met {
+  color: green;
+}
+
+/* ===== MESSAGE STYLES ===== */
+#success-message,
+#error-message {
+  max-width: 380px;
+  margin: 10px auto;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-weight: 600;
+  text-align: center;
+}
+
+#success-message {
+  background-color: #e8f6ec;
+  color: #2a7a3b;
+  border: 1px solid #bde3c3;
+}
+
+#error-message {
+  background-color: #fce8e8;
+  color: #a40000;
+  border: 1px solid #f3b0b0;
+}
+
+/* ===== AUTH STATUS ===== */
+#auth-status {
+  text-align: center;
+  font-size: 0.95rem;
+  margin-top: 20px;
+  color: #555;
+}
+
+/* Hide when inactive */
+.hidden {
+  display: none !important;
+}
+
     @media (max-width: 768px) {
       .arrival-header {
         flex-direction: column;
@@ -1764,32 +1916,60 @@
 
     <!-- PROFILE -->
     <section id="profile" class="section-card d-none">
-      <h2 class="section-title mb-2">👤 User Profile & Favorites</h2>
-      <div class="feature-description p-3 rounded mb-3">Save frequently used stations for quick access on the dashboard.</div>
-
-      <div class="row g-3">
-        <div class="col-md-6">
-          <label class="form-label">Your Name</label>
-          <input type="text" id="profileName" class="form-control" placeholder="Enter your name">
+      <!-- AUTH SECTION -->
+      <div id="auth-section">
+        <h2>Join or Sign In</h2>
+      
+        <label for="auth-email">Email:</label>
+        <input type="email" id="auth-email" placeholder="Enter your email">
+      
+        <label for="auth-password">Password:</label>
+        <input type="password" id="auth-password" placeholder="Enter your password">
+      
+        <div id="password-requirements" class="hidden">
+          <p>Password must contain:</p>
+          <span id="req-length" class="not-met">- At least 6 characters</span>
+          <span id="req-uppercase" class="not-met">- An uppercase letter</span>
+          <span id="req-lowercase" class="not-met">- A lowercase letter</span>
+          <span id="req-number" class="not-met">- A number</span>
+          <span id="req-special" class="not-met">- A special character (!@#$%^&*)</span>
         </div>
-        <div class="col-md-6 d-flex align-items-end">
-          <button class="btn btn-primary" onclick="saveProfile()">Save Profile</button>
+        
+        <button id="login-btn">Sign In</button>
+        <button id="register-btn">Register</button>
+      
+        <div class="text-center">
+          <a href="#" id="forgot-password-link">Forgot Password?</a>
         </div>
       </div>
-
-      <h5 class="mt-4">Favorite Stations</h5>
-      <div class="row g-2 align-items-end">
-        <div class="col-md-4">
-          <input type="text" id="favoriteLabel" class="form-control" placeholder="Label (e.g., Home, Work)">
-        </div>
-        <div class="col-md-6">
-          <select id="favoriteStation" class="form-select"></select>
-        </div>
-        <div class="col-md-2 d-grid">
-          <button class="btn btn-success" onclick="addFavorite()">Add</button>
+      
+      <!-- PASSWORD RESET SECTION -->
+      <div id="password-reset-section" class="hidden">
+        <h2>Reset Your Password</h2>
+      
+        <label for="reset-email">Email:</label>
+        <input type="email" id="reset-email" placeholder="Enter your account email">
+        <button id="send-reset-email-btn">Send Reset Email</button>
+      
+        <div class="text-center">
+          <a href="#" id="back-to-auth-link">Back to Login</a>
         </div>
       </div>
-      <div id="favoritesOutput" class="mt-3"></div>
+      
+      <!-- USER DASHBOARD -->
+      <div id="dashboard-section" class="hidden">
+        <h2>Welcome to SingaTrain!</h2>
+        <p style="color:#111827">You are logged in as: <strong id="user-display-email"></strong></p>
+        <div class="text-center">
+          <button id="logout-btn">Sign Out</button>
+        </div>
+      </div>
+      
+      <!-- MESSAGE DISPLAYS -->
+      <div id="error-message" class="hidden"></div>
+      <div id="success-message" class="hidden"></div>
+      <div id="auth-status">Checking authentication status...</div>
+
     </section>
 
     <!-- Toast (API errors/info) -->
@@ -2861,7 +3041,7 @@ function fareByType(km, type = "adult") {
       renderLiveArrivals();
     }
     function displayFavorites(){
-      const container = document.getElementById('favoritesOutput');
+      const container = document.getElementById('dashboardFavorites');
       if(userData.favorites.length===0){
         container.innerHTML = '<div class="text-secondary">No favorite stations yet.</div>'; return;
       }
@@ -3695,6 +3875,293 @@ function fareByType(km, type = "adult") {
       setActiveTab('dashboard');
     });
     
+  </script>
+  <!-- 1. Import the core Firebase App module (ensure version consistency) -->
+  <script type="module" src="https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js"></script>
+  
+  <!-- 2. Import the Firebase Authentication module (ensure version consistency) -->
+  <script type="module" src="https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js"></script>
+  
+  <!-- Add other Firebase products here as needed, maintaining version consistency -->
+  <!-- Example: For Firestore: <script type="module" src="https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js"></script> -->
+  
+  <!-- Your app's initialization script -->
+  <script type="module">
+    // Your Firebase project configuration (from Step 1)
+    const firebaseConfig = {
+      apiKey: "AIzaSyBTy0tRrYfIvPYhZ-k49IsU_IS9WuTVxKA",
+      authDomain: "singatrain.firebaseapp.com",
+      projectId: "singatrain",
+      storageBucket: "singatrain.firebasestorage.app",
+      messagingSenderId: "773752736023",
+      appId: "1:773752736023:web:456315abd28b9854058f52",
+      measurementId: "G-ZQHSRHNBCB"
+    };
+
+    // Import the necessary functions from the loaded modules
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js';
+    import {
+      getAuth,
+      createUserWithEmailAndPassword,
+      signInWithEmailAndPassword,
+      onAuthStateChanged,
+      signOut,
+      sendPasswordResetEmail
+    } from 'https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js';
+
+    // --- 3. Initialize Firebase App and Auth ---
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app); // This is your main Auth object
+
+    // --- 4. Get References to HTML Elements ---
+    const authSection = document.getElementById('auth-section');
+    const passwordResetSection = document.getElementById('password-reset-section');
+    const dashboardSection = document.getElementById('dashboard-section');
+
+    const authEmailInput = document.getElementById('auth-email');
+    const authPasswordInput = document.getElementById('auth-password');
+    const passwordRequirementsDiv = document.getElementById('password-requirements');
+    const reqLength = document.getElementById('req-length');
+    const reqUppercase = document.getElementById('req-uppercase');
+    const reqLowercase = document.getElementById('req-lowercase');
+    const reqNumber = document.getElementById('req-number');
+    const reqSpecial = document.getElementById('req-special');
+
+    const registerBtn = document.getElementById('register-btn');
+    const loginBtn = document.getElementById('login-btn');
+    const logoutBtn = document.getElementById('logout-btn');
+    const forgotPasswordLink = document.getElementById('forgot-password-link');
+    const backToAuthLink = document.getElementById('back-to-auth-link');
+
+    const resetEmailInput = document.getElementById('reset-email');
+    const sendResetEmailBtn = document.getElementById('send-reset-email-btn');
+
+    const userDisplayEmail = document.getElementById('user-display-email');
+    const errorMessageDiv = document.getElementById('error-message');
+    const successMessageDiv = document.getElementById('success-message');
+    const authStatusDiv = document.getElementById('auth-status');
+
+    // --- 5. Helper Functions for UI Messages ---
+
+    function showMessage(type, message) {
+      if (type === 'error') {
+        errorMessageDiv.textContent = message;
+        errorMessageDiv.classList.remove('hidden');
+        successMessageDiv.classList.add('hidden');
+      } else if (type === 'success') {
+        successMessageDiv.textContent = message;
+        successMessageDiv.classList.remove('hidden');
+        errorMessageDiv.classList.add('hidden');
+      }
+    }
+
+    function clearMessages() {
+      errorMessageDiv.classList.add('hidden');
+      successMessageDiv.classList.add('hidden');
+    }
+
+    /**
+     * Maps Firebase Auth error codes to user-friendly messages.
+     * @param {string} code - The Firebase Auth error code.
+     * @returns {string} - A user-friendly message.
+     */
+    function mapAuthError(code) {
+      switch (code) {
+        case 'auth/email-already-in-use':
+          return 'This email address is already in use. Try signing in or resetting your password.';
+        case 'auth/invalid-email':
+          return 'The email address is not valid.';
+        case 'auth/operation-not-allowed':
+          return 'Email/password accounts are not enabled. Contact support.';
+        case 'auth/weak-password':
+          return 'The password is too weak. Please use a stronger password.';
+        case 'auth/user-not-found':
+          return 'No user found with this email. Please check your email or register.';
+        case 'auth/wrong-password':
+          return 'Incorrect password. Please try again.';
+        case 'auth/invalid-credential': // Generic for failed sign-in due to wrong pass/email with identity platform
+        case 'auth/invalid-login-credentials': // New error code for failed sign-in
+          return 'Invalid login credentials. Please check your email and password.';
+        case 'auth/too-many-requests':
+          return 'Too many attempts. Access temporarily blocked. Please try again later.';
+        case 'auth/network-request-failed':
+          return 'Network error. Please check your internet connection.';
+        default:
+          return `An unknown error occurred. Code: ${code}`;
+      }
+    }
+
+    // --- 6. Client-Side Password Validation ---
+    function validatePassword(password) {
+      let isValid = true;
+      const requirements = {
+        length: password.length >= 6,
+        uppercase: /[A-Z]/.test(password),
+        lowercase: /[a-z]/.test(password),
+        number: /[0-9]/.test(password),
+        special: /[!@#$%^&*]/.test(password)
+      };
+
+      reqLength.classList.toggle('met', requirements.length);
+      reqLength.classList.toggle('not-met', !requirements.length);
+      reqUppercase.classList.toggle('met', requirements.uppercase);
+      reqUppercase.classList.toggle('not-met', !requirements.uppercase);
+      reqLowercase.classList.toggle('met', requirements.lowercase);
+      reqLowercase.classList.toggle('not-met', !requirements.lowercase);
+      reqNumber.classList.toggle('met', requirements.number);
+      reqNumber.classList.toggle('not-met', !requirements.number);
+      reqSpecial.classList.toggle('met', requirements.special);
+      reqSpecial.classList.toggle('not-met', !requirements.special);
+
+      for (const key in requirements) {
+        if (!requirements[key]) {
+          isValid = false;
+        }
+      }
+      return isValid;
+    }
+
+    authPasswordInput.addEventListener('input', () => {
+      if (!auth.currentUser) { // Only show requirements for non-logged-in users trying to register/login
+        passwordRequirementsDiv.classList.remove('hidden');
+        validatePassword(authPasswordInput.value);
+        if (authPasswordInput.value === '') { // Hide if password field is empty
+          passwordRequirementsDiv.classList.add('hidden');
+        }
+      }
+    });
+
+    // --- 7. Event Listeners for Authentication Actions ---
+
+    // Register User
+    registerBtn.addEventListener('click', async () => {
+      clearMessages();
+      const email = authEmailInput.value;
+      const password = authPasswordInput.value;
+
+      if (!email || !password) {
+        showMessage('error', 'Please enter both email and password.');
+        return;
+      }
+
+      if (!validatePassword(password)) {
+        showMessage('error', 'Password does not meet all requirements.');
+        return;
+      }
+
+      try {
+        await createUserWithEmailAndPassword(auth, email, password);
+        showMessage('success', 'Registration successful! You are now logged in.');
+        // UI will update via onAuthStateChanged
+      } catch (error) {
+        showMessage('error', mapAuthError(error.code || 'unknown-error'));
+        console.error("Registration Error:", error);
+      }
+    });
+
+    // Login User
+    loginBtn.addEventListener('click', async () => {
+      clearMessages();
+      const email = authEmailInput.value;
+      const password = authPasswordInput.value;
+
+      if (!email || !password) {
+        showMessage('error', 'Please enter both email and password.');
+        return;
+      }
+
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        showMessage('success', 'Sign-in successful! Welcome back.');
+        // UI will update via onAuthStateChanged
+      } catch (error) {
+        showMessage('error', mapAuthError(error.code || 'unknown-error'));
+        console.error("Login Error:", error);
+      }
+    });
+
+    // Logout User
+    logoutBtn.addEventListener('click', async () => {
+      clearMessages();
+      try {
+        await signOut(auth);
+        showMessage('success', 'You have been signed out.');
+        // UI will update via onAuthStateChanged
+      } catch (error) {
+        showMessage('error', mapAuthError(error.code || 'unknown-error'));
+        console.error("Logout Error:", error);
+      }
+    });
+
+    // Go to Forgot Password section
+    forgotPasswordLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      clearMessages();
+      authSection.classList.add('hidden');
+      passwordResetSection.classList.remove('hidden');
+      resetEmailInput.value = authEmailInput.value; // Pre-fill email if available
+    });
+
+    // Back to Auth section
+    backToAuthLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      clearMessages();
+      passwordResetSection.classList.add('hidden');
+      authSection.classList.remove('hidden');
+    });
+
+    // Send Password Reset Email
+    sendResetEmailBtn.addEventListener('click', async () => {
+      clearMessages();
+      const email = resetEmailInput.value;
+
+      if (!email) {
+        showMessage('error', 'Please enter your email to reset password.');
+        return;
+      }
+
+      try {
+        await sendPasswordResetEmail(auth, email);
+        showMessage('success', `A password reset link has been sent to ${email}. Please check your inbox.`);
+        // Optionally, return to login after a delay
+        setTimeout(() => {
+          passwordResetSection.classList.add('hidden');
+          authSection.classList.remove('hidden');
+        }, 5000);
+      } catch (error) {
+        showMessage('error', mapAuthError(error.code || 'unknown-error'));
+        console.error("Password Reset Error:", error);
+      }
+    });
+
+    // --- 8. Monitor Authentication State Changes (Crucial for UI) ---
+    onAuthStateChanged(auth, (user) => {
+        clearMessages();
+
+        const headerUserName = document.getElementById('userName');
+
+        if (user) {
+          const name = user.displayName || user.email.split('@')[0]; 
+
+          authStatusDiv.textContent = `Logged in as ${user.email}`;
+          userDisplayEmail.textContent = user.email;
+          headerUserName.textContent = name;
+
+          authSection.classList.add('hidden');
+          passwordResetSection.classList.add('hidden');
+          dashboardSection.classList.remove('hidden');
+          passwordRequirementsDiv.classList.add('hidden');
+        } else {
+          authStatusDiv.textContent = "Not logged in.";
+          userDisplayEmail.textContent = "";
+          headerUserName.textContent = "Guest User"; 
+          authSection.classList.remove('hidden');
+          passwordResetSection.classList.add('hidden');
+          dashboardSection.classList.add('hidden');
+        }
+      });
+
+
   </script>
 </body>
 </html>
