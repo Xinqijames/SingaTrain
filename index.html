@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -11,74 +12,80 @@
 
   <!-- Material Design Icons -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  
+
   <!-- Premium Typography - Neuralink-inspired fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
-  
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+
   <!-- Animate.css for smooth animations -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-  
+
   <!-- AOS (Animate On Scroll) for premium animations -->
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  
+
   <!-- Mapbox -->
   <script src="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.js"></script>
   <link href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css" rel="stylesheet" />
 
   <style>
     :root {
-  /* Neuralink-inspired color palette - muted and sophisticated */
-  --sg-red: #750000;         /* Primary brand red */
-  --sg-red-dark: #4d0000;    /* Darker hover red */
-  --sg-red-soft: #f8eaea;    /* Light background tint */
-  --sg-grey: #6b7280;
-  --sg-border: #e5e7eb;
-  
-  /* Premium Neuralink-inspired variables */
-  --primary-gradient: linear-gradient(135deg, #750000 0%, #a00000 100%);
-  --card-shadow: 0 2px 40px rgba(0,0,0,0.04);
-  --card-shadow-hover: 0 8px 60px rgba(0,0,0,0.08);
-  --border-radius: 20px;
-  --border-radius-sm: 12px;
-  --border-radius-lg: 32px;
-  
-  /* Neuralink-inspired muted palette */
-  --neutral-50: #fafafa;
-  --neutral-100: #f5f5f5;
-  --neutral-200: #e5e5e5;
-  --neutral-300: #d4d4d4;
-  --neutral-400: #a3a3a3;
-  --neutral-500: #737373;
-  --neutral-600: #525252;
-  --neutral-700: #404040;
-  --neutral-800: #262626;
-  --neutral-900: #171717;
-  
-  /* Premium accent colors */
-  --accent-blue: #0ea5e9;
-  --accent-green: #10b981;
-  --accent-purple: #8b5cf6;
-  --accent-orange: #f59e0b;
-  
-  /* Typography scale */
-  --text-xs: 0.75rem;
-  --text-sm: 0.875rem;
-  --text-base: 1rem;
-  --text-lg: 1.125rem;
-  --text-xl: 1.25rem;
-  --text-2xl: 1.5rem;
-  --text-3xl: 1.875rem;
-  --text-4xl: 2.25rem;
-}
-    * { 
-      box-sizing: border-box; 
+      /* Neuralink-inspired color palette - muted and sophisticated */
+      --sg-red: #750000;
+      /* Primary brand red */
+      --sg-red-dark: #4d0000;
+      /* Darker hover red */
+      --sg-red-soft: #f8eaea;
+      /* Light background tint */
+      --sg-grey: #6b7280;
+      --sg-border: #e5e7eb;
+
+      /* Premium Neuralink-inspired variables */
+      --primary-gradient: linear-gradient(135deg, #750000 0%, #a00000 100%);
+      --card-shadow: 0 2px 40px rgba(0, 0, 0, 0.04);
+      --card-shadow-hover: 0 8px 60px rgba(0, 0, 0, 0.08);
+      --border-radius: 20px;
+      --border-radius-sm: 12px;
+      --border-radius-lg: 32px;
+
+      /* Neuralink-inspired muted palette */
+      --neutral-50: #fafafa;
+      --neutral-100: #f5f5f5;
+      --neutral-200: #e5e5e5;
+      --neutral-300: #d4d4d4;
+      --neutral-400: #a3a3a3;
+      --neutral-500: #737373;
+      --neutral-600: #525252;
+      --neutral-700: #404040;
+      --neutral-800: #262626;
+      --neutral-900: #171717;
+
+      /* Premium accent colors */
+      --accent-blue: #0ea5e9;
+      --accent-green: #10b981;
+      --accent-purple: #8b5cf6;
+      --accent-orange: #f59e0b;
+
+      /* Typography scale */
+      --text-xs: 0.75rem;
+      --text-sm: 0.875rem;
+      --text-base: 1rem;
+      --text-lg: 1.125rem;
+      --text-xl: 1.25rem;
+      --text-2xl: 1.5rem;
+      --text-3xl: 1.875rem;
+      --text-4xl: 2.25rem;
+    }
+
+    * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
-    
+
     body {
-      font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+      font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
       background: var(--neutral-50);
       color: var(--neutral-800);
       min-height: 100vh;
@@ -88,40 +95,55 @@
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
-    
+
     /* Premium typography hierarchy */
-    h1, h2, h3, h4, h5, h6 {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
       font-family: 'Playfair Display', serif;
       font-weight: 500;
       letter-spacing: -0.02em;
       line-height: 1.2;
     }
-    
+
     .section-title {
       font-size: var(--text-3xl);
       font-weight: 600;
       color: var(--neutral-900);
       margin-bottom: 0.5rem;
     }
-    header{
+
+    header {
       background: #fff;
       border-bottom: 1px solid var(--sg-border);
-      position: sticky; top:0; z-index:1000;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
-    .app-title { color: var(--sg-red); }
+
+    .app-title {
+      color: var(--sg-red);
+    }
+
     .nav-pills .nav-link {
-  border-radius: 999px;
-  color: #fff;
-  background: var(--sg-red);
-}
-.nav-pills .nav-link:not(.active) {
-  background: #8b0000;
-  opacity: 0.85;
-}
-.nav-pills .nav-link:hover {
-  background: var(--sg-red-dark);
-}
-    .section-card{
+      border-radius: 999px;
+      color: #fff;
+      background: var(--sg-red);
+    }
+
+    .nav-pills .nav-link:not(.active) {
+      background: #8b0000;
+      opacity: 0.85;
+    }
+
+    .nav-pills .nav-link:hover {
+      background: var(--sg-red-dark);
+    }
+
+    .section-card {
       background: #ffffff;
       border: 1px solid var(--neutral-200);
       border-radius: var(--border-radius);
@@ -132,13 +154,13 @@
       overflow: hidden;
       backdrop-filter: blur(10px);
     }
-    
+
     .section-card:hover {
       box-shadow: var(--card-shadow-hover);
       transform: translateY(-4px);
       border-color: var(--neutral-300);
     }
-    
+
     .section-card::before {
       content: '';
       position: absolute;
@@ -150,45 +172,109 @@
       opacity: 0;
       transition: opacity 0.3s ease;
     }
-    
+
     .section-card:hover::before {
       opacity: 1;
     }
-    h2.section-title{ color:var(--sg-red); }
-    .feature-description{
-      background: var(--sg-red-soft); border:1px solid #fecaca; color:#991b1b;
+
+    h2.section-title {
+      color: var(--sg-red);
     }
-    .btn-primary{ background: var(--sg-red); border-color: var(--sg-red); }
-    .btn-primary:hover{ background: var(--sg-red-dark); border-color: var(--sg-red-dark); }
-    .btn-success{ background:#059669; border:#059669; }
-    .pill{
-      display:inline-block; padding:.25rem .6rem; border-radius:999px; font-size:.85rem;
-      background:#f3f4f6; border:1px solid #e5e7eb; color:#111827;
+
+    .feature-description {
+      background: var(--sg-red-soft);
+      border: 1px solid #fecaca;
+      color: #991b1b;
     }
-    .output-box{
-      margin-top: 16px; padding:16px; background:#f9fafb; border-left:4px solid var(--sg-red);
-      border-radius:8px; min-height: 100px;
+
+    .btn-primary {
+      background: var(--sg-red);
+      border-color: var(--sg-red);
     }
-    .alert-card{ border:1px solid var(--sg-border); border-left-width:4px; border-radius:8px; padding:12px; background:#fff; }
-    .alert-disrupted{ border-left-color:#ef4444; }
-    .alert-normal{ border-left-color:#16a34a; }
-    .route-step{ background:#f3f4f6; border-left:4px solid var(--sg-red); border-radius:8px; padding:12px; margin:.5rem 0; }
-    .fare-result{
+
+    .btn-primary:hover {
+      background: var(--sg-red-dark);
+      border-color: var(--sg-red-dark);
+    }
+
+    .btn-success {
+      background: #059669;
+      border: #059669;
+    }
+
+    .pill {
+      display: inline-block;
+      padding: .25rem .6rem;
+      border-radius: 999px;
+      font-size: .85rem;
+      background: #f3f4f6;
+      border: 1px solid #e5e7eb;
+      color: #111827;
+    }
+
+    .output-box {
+      margin-top: 16px;
+      padding: 16px;
+      background: #f9fafb;
+      border-left: 4px solid var(--sg-red);
+      border-radius: 8px;
+      min-height: 100px;
+    }
+
+    .alert-card {
+      border: 1px solid var(--sg-border);
+      border-left-width: 4px;
+      border-radius: 8px;
+      padding: 12px;
+    }
+
+    .alert-disrupted {
+      border-left-color: #ef4444;
+    }
+
+    .alert-normal {
+      border-left-color: #16a34a;
+    }
+
+    .route-step {
+      background: #f3f4f6;
+      border-left: 4px solid var(--sg-red);
+      border-radius: 8px;
+      padding: 12px;
+      margin: .5rem 0;
+    }
+
+    .fare-result {
       background: linear-gradient(135deg, var(--sg-red) 0%, var(--sg-red-dark) 100%);
-      color:#fff; padding:18px; border-radius:12px; text-align:center; font-size:1.1rem;
+      color: #fff;
+      padding: 18px;
+      border-radius: 12px;
+      text-align: center;
+      font-size: 1.1rem;
     }
-    .mapboxgl-popup-content{ border-radius:12px !important; }
-    .station-chip{ font-weight:600; color:var(--sg-red); }
-    .form-select, .form-control{ 
-      border:2px solid #e5e7eb; 
+
+    .mapboxgl-popup-content {
+      border-radius: 12px !important;
+    }
+
+    .station-chip {
+      font-weight: 600;
+      color: var(--sg-red);
+    }
+
+    .form-select,
+    .form-control {
+      border: 2px solid #e5e7eb;
       border-radius: var(--border-radius-sm);
       padding: 12px 16px;
       font-size: 14px;
       transition: all 0.3s ease;
     }
-    .form-select:focus, .form-control:focus{ 
-      border-color: var(--sg-red); 
-      box-shadow: 0 0 0 .2rem rgba(220,38,38,.15);
+
+    .form-select:focus,
+    .form-control:focus {
+      border-color: var(--sg-red);
+      box-shadow: 0 0 0 .2rem rgba(220, 38, 38, .15);
       transform: translateY(-1px);
     }
 
@@ -202,7 +288,7 @@
       position: relative;
       overflow: hidden;
     }
-    
+
     .meetup-container::before {
       content: '';
       position: absolute;
@@ -213,7 +299,7 @@
       background: linear-gradient(135deg, rgba(117, 0, 0, 0.02) 0%, rgba(14, 165, 233, 0.02) 100%);
       pointer-events: none;
     }
-    
+
     .person-card {
       background: #ffffff;
       border: 1px solid var(--neutral-200);
@@ -225,19 +311,19 @@
       overflow: hidden;
       backdrop-filter: blur(10px);
     }
-    
+
     .person-card:hover {
       border-color: var(--neutral-300);
       box-shadow: 0 8px 40px rgba(0, 0, 0, 0.06);
       transform: translateY(-3px);
     }
-    
+
     .person-card.active {
       border-color: var(--sg-red);
       background: linear-gradient(135deg, #ffffff 0%, rgba(117, 0, 0, 0.02) 100%);
       box-shadow: 0 8px 40px rgba(117, 0, 0, 0.08);
     }
-    
+
     .person-card.active::before {
       content: '';
       position: absolute;
@@ -247,14 +333,14 @@
       height: 3px;
       background: var(--primary-gradient);
     }
-    
+
     .person-header {
       display: flex;
       align-items: center;
       gap: 12px;
       margin-bottom: 16px;
     }
-    
+
     .person-avatar {
       width: 56px;
       height: 56px;
@@ -271,7 +357,7 @@
       position: relative;
       overflow: hidden;
     }
-    
+
     .person-avatar::before {
       content: '';
       position: absolute;
@@ -282,7 +368,7 @@
       background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%);
       pointer-events: none;
     }
-    
+
     .person-info h6 {
       margin: 0;
       color: var(--neutral-900);
@@ -290,17 +376,17 @@
       font-size: var(--text-lg);
       letter-spacing: -0.01em;
     }
-    
+
     .person-info small {
       color: var(--neutral-500);
       font-size: var(--text-sm);
       font-weight: 400;
     }
-    
+
     .station-selector {
       position: relative;
     }
-    
+
     .station-selector .form-select {
       background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m1 6 7 7 7-7'/%3e%3c/svg%3e");
       background-repeat: no-repeat;
@@ -308,14 +394,14 @@
       background-size: 16px 12px;
       padding-right: 40px;
     }
-    
+
     .meetup-actions {
       display: flex;
       gap: 12px;
       margin-top: 24px;
       flex-wrap: wrap;
     }
-    
+
     .btn-modern {
       background: linear-gradient(135deg, var(--sg-red) 0%, var(--sg-red-dark) 100%);
       border: none;
@@ -333,7 +419,7 @@
       position: relative;
       overflow: hidden;
     }
-    
+
     .btn-modern::before {
       content: '';
       position: absolute;
@@ -344,31 +430,31 @@
       background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
       transition: left 0.5s;
     }
-    
+
     .btn-modern:hover::before {
       left: 100%;
     }
-    
+
     .btn-modern:hover {
       transform: translateY(-3px);
       box-shadow: 0 12px 40px rgba(117, 0, 0, 0.25);
       color: white;
     }
-    
+
     .btn-modern.secondary {
       background: var(--neutral-50);
       color: var(--neutral-700);
       border: 1px solid var(--neutral-300);
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
     }
-    
+
     .btn-modern.secondary:hover {
       background: var(--neutral-100);
       border-color: var(--sg-red);
       color: var(--sg-red);
       box-shadow: 0 8px 24px rgba(117, 0, 0, 0.1);
     }
-    
+
     .meetup-results {
       background: #ffffff;
       border: 1px solid var(--neutral-200);
@@ -380,7 +466,7 @@
       box-shadow: 0 8px 40px rgba(0, 0, 0, 0.06);
       backdrop-filter: blur(10px);
     }
-    
+
     .meetup-results::before {
       content: '';
       position: absolute;
@@ -390,7 +476,7 @@
       height: 3px;
       background: linear-gradient(90deg, var(--sg-red) 0%, var(--accent-green) 100%);
     }
-    
+
     .meeting-point {
       background: linear-gradient(135deg, var(--sg-red) 0%, var(--accent-blue) 100%);
       color: white;
@@ -402,7 +488,7 @@
       overflow: hidden;
       box-shadow: 0 12px 40px rgba(117, 0, 0, 0.2);
     }
-    
+
     .meeting-point::before {
       content: '';
       position: absolute;
@@ -413,26 +499,26 @@
       background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
       pointer-events: none;
     }
-    
+
     .meeting-point h4 {
       font-size: var(--text-2xl);
       font-weight: 600;
       margin-bottom: 8px;
       letter-spacing: -0.02em;
     }
-    
+
     .meeting-point p {
       opacity: 0.9;
       font-size: var(--text-base);
       margin: 0;
     }
-    
+
     .travel-times {
       display: grid;
       gap: 12px;
       margin-top: 20px;
     }
-    
+
     .travel-time-item {
       background: var(--neutral-50);
       border: 1px solid var(--neutral-200);
@@ -445,14 +531,14 @@
       position: relative;
       overflow: hidden;
     }
-    
+
     .travel-time-item:hover {
       background: #ffffff;
       border-color: var(--neutral-300);
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
       transform: translateY(-2px);
     }
-    
+
     .time-badge {
       background: linear-gradient(135deg, var(--sg-red) 0%, var(--accent-blue) 100%);
       color: white;
@@ -465,14 +551,14 @@
       box-shadow: 0 4px 12px rgba(117, 0, 0, 0.15);
       letter-spacing: -0.01em;
     }
-    
+
     .quick-stations {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
       margin-top: 16px;
     }
-    
+
     .quick-station-btn {
       background: #f8fafc;
       border: 1px solid #e2e8f0;
@@ -484,14 +570,14 @@
       transition: all 0.3s ease;
       cursor: pointer;
     }
-    
+
     .quick-station-btn:hover {
       background: var(--sg-red);
       color: white;
       border-color: var(--sg-red);
       transform: translateY(-1px);
     }
-    
+
     .floating-action {
       position: fixed;
       bottom: 24px;
@@ -510,134 +596,331 @@
       transition: all 0.3s ease;
       z-index: 1000;
     }
-    
+
     .floating-action:hover {
       transform: scale(1.1);
       box-shadow: 0 12px 35px rgba(117, 0, 0, 0.4);
     }
-    
+
+    /* ===== PROFILE / AUTH SECTIONS ===== */
+    #profile {
+      max-width: 500px;
+      margin: 2rem auto;
+    }
+
+    #auth-section,
+    #password-reset-section,
+    #dashboard-section {
+      background: #ffffff;
+      border: 1px solid var(--neutral-200);
+      border-radius: var(--border-radius);
+      padding: 32px;
+      box-shadow: var(--card-shadow);
+      transition: all 0.3s ease;
+    }
+
+    #auth-section h2,
+    #password-reset-section h2,
+    #dashboard-section h2 {
+      font-size: var(--text-2xl);
+      color: var(--sg-red);
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    select {
+      width: 100%;
+      padding: 12px 16px;
+      margin-bottom: 1rem;
+      border-radius: var(--border-radius-sm);
+      border: 2px solid var(--neutral-200);
+      font-size: var(--text-base);
+      transition: all 0.3s ease;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: var(--sg-red);
+      box-shadow: 0 0 0 0.2rem rgba(220, 38, 38, 0.15);
+      outline: none;
+    }
+
+    button {
+      display: block;
+      width: 100%;
+      padding: 12px 16px;
+      font-size: var(--text-base);
+      font-weight: 600;
+      border-radius: var(--border-radius-sm);
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    #login-btn,
+    #send-reset-email-btn {
+      background: var(--sg-red);
+      color: white;
+    }
+
+    #login-btn:hover,
+    #send-reset-email-btn:hover {
+      background: var(--sg-red-dark);
+    }
+
+    #register-btn,
+    #saveProfileBtn,
+    #addFavoriteBtn,
+    #logout-btn {
+      background: #ffffff;
+      border: 2px solid var(--sg-red);
+      color: var(--sg-red);
+    }
+
+    #register-btn:hover,
+    #saveProfileBtn:hover,
+    #addFavoriteBtn:hover,
+    #logout-btn:hover {
+      background: var(--sg-red);
+      color: white;
+      box-shadow: var(--card-shadow-hover);
+      transform: translateY(-2px);
+    }
+
+    #password-requirements {
+      background: var(--sg-red-soft);
+      border-left: 4px solid var(--sg-red);
+      padding: 0.75rem;
+      font-size: var(--text-sm);
+      margin-bottom: 1rem;
+    }
+
+    #password-requirements span.met {
+      color: var(--accent-green);
+    }
+
+    #password-requirements span.not-met {
+      color: #991b1b;
+    }
+
+    #favoriteList {
+      max-height: 250px;
+      overflow-y: auto;
+    }
+
+    /* Each favorite item */
+    #favoriteList li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 10px 15px;
+      margin-bottom: 8px;
+      transition: background-color 0.2s, transform 0.2s;
+    }
+
+    /* Hover effect */
+    #favoriteList li:hover {
+      background-color: #f1f1f1;
+      transform: scale(1.02);
+    }
+
+    /* Station label styling */
+    #favoriteList li strong {
+      font-weight: 600;
+      color: #333;
+    }
+
+    /* Remove button styling */
+#favoriteList li button {
+  background-color: #e74c3c;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 4px 8px;       /* vertical + horizontal padding */
+  cursor: pointer;
+  transition: background-color 0.2s;
+  height: auto;
+  align-self: center;      /* center vertically */
+  font-size: 0.85rem;
+  min-width: 0;            /* prevent flex stretch */
+  width: auto;             /* let width fit content */
+}
+
+
+    #favoriteList li button:hover {
+      background-color: #c0392b;
+    }
+
+    #error-message,
+    #success-message {
+      margin-top: 1rem;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    #error-message {
+      color: #b91c1c;
+    }
+
+    #success-message {
+      color: var(--accent-green);
+    }
+
+
     /* Premium Animations */
     @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-      100% { transform: scale(1); }
+      0% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.05);
+      }
+
+      100% {
+        transform: scale(1);
+      }
     }
-    
+
     @keyframes slideInUp {
       from {
         opacity: 0;
         transform: translateY(30px);
       }
+
       to {
         opacity: 1;
         transform: translateY(0);
       }
     }
-    
+
     @keyframes fadeInScale {
       from {
         opacity: 0;
         transform: scale(0.9);
       }
+
       to {
         opacity: 1;
         transform: scale(1);
       }
     }
-    
+
     /* Map Interaction Animations */
     @keyframes mapClickRipple {
       0% {
         transform: scale(0);
         opacity: 1;
       }
+
       100% {
         transform: scale(4);
         opacity: 0;
       }
     }
-    
+
     @keyframes stationSelect {
       0% {
         transform: scale(1);
         box-shadow: 0 0 0 0 rgba(117, 0, 0, 0.4);
       }
+
       50% {
         transform: scale(1.2);
         box-shadow: 0 0 0 20px rgba(117, 0, 0, 0.1);
       }
+
       100% {
         transform: scale(1);
         box-shadow: 0 0 0 0 rgba(117, 0, 0, 0);
       }
     }
-    
+
     @keyframes loadingPulse {
-      0%, 100% {
+
+      0%,
+      100% {
         opacity: 0.4;
         transform: scale(0.95);
       }
+
       50% {
         opacity: 1;
         transform: scale(1.05);
       }
     }
-    
+
     @keyframes loadingDots {
-      0%, 20% {
+
+      0%,
+      20% {
         opacity: 0;
         transform: scale(0.8);
       }
+
       50% {
         opacity: 1;
         transform: scale(1);
       }
-      80%, 100% {
+
+      80%,
+      100% {
         opacity: 0;
         transform: scale(0.8);
       }
     }
-    
+
     @keyframes progressBar {
       0% {
         width: 0%;
         opacity: 0;
       }
+
       10% {
         opacity: 1;
       }
+
       90% {
         opacity: 1;
       }
+
       100% {
         width: 100%;
         opacity: 0;
       }
     }
-    
+
     @keyframes successCheckmark {
       0% {
         transform: scale(0) rotate(0deg);
         opacity: 0;
       }
+
       50% {
         transform: scale(1.2) rotate(180deg);
         opacity: 1;
       }
+
       100% {
         transform: scale(1) rotate(360deg);
         opacity: 1;
       }
     }
-    
+
     .animate-slide-in {
       animation: slideInUp 0.5s ease-out;
     }
-    
+
     .animate-fade-in-scale {
       animation: fadeInScale 0.4s ease-out;
     }
-    
+
     /* Map Animation Classes */
     .map-click-ripple {
       position: absolute;
@@ -646,21 +929,21 @@
       pointer-events: none;
       animation: mapClickRipple 0.6s ease-out;
     }
-    
+
     .station-selected {
       animation: stationSelect 0.8s ease-out;
     }
-    
+
     /* Loading Animation Classes */
     .loading-pulse {
       animation: loadingPulse 1.5s ease-in-out infinite;
     }
-    
+
     .loading-dots {
       display: inline-flex;
       gap: 4px;
     }
-    
+
     .loading-dots span {
       width: 8px;
       height: 8px;
@@ -668,15 +951,15 @@
       background: var(--sg-red);
       animation: loadingDots 1.4s ease-in-out infinite;
     }
-    
+
     .loading-dots span:nth-child(2) {
       animation-delay: 0.2s;
     }
-    
+
     .loading-dots span:nth-child(3) {
       animation-delay: 0.4s;
     }
-    
+
     .progress-bar {
       position: relative;
       height: 3px;
@@ -685,7 +968,7 @@
       overflow: hidden;
       margin: 20px 0;
     }
-    
+
     .progress-bar::before {
       content: '';
       position: absolute;
@@ -696,11 +979,11 @@
       border-radius: 2px;
       animation: progressBar 2s ease-out;
     }
-    
+
     .success-checkmark {
       animation: successCheckmark 0.8s ease-out;
     }
-    
+
     /* Capybara Loader Animation - From Uiverse.io by Novaxlo */
     .capybaraloader {
       width: 14em;
@@ -711,14 +994,14 @@
       --color2: rgb(77, 0, 0);
       transform: scale(0.75);
     }
-    
+
     .capybara {
       width: 100%;
       height: 7.5em;
       position: relative;
       z-index: 1;
     }
-    
+
     .loader {
       width: 100%;
       height: 2.5em;
@@ -726,7 +1009,7 @@
       z-index: 1;
       overflow: hidden;
     }
-    
+
     .capy {
       width: 85%;
       height: 100%;
@@ -736,7 +1019,7 @@
       z-index: 1;
       animation: movebody 1s linear infinite;
     }
-    
+
     .capyhead {
       width: 7.5em;
       height: 7em;
@@ -749,7 +1032,7 @@
       box-shadow: -1em 0em var(--color2);
       animation: movebody 1s linear infinite;
     }
-    
+
     .capyear {
       width: 2em;
       height: 2em;
@@ -761,12 +1044,12 @@
       overflow: hidden;
       z-index: 3;
     }
-    
+
     .capyear:nth-child(2) {
       left: 5em;
       background: linear-gradient(25deg, var(--color), 90%, var(--color2));
     }
-    
+
     .capyear2 {
       width: 100%;
       height: 1em;
@@ -777,7 +1060,7 @@
       position: absolute;
       transform: rotate(-45deg);
     }
-    
+
     .capymouth {
       width: 3.5em;
       height: 2em;
@@ -791,7 +1074,7 @@
       align-items: center;
       padding: 0.5em;
     }
-    
+
     .capylips {
       width: 0.25em;
       height: 0.75em;
@@ -799,11 +1082,11 @@
       transform: rotate(-45deg);
       background-color: var(--color);
     }
-    
+
     .capylips:nth-child(2) {
       transform: rotate(45deg);
     }
-    
+
     .capyeye {
       width: 2em;
       height: 0.5em;
@@ -814,13 +1097,13 @@
       border-radius: 5em;
       transform: rotate(45deg);
     }
-    
+
     .capyeye:nth-child(4) {
       transform: rotate(-45deg);
       left: 5.5em;
       width: 1.75em;
     }
-    
+
     .capyleg {
       width: 6em;
       height: 5em;
@@ -832,7 +1115,7 @@
       border-radius: 2em;
       animation: movebody 1s linear infinite;
     }
-    
+
     .capyleg2 {
       width: 1.75em;
       height: 3em;
@@ -845,74 +1128,83 @@
       box-shadow: inset 0em -0.5em var(--color2);
       animation: moveleg 1s linear infinite;
     }
-    
+
     .capyleg2:nth-child(3) {
       width: 1.25em;
       left: 0.5em;
       height: 2em;
       animation: moveleg2 1s linear infinite 0.075s;
     }
-    
+
     @keyframes moveleg {
       0% {
         transform: rotate(-45deg) translateX(-5%);
       }
+
       50% {
         transform: rotate(45deg) translateX(5%);
       }
+
       100% {
         transform: rotate(-45deg) translateX(-5%);
       }
     }
-    
+
     @keyframes moveleg2 {
       0% {
         transform: rotate(45deg);
       }
+
       50% {
         transform: rotate(-45deg);
       }
+
       100% {
         transform: rotate(45deg);
       }
     }
-    
+
     @keyframes movebody {
       0% {
         transform: translateX(0%);
       }
+
       50% {
         transform: translateX(2%);
       }
+
       100% {
         transform: translateX(0%);
       }
     }
-    
+
     .loaderline {
       width: 50em;
       height: 0.5em;
       border-top: 0.5em dashed var(--color2);
       animation: moveline 10s linear infinite;
     }
-    
+
     @keyframes moveline {
       0% {
         transform: translateX(0%);
         opacity: 0%;
       }
+
       5% {
         opacity: 100%;
       }
+
       95% {
         opacity: 100%;
       }
+
       100% {
         opacity: 0%;
         transform: translateX(-70%);
       }
     }
-    
+
     /* Map overlay for capybara loading */
     .map-loading-overlay {
       position: absolute;
@@ -930,66 +1222,81 @@
       visibility: hidden;
       transition: all 0.3s ease;
     }
-    
+
     .map-loading-overlay.show {
       opacity: 1;
       visibility: visible;
     }
-    
+
     .map-loading-content {
       text-align: center;
       color: var(--neutral-800);
     }
-    
+
     .map-loading-content h6 {
       margin-top: 20px;
       font-size: var(--text-lg);
       font-weight: 600;
     }
-    
+
     .map-loading-content p {
       margin-top: 8px;
       font-size: var(--text-sm);
       color: var(--neutral-600);
     }
-    
+
     /* Enhanced hover effects */
     .person-card:hover .person-avatar {
       transform: scale(1.1);
       box-shadow: 0 6px 20px rgba(117, 0, 0, 0.4);
     }
-    
+
     .btn-modern:active {
       transform: translateY(0);
     }
-    
+
     /* Loading states */
     .loading-shimmer {
       background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
       background-size: 200% 100%;
       animation: shimmer 1.5s infinite;
     }
-    
+
     @keyframes shimmer {
-      0% { background-position: -200% 0; }
-      100% { background-position: 200% 0; }
+      0% {
+        background-position: -200% 0;
+      }
+
+      100% {
+        background-position: 200% 0;
+      }
     }
-    
+
     /* Success states */
     .success-glow {
       box-shadow: 0 0 20px rgba(34, 197, 94, 0.3);
       border-color: #22c55e;
     }
-    
+
     /* Error states */
     .error-shake {
       animation: shake 0.5s ease-in-out;
     }
-    
+
     @keyframes shake {
-      0%, 100% { transform: translateX(0); }
-      25% { transform: translateX(-5px); }
-      75% { transform: translateX(5px); }
+
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+
+      25% {
+        transform: translateX(-5px);
+      }
+
+      75% {
+        transform: translateX(5px);
+      }
     }
 
     /* === WOW-FACTOR ENHANCEMENTS === */
@@ -997,47 +1304,62 @@
       content: '';
       position: fixed;
       inset: 0;
-      background: linear-gradient(120deg, rgba(212,46,18,0.15), rgba(0,150,69,0.12), rgba(250,158,13,0.1));
+      background: linear-gradient(120deg, rgba(212, 46, 18, 0.15), rgba(0, 150, 69, 0.12), rgba(250, 158, 13, 0.1));
       background-size: 180% 180%;
       animation: bg-shift 18s ease infinite;
       z-index: -2;
     }
+
     body::after {
       content: '';
       position: fixed;
       inset: 0;
       background:
-        radial-gradient(circle at 20% 20%, rgba(153,0,170,0.18), transparent 45%),
-        radial-gradient(circle at 80% 30%, rgba(0,94,196,0.18), transparent 50%),
-        radial-gradient(circle at 50% 80%, rgba(255,94,0,0.12), transparent 40%);
+        radial-gradient(circle at 20% 20%, rgba(153, 0, 170, 0.18), transparent 45%),
+        radial-gradient(circle at 80% 30%, rgba(0, 94, 196, 0.18), transparent 50%),
+        radial-gradient(circle at 50% 80%, rgba(255, 94, 0, 0.12), transparent 40%);
       filter: blur(60px);
       opacity: 0.9;
       pointer-events: none;
       z-index: -1;
       transition: opacity 0.6s ease;
     }
+
     @keyframes bg-shift {
-      0% { transform: translate3d(0, 0, 0); }
-      50% { transform: translate3d(-4%, -3%, 0); }
-      100% { transform: translate3d(0, 0, 0); }
+      0% {
+        transform: translate3d(0, 0, 0);
+      }
+
+      50% {
+        transform: translate3d(-4%, -3%, 0);
+      }
+
+      100% {
+        transform: translate3d(0, 0, 0);
+      }
     }
+
     body.dark-mode {
       background: var(--neutral-900);
       color: var(--neutral-100);
     }
+
     body.dark-mode::before {
-      background: linear-gradient(135deg, rgba(117,0,0,0.35), rgba(0,94,196,0.3), rgba(153,0,170,0.25));
+      background: linear-gradient(135deg, rgba(117, 0, 0, 0.35), rgba(0, 94, 196, 0.3), rgba(153, 0, 170, 0.25));
     }
+
     body.dark-mode::after {
       opacity: 0.55;
     }
+
     body.dark-mode .section-card {
       background: rgba(26, 29, 36, 0.75);
-      border-color: rgba(255,255,255,0.08);
-      box-shadow: 0 14px 32px rgba(0,0,0,0.45);
+      border-color: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 14px 32px rgba(0, 0, 0, 0.45);
     }
+
     body.dark-mode .nav-pills .nav-link:not(.active) {
-      background: rgba(255,255,255,0.08);
+      background: rgba(255, 255, 255, 0.08);
     }
 
     .live-tools {
@@ -1048,51 +1370,60 @@
       gap: 1rem;
       padding: 20px 24px;
       border-radius: 20px;
-      background: rgba(255,255,255,0.72);
-      border: 1px solid rgba(216,222,233,0.5);
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid rgba(216, 222, 233, 0.5);
       box-shadow: var(--card-shadow);
       backdrop-filter: blur(12px);
       margin-bottom: 24px;
     }
+
     body.dark-mode .live-tools {
-      background: rgba(19,21,25,0.75);
-      border-color: rgba(255,255,255,0.06);
-      box-shadow: 0 12px 24px rgba(0,0,0,0.45);
+      background: rgba(19, 21, 25, 0.75);
+      border-color: rgba(255, 255, 255, 0.06);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.45);
     }
+
     .theme-toggle {
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
       border-radius: 999px;
       padding: 6px 14px;
-      background: rgba(117,0,0,0.08);
+      background: rgba(117, 0, 0, 0.08);
       color: var(--sg-red);
       cursor: pointer;
       transition: background 0.35s ease, color 0.35s ease;
     }
+
     .theme-toggle .material-icons {
       font-size: 1.2rem;
     }
+
     .theme-toggle.active {
       background: var(--sg-red);
       color: #fff;
-      box-shadow: 0 14px 24px rgba(117,0,0,0.35);
+      box-shadow: 0 14px 24px rgba(117, 0, 0, 0.35);
     }
+
     body.dark-mode .theme-toggle {
-      background: rgba(255,255,255,0.08);
-      color: rgba(255,255,255,0.82);
+      background: rgba(255, 255, 255, 0.08);
+      color: rgba(255, 255, 255, 0.82);
     }
+
     .live-clock {
       font-size: var(--text-lg);
       font-weight: 600;
       letter-spacing: 0.08em;
     }
+
     .live-clock span {
       font-variant-numeric: tabular-nums;
     }
+
     .hover-float {
       transition: transform 0.45s ease;
     }
+
     .hover-float:hover {
       transform: translateY(-4px);
     }
@@ -1102,9 +1433,10 @@
       gap: 1.5rem;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     }
+
     .arrival-card {
       position: relative;
-      background: rgba(255,255,255,0.82);
+      background: rgba(255, 255, 255, 0.82);
       border-radius: 20px;
       padding: 24px;
       border: 1px solid rgba(216, 222, 233, 0.6);
@@ -1113,34 +1445,48 @@
       backdrop-filter: blur(12px);
       transition: transform 0.45s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.45s ease, border-color 0.45s ease;
     }
+
     .arrival-card:hover {
       transform: translateY(-6px) scale(1.01);
       box-shadow: var(--card-shadow-hover);
-      border-color: rgba(117,0,0,0.25);
+      border-color: rgba(117, 0, 0, 0.25);
     }
+
     .arrival-card::after {
       content: '';
       position: absolute;
       inset: -40% 40% 60% -40%;
       opacity: 0;
-      background: radial-gradient(circle, rgba(255,255,255,0.35), transparent 55%);
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.35), transparent 55%);
       transform: rotate(15deg);
       transition: opacity 0.6s ease;
     }
+
     .arrival-card:hover::after {
       opacity: 1;
     }
+
     body.dark-mode .arrival-card {
-      background: rgba(19,21,25,0.85);
-      border-color: rgba(117,0,0,0.15);
+      background: rgba(19, 21, 25, 0.85);
+      border-color: rgba(117, 0, 0, 0.15);
     }
+
     .arrival-card.arriving-soon {
       animation: pulse-highlight 1.8s ease-in-out infinite;
     }
+
     @keyframes pulse-highlight {
-      0%, 100% { box-shadow: 0 10px 30px rgba(212,46,18,0.25); }
-      50% { box-shadow: 0 18px 40px rgba(212,46,18,0.4); }
+
+      0%,
+      100% {
+        box-shadow: 0 10px 30px rgba(212, 46, 18, 0.25);
+      }
+
+      50% {
+        box-shadow: 0 18px 40px rgba(212, 46, 18, 0.4);
+      }
     }
+
     .arrival-header {
       display: flex;
       justify-content: space-between;
@@ -1148,23 +1494,27 @@
       margin-bottom: 12px;
       gap: 0.75rem;
     }
+
     .arrival-header .station-name {
       font-size: var(--text-xl);
       font-weight: 600;
     }
+
     .arrival-header .tag {
       font-size: 0.75rem;
       text-transform: uppercase;
       letter-spacing: 0.12em;
       padding: 6px 12px;
       border-radius: 999px;
-      background: rgba(117,0,0,0.08);
+      background: rgba(117, 0, 0, 0.08);
       color: var(--sg-red);
     }
+
     body.dark-mode .arrival-header .tag {
-      background: rgba(255,255,255,0.08);
-      color: rgba(255,255,255,0.75);
+      background: rgba(255, 255, 255, 0.08);
+      color: rgba(255, 255, 255, 0.75);
     }
+
     .favorite-toggle {
       display: inline-flex;
       align-items: center;
@@ -1173,21 +1523,24 @@
       width: 34px;
       height: 34px;
       border-radius: 50%;
-      background: rgba(117,0,0,0.08);
+      background: rgba(117, 0, 0, 0.08);
       color: var(--sg-red);
       transition: transform 0.35s ease, background 0.35s ease, color 0.35s ease;
     }
+
     .favorite-toggle.active {
       background: var(--sg-red);
       color: #fff;
-      box-shadow: 0 10px 20px rgba(117,0,0,0.35);
+      box-shadow: 0 10px 20px rgba(117, 0, 0, 0.35);
     }
+
     .favorite-toggle:hover {
       transform: scale(1.1);
     }
+
     body.dark-mode .favorite-toggle {
-      background: rgba(255,255,255,0.12);
-      color: rgba(255,255,255,0.75);
+      background: rgba(255, 255, 255, 0.12);
+      color: rgba(255, 255, 255, 0.75);
     }
 
     .line-section {
@@ -1195,6 +1548,7 @@
       gap: 12px;
       padding-top: 8px;
     }
+
     .line-label {
       display: flex;
       justify-content: space-between;
@@ -1202,17 +1556,20 @@
       gap: 0.75rem;
       font-weight: 600;
     }
+
     .line-label .subtle {
       font-size: 0.75rem;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       opacity: 0.7;
     }
+
     .arrival-row {
       display: flex;
       align-items: center;
       gap: 0.75rem;
     }
+
     .arrival-row .train-icon {
       width: 36px;
       height: 36px;
@@ -1220,21 +1577,24 @@
       display: grid;
       place-items: center;
       font-size: 1.2rem;
-      background: rgba(117,0,0,0.12);
-      box-shadow: inset 0 0 0 1px rgba(117,0,0,0.18);
+      background: rgba(117, 0, 0, 0.12);
+      box-shadow: inset 0 0 0 1px rgba(117, 0, 0, 0.18);
     }
+
     .arrival-row .countdown {
       font-weight: 600;
       min-width: 78px;
     }
+
     .arrival-row .progress-bar {
       flex: 1;
       height: 10px;
       border-radius: 999px;
-      background: rgba(117,0,0,0.1);
+      background: rgba(117, 0, 0, 0.1);
       overflow: hidden;
       position: relative;
     }
+
     .arrival-row .progress-fill {
       position: absolute;
       inset: 0;
@@ -1243,6 +1603,7 @@
       transform: scaleX(0);
       transition: transform 0.9s ease;
     }
+
     .arrival-row .progress-glow {
       position: absolute;
       inset: -40%;
@@ -1259,40 +1620,47 @@
       grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
       align-items: center;
     }
+
     .hero-intro h1 {
       font-size: clamp(2.8rem, 4vw, 3.6rem);
       margin-bottom: 1.25rem;
     }
+
     .hero-intro p {
       font-size: var(--text-lg);
       color: rgba(17, 24, 39, 0.78);
       max-width: 520px;
       margin-bottom: 2rem;
     }
+
     body.dark-mode .hero-intro p {
-      color: rgba(255,255,255,0.75);
+      color: rgba(255, 255, 255, 0.75);
     }
+
     .hero-cta {
       display: flex;
       flex-wrap: wrap;
       gap: 1rem;
       align-items: center;
     }
+
     .hero-cta .btn {
       padding: 14px 28px;
       border-radius: 14px;
       font-weight: 600;
       letter-spacing: 0.04em;
     }
+
     .hero-illustration {
       position: relative;
       min-height: 320px;
       border-radius: 24px;
       padding: 32px;
-      background: linear-gradient(135deg, rgba(212,46,18,0.35), rgba(0,150,69,0.25), rgba(0,94,196,0.3));
-      box-shadow: 0 24px 60px rgba(117,0,0,0.35);
+      background: linear-gradient(135deg, rgba(212, 46, 18, 0.35), rgba(0, 150, 69, 0.25), rgba(0, 94, 196, 0.3));
+      box-shadow: 0 24px 60px rgba(117, 0, 0, 0.35);
       overflow: hidden;
     }
+
     .hero-map {
       position: absolute;
       inset: 12%;
@@ -1301,30 +1669,34 @@
       filter: grayscale(10%) contrast(105%) brightness(110%);
       opacity: 0.35;
     }
+
     .hero-train {
       position: relative;
       width: 220px;
       margin: 0 auto;
       padding: 20px 26px;
       border-radius: 18px;
-      background: rgba(255,255,255,0.9);
-      box-shadow: 0 12px 35px rgba(0,0,0,0.18);
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.18);
       text-align: center;
       animation: float 4.8s ease-in-out infinite;
     }
+
     .hero-train .material-icons {
       font-size: 42px;
       color: var(--sg-red);
-      text-shadow: 0 8px 20px rgba(212,46,18,0.45);
+      text-shadow: 0 8px 20px rgba(212, 46, 18, 0.45);
       animation: glow 2.4s ease-in-out infinite alternate;
     }
+
     .hero-train .tagline {
       font-size: 0.9rem;
       letter-spacing: 0.16em;
       text-transform: uppercase;
-      color: rgba(17,24,39,0.65);
+      color: rgba(17, 24, 39, 0.65);
       margin-top: 18px;
     }
+
     .floating-pill {
       position: absolute;
       display: inline-flex;
@@ -1333,192 +1705,218 @@
       padding: 10px 16px;
       border-radius: 999px;
       font-size: 0.9rem;
-      background: rgba(255,255,255,0.85);
+      background: rgba(255, 255, 255, 0.85);
       color: var(--sg-red);
-      box-shadow: 0 12px 20px rgba(117,0,0,0.15);
+      box-shadow: 0 12px 20px rgba(117, 0, 0, 0.15);
       animation: float 5.2s ease-in-out infinite;
     }
-    .hero-illustration .floating-pill:nth-of-type(1) { top: 30px; left: 12%; animation-delay: 0.2s; }
-    .hero-illustration .floating-pill:nth-of-type(2) { bottom: 40px; right: 10%; animation-delay: 0.9s; }
-    .hero-illustration .floating-pill:nth-of-type(3) { top: 140px; right: 18%; animation-delay: 1.5s; }
+
+    .hero-illustration .floating-pill:nth-of-type(1) {
+      top: 30px;
+      left: 12%;
+      animation-delay: 0.2s;
+    }
+
+    .hero-illustration .floating-pill:nth-of-type(2) {
+      bottom: 40px;
+      right: 10%;
+      animation-delay: 0.9s;
+    }
+
+    .hero-illustration .floating-pill:nth-of-type(3) {
+      top: 140px;
+      right: 18%;
+      animation-delay: 1.5s;
+    }
+
     body.dark-mode .hero-illustration {
-      background: linear-gradient(135deg, rgba(117,0,0,0.55), rgba(0,94,196,0.45), rgba(153,0,170,0.45));
-      box-shadow: 0 24px 40px rgba(0,0,0,0.55);
+      background: linear-gradient(135deg, rgba(117, 0, 0, 0.55), rgba(0, 94, 196, 0.45), rgba(153, 0, 170, 0.45));
+      box-shadow: 0 24px 40px rgba(0, 0, 0, 0.55);
     }
+
     body.dark-mode .hero-train {
-      background: rgba(15,17,21,0.85);
-      color: rgba(255,255,255,0.85);
+      background: rgba(15, 17, 21, 0.85);
+      color: rgba(255, 255, 255, 0.85);
     }
+
     body.dark-mode .floating-pill {
-      background: rgba(15,17,21,0.82);
-      color: rgba(255,255,255,0.82);
-      box-shadow: 0 14px 28px rgba(0,0,0,0.45);
+      background: rgba(15, 17, 21, 0.82);
+      color: rgba(255, 255, 255, 0.82);
+      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.45);
     }
+
     @keyframes float {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-12px); }
+
+      0%,
+      100% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-12px);
+      }
     }
+
     @keyframes glow {
-      0% { text-shadow: 0 8px 20px rgba(212,46,18,0.45); }
-      100% { text-shadow: 0 16px 35px rgba(212,46,18,0.65); }
+      0% {
+        text-shadow: 0 8px 20px rgba(212, 46, 18, 0.45);
+      }
+
+      100% {
+        text-shadow: 0 16px 35px rgba(212, 46, 18, 0.65);
+      }
     }
+
     .gradient-divider {
       height: 1px;
       margin: 28px 0;
-      background: linear-gradient(90deg, transparent, rgba(117,0,0,0.35), rgba(0,94,196,0.35), transparent);
+      background: linear-gradient(90deg, transparent, rgba(117, 0, 0, 0.35), rgba(0, 94, 196, 0.35), transparent);
     }
 
     /* ===== AUTH SECTIONS ===== */
-#auth-section,
-#password-reset-section,
-#dashboard-section {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  padding: 24px 28px;
-  max-width: 380px;
-  margin: 40px auto;
-  text-align: left;
-  transition: all 0.3s ease;
-}
+    #auth-section,
+    #password-reset-section,
+    #dashboard-section {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      padding: 24px 28px;
+      max-width: 380px;
+      margin: 40px auto;
+      text-align: left;
+      transition: all 0.3s ease;
+    }
 
-#auth-section h2,
-#password-reset-section h2,
-#dashboard-section h2 {
-  color: #7A0000; /* MRT red */
-  font-size: 1.5rem;
-  text-align: center;
-  margin-bottom: 20px;
-}
+    #auth-section h2,
+    #password-reset-section h2,
+    #dashboard-section h2 {
+      color: #7A0000;
+      /* MRT red */
+      font-size: 1.5rem;
+      text-align: center;
+      margin-bottom: 20px;
+    }
 
-#auth-section label,
-#password-reset-section label {
-  display: block;
-  font-weight: 600;
-  margin-top: 10px;
-  color: #333;
-}
+    #auth-section label,
+    #password-reset-section label {
+      display: block;
+      font-weight: 600;
+      margin-top: 10px;
+      color: #333;
+    }
 
-#auth-section input,
-#password-reset-section input {
-  width: 100%;
-  padding: 10px 12px;
-  margin-top: 6px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 0.95rem;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
+    #auth-section input,
+    #password-reset-section input {
+      width: 100%;
+      padding: 10px 12px;
+      margin-top: 6px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
 
-#auth-section input:focus,
-#password-reset-section input:focus {
-  border-color: #7A0000;
-  box-shadow: 0 0 4px rgba(122, 0, 0, 0.3);
-  outline: none;
-}
+    #auth-section input:focus,
+    #password-reset-section input:focus {
+      border-color: #7A0000;
+      box-shadow: 0 0 4px rgba(122, 0, 0, 0.3);
+      outline: none;
+    }
 
-#auth-section button,
-#password-reset-section button,
-#dashboard-section button {
-  width: 100%;
-  margin-top: 15px;
-  padding: 10px 0;
-  background-color: #7A0000;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
+    #auth-section button,
+    #password-reset-section button,
+    #dashboard-section button {
+      width: 100%;
+      margin-top: 15px;
+      padding: 10px 0;
+      background-color: #7A0000;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
 
-#auth-section button:hover,
-#password-reset-section button:hover,
-#dashboard-section button:hover {
-  background-color: #a40000;
-}
+    #auth-section button:hover,
+    #password-reset-section button:hover,
+    #dashboard-section button:hover {
+      background-color: #a40000;
+    }
 
-.text-center {
-  text-align: center;
-  margin-top: 12px;
-}
+    .text-center {
+      text-align: center;
+      margin-top: 12px;
+    }
 
-.text-center a {
-  color: #7A0000;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 0.9rem;
-}
+    .text-center a {
+      color: #7A0000;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
 
-.text-center a:hover {
-  text-decoration: underline;
-}
+    .text-center a:hover {
+      text-decoration: underline;
+    }
 
-/* ===== PASSWORD REQUIREMENTS ===== */
-#password-requirements {
-  margin-top: 10px;
-  background: #f9f9f9;
-  padding: 10px 14px;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  border-left: 3px solid #7A0000;
-}
+    /* ===== PASSWORD REQUIREMENTS ===== */
+    #password-requirements {
+      margin-top: 10px;
+      background: #f9f9f9;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      border-left: 3px solid #7A0000;
+    }
 
-#password-requirements p {
-  font-weight: 600;
-  margin-bottom: 6px;
-  color: #333;
-}
+    #password-requirements p {
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #333;
+    }
 
-#password-requirements span {
-  display: block;
-  margin-left: 6px;
-}
+    #password-requirements span {
+      display: block;
+      margin-left: 6px;
+    }
 
-.not-met {
-  color: #a40000;
-}
+    .not-met {
+      color: #a40000;
+    }
 
-.met {
-  color: green;
-}
+    .met {
+      color: green;
+    }
 
-/* ===== MESSAGE STYLES ===== */
-#success-message,
-#error-message {
-  max-width: 380px;
-  margin: 10px auto;
-  padding: 10px 14px;
-  border-radius: 8px;
-  font-weight: 600;
-  text-align: center;
-}
+    /* ===== MESSAGE STYLES ===== */
+    #success-message,
+    #error-message {
+      max-width: 380px;
+      margin: 10px auto;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-weight: 600;
+      text-align: center;
+    }
 
-#success-message {
-  background-color: #e8f6ec;
-  color: #2a7a3b;
-  border: 1px solid #bde3c3;
-}
+    #success-message {
+      background-color: #e8f6ec;
+      color: #2a7a3b;
+      border: 1px solid #bde3c3;
+    }
 
-#error-message {
-  background-color: #fce8e8;
-  color: #a40000;
-  border: 1px solid #f3b0b0;
-}
+    #error-message {
+      background-color: #fce8e8;
+      color: #a40000;
+      border: 1px solid #f3b0b0;
+    }
 
-/* ===== AUTH STATUS ===== */
-#auth-status {
-  text-align: center;
-  font-size: 0.95rem;
-  margin-top: 20px;
-  color: #555;
-}
-
-/* Hide when inactive */
-.hidden {
-  display: none !important;
-}
+    /* Hide when inactive */
+    .hidden {
+      display: none !important;
+    }
 
     @media (max-width: 768px) {
       .arrival-header {
@@ -1526,79 +1924,86 @@
         align-items: flex-start;
         gap: 0.4rem;
       }
+
       .arrival-header .station-name {
         font-size: 1.1rem;
       }
+
       .arrival-row {
         flex-direction: column;
         align-items: flex-start;
       }
+
       .arrival-row .countdown {
         min-width: auto;
       }
+
       .arrival-row .progress-bar {
         width: 100%;
       }
+
       .live-clock {
         width: 100%;
         text-align: left;
       }
+
       .hero {
         padding: 60px 0 48px;
         gap: 32px;
       }
+
       .hero-illustration {
         min-height: 260px;
       }
-      
+
       .meetup-container {
         padding: 16px;
       }
-      
+
       .person-card {
         padding: 16px;
       }
-      
+
       .meetup-actions {
         flex-direction: column;
       }
-      
+
       .btn-modern {
         width: 100%;
         justify-content: center;
       }
-      
+
       .floating-action {
         bottom: 16px;
         right: 16px;
       }
-      
+
       .travel-times {
         gap: 8px;
       }
-      
+
       .travel-time-item {
         padding: 12px;
       }
     }
-    
+
     @media (max-width: 576px) {
       .section-card {
         padding: 20px;
       }
-      
+
       .meetup-container {
         padding: 12px;
       }
-      
+
       .person-card {
         padding: 12px;
       }
-      
+
       .quick-stations {
         gap: 6px;
       }
-      
+
       .quick-station-btn {
         font-size: 11px;
         padding: 4px 8px;
@@ -1606,14 +2011,15 @@
     }
   </style>
 </head>
+
 <body>
   <!-- HEADER -->
   <header class="py-3">
     <div class="container d-flex flex-wrap align-items-center justify-content-between">
       <div class="d-flex align-items-center gap-2">
-  <img src="./singatrainlogo.png" alt="SingaTrain Logo" width="38" height="38" style="border-radius:8px;">
-  <h1 class="h4 m-0 app-title">SingaTrain</h1>
-</div>
+        <img src="./singatrainlogo.png" alt="SingaTrain Logo" width="38" height="38" style="border-radius:8px;">
+        <h1 class="h4 m-0 app-title">SingaTrain</h1>
+      </div>
       <div class="d-flex align-items-center gap-2">
         <span class="fw-semibold text-secondary" id="userName">Guest User</span>
         <button class="btn btn-outline-danger btn-sm" onclick="showTab('profile')">Profile</button>
@@ -1636,7 +2042,8 @@
     <div class="hero-intro" data-aos="fade-right">
       <span class="pill mb-3">Singapore MRT Companion</span>
       <h1 class="fw-semibold">Stay Ahead Of Every Train</h1>
-      <p>Experience a commuter dashboard crafted for speed and clarity. Watch live countdowns, favourite your go-to stations, and glide between light and dark modes for the perfect travel briefing.</p>
+      <p>Experience a commuter dashboard crafted for speed and clarity. Watch live countdowns, favourite your go-to
+        stations, and glide between light and dark modes for the perfect travel briefing.</p>
       <div class="hero-cta">
         <a class="btn btn-primary btn-lg hover-float" onclick="setActiveTab('live')">
           <span class="material-icons me-2">bolt</span>
@@ -1673,7 +2080,8 @@
       <!-- Map -->
       <div class="mb-3">
         <h5 class="mb-2">🗺️ Singapore MRT Network</h5>
-        <div id="singaporeMap" style="width:100%;height:400px;border:1px solid var(--sg-border);border-radius:12px;background:#f3f4f6"></div>
+        <div id="singaporeMap"
+          style="width:100%;height:400px;border:1px solid var(--sg-border);border-radius:12px;background:#f3f4f6"></div>
       </div>
 
       <h5 class="mt-3">⭐ Favorite Stations</h5>
@@ -1696,7 +2104,8 @@
           </button>
           <div class="d-flex align-items-center gap-2">
             <div class="form-check form-switch m-0">
-              <input class="form-check-input" type="checkbox" id="delayToggle" checked onchange="toggleSimulatedDelay(this.checked)">
+              <input class="form-check-input" type="checkbox" id="delayToggle" checked
+                onchange="toggleSimulatedDelay(this.checked)">
               <label class="form-check-label small text-secondary" for="delayToggle">Simulate delays</label>
             </div>
             <button class="btn btn-outline-secondary btn-sm hover-float" onclick="manualRefreshArrivals()">
@@ -1742,7 +2151,8 @@
     <!-- ROUTE -->
     <section id="route" class="section-card d-none">
       <h2 class="section-title mb-2">🗺️ Interactive Route Planner</h2>
-      <div class="feature-description p-3 rounded mb-3">Shortest path (fewest stops) across lines & interchanges with time estimate.</div>
+      <div class="feature-description p-3 rounded mb-3">Shortest path (fewest stops) across lines & interchanges with
+        time estimate.</div>
 
       <div class="row g-3">
         <div class="col-md-6">
@@ -1769,13 +2179,15 @@
         </div>
         <div>
           <h2 class="section-title mb-2">Meet-up Point Finder</h2>
-          <p class="text-muted mb-0" style="font-size: var(--text-lg); color: var(--neutral-600);">Find the perfect meeting spot that's fair for everyone</p>
+          <p class="text-muted mb-0" style="font-size: var(--text-lg); color: var(--neutral-600);">Find the perfect
+            meeting spot that's fair for everyone</p>
         </div>
       </div>
 
       <div class="meetup-container">
         <div class="d-flex align-items-center justify-content-between mb-6">
-          <h5 class="mb-0 d-flex align-items-center gap-3" style="font-size: var(--text-xl); color: var(--neutral-900);">
+          <h5 class="mb-0 d-flex align-items-center gap-3"
+            style="font-size: var(--text-xl); color: var(--neutral-900);">
             <span class="material-icons" style="color: var(--sg-red);">group</span>
             Group Members
           </h5>
@@ -1784,11 +2196,12 @@
             Add Person
           </button>
         </div>
-        
+
         <div id="meetupLocations"></div>
-        
+
         <div class="quick-stations">
-          <span class="text-muted me-3" style="font-size: var(--text-sm); color: var(--neutral-500);">Quick select:</span>
+          <span class="text-muted me-3" style="font-size: var(--text-sm); color: var(--neutral-500);">Quick
+            select:</span>
           <span class="quick-station-btn" onclick="quickSelectStation('City Hall')">City Hall</span>
           <span class="quick-station-btn" onclick="quickSelectStation('Orchard')">Orchard</span>
           <span class="quick-station-btn" onclick="quickSelectStation('Raffles Place')">Raffles Place</span>
@@ -1807,34 +2220,37 @@
           Clear All
         </button>
       </div>
-     
-     <!-- Map for Meet-up -->
-     <div class="mt-6">
-       <div class="d-flex align-items-center gap-3 mb-4">
-         <span class="material-icons" style="color: var(--sg-red); font-size: 28px;">map</span>
-         <h5 class="mb-0" style="font-size: var(--text-xl); color: var(--neutral-900);">Interactive MRT Network</h5>
-       </div>
-       <div id="meetupMap" style="width:100%;height:500px;border:1px solid var(--neutral-200);border-radius:var(--border-radius);background:var(--neutral-50);box-shadow: 0 4px 20px rgba(0,0,0,0.04);"></div>
-       <div class="mt-3 text-muted" style="font-size: var(--text-sm); color: var(--neutral-500);">
-         <span class="material-icons" style="font-size: 18px; vertical-align: middle; margin-right: 8px;">info</span>
-         Click on stations to add them to your group members
-       </div>
-     </div>
-     
-     <div id="meetupOutput" class="meetup-results d-none">
-       <!-- Results will be populated here -->
-     </div>
-     
-     <!-- Floating Action Button -->
-     <div class="floating-action d-none" id="floatingAction" onclick="addMeetupLocation()">
-       <span class="material-icons">add</span>
-     </div>
-   </section>
+
+      <!-- Map for Meet-up -->
+      <div class="mt-6">
+        <div class="d-flex align-items-center gap-3 mb-4">
+          <span class="material-icons" style="color: var(--sg-red); font-size: 28px;">map</span>
+          <h5 class="mb-0" style="font-size: var(--text-xl); color: var(--neutral-900);">Interactive MRT Network</h5>
+        </div>
+        <div id="meetupMap"
+          style="width:100%;height:500px;border:1px solid var(--neutral-200);border-radius:var(--border-radius);background:var(--neutral-50);box-shadow: 0 4px 20px rgba(0,0,0,0.04);">
+        </div>
+        <div class="mt-3 text-muted" style="font-size: var(--text-sm); color: var(--neutral-500);">
+          <span class="material-icons" style="font-size: 18px; vertical-align: middle; margin-right: 8px;">info</span>
+          Click on stations to add them to your group members
+        </div>
+      </div>
+
+      <div id="meetupOutput" class="meetup-results d-none">
+        <!-- Results will be populated here -->
+      </div>
+
+      <!-- Floating Action Button -->
+      <div class="floating-action d-none" id="floatingAction" onclick="addMeetupLocation()">
+        <span class="material-icons">add</span>
+      </div>
+    </section>
 
     <!-- ALTERNATIVES -->
     <section id="alternatives" class="section-card d-none">
       <h2 class="section-title mb-2">🔄 Alternative Routes (Breakdown Mode)</h2>
-      <div class="feature-description p-3 rounded mb-3">Auto-detect disruptions from Live Alerts. Offers MRT-only, Bus, or Mixed alternatives.</div>
+      <div class="feature-description p-3 rounded mb-3">Auto-detect disruptions from Live Alerts. Offers MRT-only, Bus,
+        or Mixed alternatives.</div>
 
       <div class="row g-3">
         <div class="col-md-6">
@@ -1870,7 +2286,8 @@
     <!-- FARE -->
     <section id="fare" class="section-card d-none">
       <h2 class="section-title mb-2">💰 Fare Calculator</h2>
-      <div class="feature-description p-3 rounded mb-3">Distance-based adult & concession fares + Monthly Pass breakeven.</div>
+      <div class="feature-description p-3 rounded mb-3">Distance-based adult & concession fares + Monthly Pass
+        breakeven.</div>
 
       <div class="row g-3">
         <div class="col-md-4">
@@ -1916,16 +2333,20 @@
 
     <!-- PROFILE -->
     <section id="profile" class="section-card d-none">
+      <!-- MESSAGE DISPLAYS -->
+      <div id="error-message" class="hidden"></div>
+      <div id="success-message" class="hidden"></div>
+
       <!-- AUTH SECTION -->
       <div id="auth-section">
         <h2>Join or Sign In</h2>
-      
+
         <label for="auth-email">Email:</label>
         <input type="email" id="auth-email" placeholder="Enter your email">
-      
+
         <label for="auth-password">Password:</label>
         <input type="password" id="auth-password" placeholder="Enter your password">
-      
+
         <div id="password-requirements" class="hidden">
           <p>Password must contain:</p>
           <span id="req-length" class="not-met">- At least 6 characters</span>
@@ -1934,50 +2355,65 @@
           <span id="req-number" class="not-met">- A number</span>
           <span id="req-special" class="not-met">- A special character (!@#$%^&*)</span>
         </div>
-        
+
         <button id="login-btn">Sign In</button>
         <button id="register-btn">Register</button>
-      
+
         <div class="text-center">
           <a href="#" id="forgot-password-link">Forgot Password?</a>
         </div>
       </div>
-      
+
       <!-- PASSWORD RESET SECTION -->
       <div id="password-reset-section" class="hidden">
         <h2>Reset Your Password</h2>
-      
+
         <label for="reset-email">Email:</label>
         <input type="email" id="reset-email" placeholder="Enter your account email">
         <button id="send-reset-email-btn">Send Reset Email</button>
-      
+
         <div class="text-center">
           <a href="#" id="back-to-auth-link">Back to Login</a>
         </div>
       </div>
-      
+
       <!-- USER DASHBOARD -->
       <div id="dashboard-section" class="hidden">
         <h2>Welcome to SingaTrain!</h2>
         <p style="color:#111827">You are logged in as: <strong id="user-display-email"></strong></p>
-        <div class="text-center">
-          <button id="logout-btn">Sign Out</button>
+
+        <div id="profile-info">
+          <label for="profileName" style="color:#111827">Display Name:</label>
+          <input type="text" id="profileName" placeholder="Enter your name">
+          <button id="saveProfileBtn">Save Profile</button>
+
+          <p style="margin-top: 10px; color:#111827">Your Favorites:</p>
+          <div id="favoriteList"></div>
+
+          <label for="favoriteLabel" style="color:#111827">Label:</label>
+          <input type="text" id="favoriteLabel" placeholder="Favorite name">
+
+          <label for="favoriteStation" style="color:#111827">Station:</label>
+          <select id="favoriteStation"></select>
+          <button id="addFavoriteBtn">Add Favorite</button>
         </div>
+
+        <button id="logout-btn">Sign Out</button>
       </div>
-      
-      <!-- MESSAGE DISPLAYS -->
-      <div id="error-message" class="hidden"></div>
-      <div id="success-message" class="hidden"></div>
-      <div id="auth-status">Checking authentication status...</div>
+
+
+
 
     </section>
 
     <!-- Toast (API errors/info) -->
     <div class="position-fixed bottom-0 end-0 p-3" style="z-index:1100">
-      <div id="appToast" class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
+      <div id="appToast" class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive"
+        aria-atomic="true">
         <div class="d-flex">
           <div class="toast-body" id="toastMsg">An error occurred.</div>
-          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+            aria-label="Close"></button>
         </div>
       </div>
     </div>
@@ -1988,38 +2424,44 @@
     // ====== API CONFIG ======
     const PROXY = "https://corsproxy.io/?";
     const API_BASE = "https://datamall2.mytransport.sg/ltaodataservice";
-     // <- replace with your real key
+    // <- replace with your real key
 
     // ====== STATIONS DB (simplified; you can expand) ======
     const MRT_STATIONS = {
-      NSL: ['Jurong East','Bukit Batok','Bukit Gombak','Choa Chu Kang','Yew Tee','Kranji','Marsiling','Woodlands','Admiralty','Sembawang','Canberra','Yishun','Khatib','Yio Chu Kang','Ang Mo Kio','Bishan','Braddell','Toa Payoh','Novena','Newton','Orchard','Somerset','Dhoby Ghaut','City Hall','Raffles Place','Marina Bay','Marina South Pier'],
-      EWL: ['Pasir Ris','Tampines','Simei','Tanah Merah','Bedok','Kembangan','Eunos','Paya Lebar','Aljunied','Kallang','Lavender','Bugis','City Hall','Raffles Place','Tanjong Pagar','Outram Park','Tiong Bahru','Redhill','Queenstown','Commonwealth','Buona Vista','Dover','Clementi','Jurong East','Chinese Garden','Lakeside','Boon Lay','Pioneer','Joo Koon','Gul Circle','Tuas Crescent','Tuas West Road','Tuas Link'],
-      DTL: ['Bukit Panjang','Cashew','Hillview','Beauty World','King Albert Park','Sixth Avenue','Tan Kah Kee','Botanic Gardens','Stevens','Newton','Little India','Rochor','Bugis','Promenade','Bayfront','Downtown','Telok Ayer','Chinatown','Fort Canning','Bencoolen','Jalan Besar','Bendemeer','Geylang Bahru','Mattar','MacPherson','Ubi','Kaki Bukit','Bedok North','Bedok Reservoir','Tampines West','Tampines','Tampines East','Upper Changi','Expo'],
-      CCL: ['Dhoby Ghaut','Bras Basah','Esplanade','Promenade','Nicoll Highway','Stadium','Mountbatten','Dakota','Paya Lebar','MacPherson','Tai Seng','Bartley','Serangoon','Lorong Chuan','Bishan','Marymount','Caldecott','Botanic Gardens','Farrer Road','Holland Village','Buona Vista','one-north','Kent Ridge','Haw Par Villa','Pasir Panjang','Labrador Park','Telok Blangah','HarbourFront'],
-      NEL: ['HarbourFront','Outram Park','Chinatown','Clarke Quay','Dhoby Ghaut','Little India','Farrer Park','Boon Keng','Potong Pasir','Woodleigh','Serangoon','Kovan','Hougang','Buangkok','Sengkang','Punggol'],
-      TEL: ['Woodlands North','Woodlands','Woodlands South','Springleaf','Lentor','Mayflower','Bright Hill','Upper Thomson','Caldecott','Mount Pleasant','Stevens','Napier','Orchard Boulevard','Orchard','Great World','Havelock','Outram Park','Maxwell','Shenton Way','Marina Bay','Marina South','Gardens by the Bay']
+      NSL: ['Jurong East', 'Bukit Batok', 'Bukit Gombak', 'Choa Chu Kang', 'Yew Tee', 'Kranji', 'Marsiling', 'Woodlands', 'Admiralty', 'Sembawang', 'Canberra', 'Yishun', 'Khatib', 'Yio Chu Kang', 'Ang Mo Kio', 'Bishan', 'Braddell', 'Toa Payoh', 'Novena', 'Newton', 'Orchard', 'Somerset', 'Dhoby Ghaut', 'City Hall', 'Raffles Place', 'Marina Bay', 'Marina South Pier'],
+      EWL: ['Pasir Ris', 'Tampines', 'Simei', 'Tanah Merah', 'Bedok', 'Kembangan', 'Eunos', 'Paya Lebar', 'Aljunied', 'Kallang', 'Lavender', 'Bugis', 'City Hall', 'Raffles Place', 'Tanjong Pagar', 'Outram Park', 'Tiong Bahru', 'Redhill', 'Queenstown', 'Commonwealth', 'Buona Vista', 'Dover', 'Clementi', 'Jurong East', 'Chinese Garden', 'Lakeside', 'Boon Lay', 'Pioneer', 'Joo Koon', 'Gul Circle', 'Tuas Crescent', 'Tuas West Road', 'Tuas Link'],
+      DTL: ['Bukit Panjang', 'Cashew', 'Hillview', 'Beauty World', 'King Albert Park', 'Sixth Avenue', 'Tan Kah Kee', 'Botanic Gardens', 'Stevens', 'Newton', 'Little India', 'Rochor', 'Bugis', 'Promenade', 'Bayfront', 'Downtown', 'Telok Ayer', 'Chinatown', 'Fort Canning', 'Bencoolen', 'Jalan Besar', 'Bendemeer', 'Geylang Bahru', 'Mattar', 'MacPherson', 'Ubi', 'Kaki Bukit', 'Bedok North', 'Bedok Reservoir', 'Tampines West', 'Tampines', 'Tampines East', 'Upper Changi', 'Expo'],
+      CCL: ['Dhoby Ghaut', 'Bras Basah', 'Esplanade', 'Promenade', 'Nicoll Highway', 'Stadium', 'Mountbatten', 'Dakota', 'Paya Lebar', 'MacPherson', 'Tai Seng', 'Bartley', 'Serangoon', 'Lorong Chuan', 'Bishan', 'Marymount', 'Caldecott', 'Botanic Gardens', 'Farrer Road', 'Holland Village', 'Buona Vista', 'one-north', 'Kent Ridge', 'Haw Par Villa', 'Pasir Panjang', 'Labrador Park', 'Telok Blangah', 'HarbourFront'],
+      NEL: ['HarbourFront', 'Outram Park', 'Chinatown', 'Clarke Quay', 'Dhoby Ghaut', 'Little India', 'Farrer Park', 'Boon Keng', 'Potong Pasir', 'Woodleigh', 'Serangoon', 'Kovan', 'Hougang', 'Buangkok', 'Sengkang', 'Punggol'],
+      TEL: ['Woodlands North', 'Woodlands', 'Woodlands South', 'Springleaf', 'Lentor', 'Mayflower', 'Bright Hill', 'Upper Thomson', 'Caldecott', 'Mount Pleasant', 'Stevens', 'Napier', 'Orchard Boulevard', 'Orchard', 'Great World', 'Havelock', 'Outram Park', 'Maxwell', 'Shenton Way', 'Marina Bay', 'Marina South', 'Gardens by the Bay']
     };
     const ALL_STATIONS = [...new Set(Object.values(MRT_STATIONS).flat())].sort();
 
     // ====== USER DATA ======
-    let userData = { name:'Guest User', favorites:[] };
+    let userData = {
+      uid: null,         // Firebase UID
+      name: 'Guest User',
+      email: null,
+      favorites: []      // Array of { label, station }
+    };
+
 
     // ====== UI HELPERS ======
     const toastEl = document.getElementById('appToast');
     const toastMsg = document.getElementById('toastMsg');
-    function showToast(msg, isError=true){
+    function showToast(msg, isError = true) {
       toastMsg.textContent = msg;
-      toastEl.classList.remove('text-bg-danger','text-bg-primary','text-bg-success');
+      toastEl.classList.remove('text-bg-danger', 'text-bg-primary', 'text-bg-success');
       toastEl.classList.add(isError ? 'text-bg-danger' : 'text-bg-primary');
       new bootstrap.Toast(toastEl, { delay: 3500 }).show();
     }
 
-    function setActiveTab(tabName){
-      document.querySelectorAll('.nav-link').forEach(b=>b.classList.remove('active'));
+    function setActiveTab(tabName) {
+      document.querySelectorAll('.nav-link').forEach(b => b.classList.remove('active'));
       document.querySelector(`.nav-link[data-tab="${tabName}"]`)?.classList.add('active');
-      document.querySelectorAll('main section').forEach(s=>s.classList.add('d-none'));
+      document.querySelectorAll('main section').forEach(s => s.classList.add('d-none'));
       document.getElementById(tabName)?.classList.remove('d-none');
-      
+
       // Show/hide floating action button
       const floatingAction = document.getElementById('floatingAction');
       if (tabName === 'meetup') {
@@ -2033,29 +2475,29 @@
       } else {
         floatingAction?.classList.add('d-none');
       }
-      
-      if(tabName==='dashboard'){
+
+      if (tabName === 'dashboard') {
         loadDashboard();
       }
-      if(tabName==='live'){
+      if (tabName === 'live') {
         startArrivalRenderLoop();
-      }else{
+      } else {
         stopArrivalRenderLoop();
       }
     }
-    document.querySelectorAll('.nav-link').forEach(btn=>{
+    document.querySelectorAll('.nav-link').forEach(btn => {
       btn.addEventListener('click', () => setActiveTab(btn.dataset.tab));
     });
-    function showTab(tab){ setActiveTab(tab); }
+    function showTab(tab) { setActiveTab(tab); }
 
     // ====== INIT DROPDOWNS ======
-    function fillSelect(el){
+    function fillSelect(el) {
       el.innerHTML = '<option value="">-- Select Station --</option>' +
-        ALL_STATIONS.map(s=>`<option value="${s}">${s}</option>`).join('');
+        ALL_STATIONS.map(s => `<option value="${s}">${s}</option>`).join('');
     }
-    function initializeDropdowns(){
-      ['routeStart','routeEnd','altStart','altEnd','fareStart','fareEnd','favoriteStation'].forEach(id=>{
-        const el = document.getElementById(id); if(el) fillSelect(el);
+    function initializeDropdowns() {
+      ['routeStart', 'routeEnd', 'altStart', 'altEnd', 'fareStart', 'fareEnd', 'favoriteStation'].forEach(id => {
+        const el = document.getElementById(id); if (el) fillSelect(el);
       });
       addMeetupLocation(); // seed first row
     }
@@ -2063,44 +2505,44 @@
     // ====== BUILD GRAPH (for routing) ======
     // Graph maps "Station (LINE)" nodes; interchanges are connected with small penalty.
     const graph = new Map();
-    function nodeKey(st, line){ return `${st} (${line})`; }
+    function nodeKey(st, line) { return `${st} (${line})`; }
 
-    function addEdge(a,b, weight=1){
-      if(!graph.has(a)) graph.set(a,[]);
-      if(!graph.has(b)) graph.set(b,[]);
-      graph.get(a).push({to:b, w:weight});
-      graph.get(b).push({to:a, w:weight});
+    function addEdge(a, b, weight = 1) {
+      if (!graph.has(a)) graph.set(a, []);
+      if (!graph.has(b)) graph.set(b, []);
+      graph.get(a).push({ to: b, w: weight });
+      graph.get(b).push({ to: a, w: weight });
     }
-    function buildGraph(){
+    function buildGraph() {
       graph.clear();
       // connect consecutive stations on same line
-      Object.entries(MRT_STATIONS).forEach(([line, stations])=>{
-        stations.forEach((st, i)=>{
-          const A = nodeKey(st,line);
-          if(i>0){
-            const B = nodeKey(stations[i-1], line);
-            addEdge(A,B,1);
+      Object.entries(MRT_STATIONS).forEach(([line, stations]) => {
+        stations.forEach((st, i) => {
+          const A = nodeKey(st, line);
+          if (i > 0) {
+            const B = nodeKey(stations[i - 1], line);
+            addEdge(A, B, 1);
           }
-          if(i<stations.length-1){
-            const C = nodeKey(stations[i+1], line);
-            addEdge(A,C,1);
+          if (i < stations.length - 1) {
+            const C = nodeKey(stations[i + 1], line);
+            addEdge(A, C, 1);
           }
         });
       });
       // connect interchanges (same physical station across lines)
       const stationToLines = new Map();
-      Object.entries(MRT_STATIONS).forEach(([line, stations])=>{
-        stations.forEach(st=>{
-          if(!stationToLines.has(st)) stationToLines.set(st,[]);
+      Object.entries(MRT_STATIONS).forEach(([line, stations]) => {
+        stations.forEach(st => {
+          if (!stationToLines.has(st)) stationToLines.set(st, []);
           stationToLines.get(st).push(line);
         });
       });
-      stationToLines.forEach((lines, st)=>{
-        if(lines.length>1){
+      stationToLines.forEach((lines, st) => {
+        if (lines.length > 1) {
           // small interchange cost ~0.5 stops so pathfinder can pick smart transfers
-          for(let i=0;i<lines.length;i++){
-            for(let j=i+1;j<lines.length;j++){
-              addEdge(nodeKey(st,lines[i]), nodeKey(st,lines[j]), 0.5);
+          for (let i = 0; i < lines.length; i++) {
+            for (let j = i + 1; j < lines.length; j++) {
+              addEdge(nodeKey(st, lines[i]), nodeKey(st, lines[j]), 0.5);
             }
           }
         }
@@ -2109,45 +2551,45 @@
     buildGraph();
 
     // ====== SHORTEST PATH (Dijkstra) by stops (weights) ======
-    function shortestPath(startStation, endStation){
+    function shortestPath(startStation, endStation) {
       // start from any line containing startStation; end at any line containing endStation
-      const startNodes = Object.keys(MRT_STATIONS).filter(l=>MRT_STATIONS[l].includes(startStation)).map(l=>nodeKey(startStation,l));
-      const endNodes   = Object.keys(MRT_STATIONS).filter(l=>MRT_STATIONS[l].includes(endStation)).map(l=>nodeKey(endStation,l));
-      if(startNodes.length===0 || endNodes.length===0) return null;
+      const startNodes = Object.keys(MRT_STATIONS).filter(l => MRT_STATIONS[l].includes(startStation)).map(l => nodeKey(startStation, l));
+      const endNodes = Object.keys(MRT_STATIONS).filter(l => MRT_STATIONS[l].includes(endStation)).map(l => nodeKey(endStation, l));
+      if (startNodes.length === 0 || endNodes.length === 0) return null;
 
-      const dist = new Map(), prev = new Map(), pq=[];
-      function push(n, d){ pq.push([d,n]); pq.sort((a,b)=>a[0]-b[0]); }
+      const dist = new Map(), prev = new Map(), pq = [];
+      function push(n, d) { pq.push([d, n]); pq.sort((a, b) => a[0] - b[0]); }
 
       // initialize
-      graph.forEach((_, n)=>dist.set(n, Infinity));
-      startNodes.forEach(n=>{ dist.set(n,0); push(n,0); });
+      graph.forEach((_, n) => dist.set(n, Infinity));
+      startNodes.forEach(n => { dist.set(n, 0); push(n, 0); });
 
-      let target=null;
+      let target = null;
       const endSet = new Set(endNodes);
 
-      while(pq.length){
-        const [d,u]=pq.shift();
-        if(d!==dist.get(u)) continue;
-        if(endSet.has(u)){ target=u; break; }
-        for(const {to, w} of (graph.get(u)||[])){
+      while (pq.length) {
+        const [d, u] = pq.shift();
+        if (d !== dist.get(u)) continue;
+        if (endSet.has(u)) { target = u; break; }
+        for (const { to, w } of (graph.get(u) || [])) {
           const nd = d + w;
-          if(nd < dist.get(to)){
+          if (nd < dist.get(to)) {
             dist.set(to, nd);
             prev.set(to, u);
             push(to, nd);
           }
         }
       }
-      if(!target) return null;
+      if (!target) return null;
 
       // reconstruct
       const path = [];
       let cur = target;
-      while(cur){ path.unshift(cur); cur = prev.get(cur); }
+      while (cur) { path.unshift(cur); cur = prev.get(cur); }
       // compress to [ {station, line}... ]
-      const steps = path.map(k=>{
+      const steps = path.map(k => {
         const m = k.match(/^(.*) \((.*)\)$/);
-        return { station: m?m[1]:k, line: m?m[2]:'?' };
+        return { station: m ? m[1] : k, line: m ? m[2] : '?' };
       });
       const totalWeight = dist.get(target); // stops incl. interchange weight
 
@@ -2156,20 +2598,20 @@
 
     // ====== TIME / DISTANCE ESTIMATES ======
     // avg 2.2 min between stops; interchange adds ~4 min walking; distance ~1.1 km per stop
-    function estimateTimeMinutes(totalWeight){
+    function estimateTimeMinutes(totalWeight) {
       // split weight into stops vs. interchanges (0.5 weights become transfers)
       const stopsApprox = Math.max(0, Math.round(totalWeight)); // approx whole stops
       const transfersApprox = Math.max(0, Math.round((totalWeight - stopsApprox) * 2)); // each 0.5 => 1 transfer
-      return Math.round(stopsApprox*2.2 + transfersApprox*4 + 3); // +3 buffer
+      return Math.round(stopsApprox * 2.2 + transfersApprox * 4 + 3); // +3 buffer
     }
-    function estimateDistanceKm(totalWeight){
+    function estimateDistanceKm(totalWeight) {
       const stops = Math.max(0, Math.round(totalWeight)); // only full edges
-      const transfers = Math.round((totalWeight - stops)*2);
-      return +(stops*1.1 + transfers*0.3).toFixed(1); // add small transfer walk dist
+      const transfers = Math.round((totalWeight - stops) * 2);
+      return +(stops * 1.1 + transfers * 0.3).toFixed(1); // add small transfer walk dist
     }
 
     // ====== LIVE INFO ======
-    async function fetchLiveInfo(){
+    async function fetchLiveInfo() {
       const line = document.getElementById('liveTrainLine').value;
       const out = document.getElementById('liveOutput');
       out.innerHTML = '<div class="text-secondary">Fetching live data…</div>';
@@ -2177,78 +2619,78 @@
       try {
         // Alerts
         let alerts = [];
-        try{
+        try {
           const alertUrl = `${PROXY}${encodeURIComponent(API_BASE + "/TrainServiceAlerts")}`;
-          const res = await fetch(alertUrl, { headers:{ AccountKey: ACCOUNT_KEY, accept:"application/json" } });
-          if(res.ok){
+          const res = await fetch(alertUrl, { headers: { AccountKey: ACCOUNT_KEY, accept: "application/json" } });
+          if (res.ok) {
             const data = await res.json();
-            alerts = Array.isArray(data.value||data.Value) ? (data.value||data.Value) : (Array.isArray(data)?data:[]);
+            alerts = Array.isArray(data.value || data.Value) ? (data.value || data.Value) : (Array.isArray(data) ? data : []);
           }
-        }catch(e){ 
+        } catch (e) {
           console.log('Service Alerts API unavailable, using demo data');
           alerts = []; // Use empty array instead of showing error
         }
         // Crowd
         let crowds = [];
-        try{
+        try {
           const crowdUrl = `${PROXY}${encodeURIComponent(API_BASE + "/PCDRealTime?TrainLine=" + line)}`;
-          const res = await fetch(crowdUrl, { headers:{ AccountKey: ACCOUNT_KEY, accept:"application/json" } });
-          if(res.ok){
+          const res = await fetch(crowdUrl, { headers: { AccountKey: ACCOUNT_KEY, accept: "application/json" } });
+          if (res.ok) {
             const data = await res.json();
             // console.log('Crowd API Response:', data); // Debug log
-            crowds = Array.isArray(data.value||data.Value) ? (data.value||data.Value) : (Array.isArray(data)?data:[]);
+            crowds = Array.isArray(data.value || data.Value) ? (data.value || data.Value) : (Array.isArray(data) ? data : []);
             // console.log('Extracted crowds:', crowds); // Debug log
           }
-        }catch(e){ 
+        } catch (e) {
           console.log('Crowd data API error:', e);
           crowds = []; // Use empty array instead of showing error
         }
 
         // Render
         let html = '<h5>Service Status</h5>';
-        const lineAlert = alerts.find(a => (a.Line||a.line||'').toUpperCase().includes(line));
-        if(lineAlert){
+        const lineAlert = alerts.find(a => (a.Line || a.line || '').toUpperCase().includes(line));
+        if (lineAlert) {
           html += `<div class="alert-card alert-disrupted mb-2">
             <strong>⚠️ ${lineAlert.Line || line}</strong><br>
             <small>${lineAlert.Message || 'Service disruption reported'}</small>
           </div>`;
-        }else{
+        } else {
           html += `<div class="alert-card alert-normal mb-2">
             <strong>✅ ${line}</strong><br><small>All services operating normally</small>
           </div>`;
         }
 
         html += '<h5 class="mt-3">Station Crowd Levels</h5>';
-        if(crowds.length){
-          html += crowds.map(s=>{
-            const lvlRaw = (s.CrowdLevel||s.crowdLevel||'').toString().toLowerCase();
-            const label = lvlRaw==='h' ? 'High' : lvlRaw==='m' ? 'Moderate' : lvlRaw==='l' ? 'Low' : (s.CrowdLevel||'N/A');
-            const cls = lvlRaw==='h' ? 'text-danger fw-semibold' : (lvlRaw==='m'?'text-warning fw-semibold':'text-success fw-semibold');
+        if (crowds.length) {
+          html += crowds.map(s => {
+            const lvlRaw = (s.CrowdLevel || s.crowdLevel || '').toString().toLowerCase();
+            const label = lvlRaw === 'h' ? 'High' : lvlRaw === 'm' ? 'Moderate' : lvlRaw === 'l' ? 'Low' : (s.CrowdLevel || 'N/A');
+            const cls = lvlRaw === 'h' ? 'text-danger fw-semibold' : (lvlRaw === 'm' ? 'text-warning fw-semibold' : 'text-success fw-semibold');
             return `<div class="d-flex justify-content-between border rounded p-2 mb-1">
-              <span>${s.Station||s.station||'Unknown'}</span>
+              <span>${s.Station || s.station || 'Unknown'}</span>
               <span class="${cls}">${label}</span>
             </div>`;
           }).join('');
-        }else{
+        } else {
           html += '<div class="text-secondary">No crowd data for this line.</div>';
         }
         out.innerHTML = html;
-      } catch(err){
+      } catch (err) {
         out.innerHTML = `<span class="text-danger">Error: ${err.message}</span>`;
         showToast(err.message);
         console.error(err);
       }
     }
     // ====== ROUTE PLANNER ======
-    function planRoute(){
+    function planRoute() {
       const start = document.getElementById('routeStart').value;
       const end = document.getElementById('routeEnd').value;
       const out = document.getElementById('routeOutput');
-      if(!start || !end){ out.innerHTML = '<span class="text-danger">Please select both stations.</span>'; return; }
-      if(start===end){ out.innerHTML = '<span class="text-secondary">You are already at your destination 😊</span>'; return; }
+      if (!start || !end) { out.innerHTML = '<span class="text-danger">Please select both stations.</span>'; return; }
+      if (start === end) { out.innerHTML = '<span class="text-secondary">You are already at your destination 😊</span>'; return; }
 
       const path = shortestPath(start, end);
-      if(!path){ out.innerHTML = '<span class="text-danger">No route found.</span>'; return; }
+      if (!path) { out.innerHTML = '<span class="text-danger">No route found.</span>'; return; }
 
       const mins = estimateTimeMinutes(path.totalWeight);
       const dist = estimateDistanceKm(path.totalWeight);
@@ -2258,39 +2700,39 @@
 
       // Build steps (group consecutive same-line segments)
       const steps = [];
-      let i=0;
-      while(i<path.steps.length-1){
+      let i = 0;
+      while (i < path.steps.length - 1) {
         const cur = path.steps[i];
-        let j=i+1;
-        while(j<path.steps.length && path.steps[j].line===cur.line) j++;
-        const segEnd = path.steps[j-1];
-        if(cur.station!==segEnd.station){
+        let j = i + 1;
+        while (j < path.steps.length && path.steps[j].line === cur.line) j++;
+        const segEnd = path.steps[j - 1];
+        if (cur.station !== segEnd.station) {
           const stations = getStopsCount(cur, segEnd);
-          steps.push({ action:`Take ${cur.line}`, details:`${cur.station} → ${segEnd.station} (${stations} stops)` });
+          steps.push({ action: `Take ${cur.line}`, details: `${cur.station} → ${segEnd.station} (${stations} stops)` });
         }
-        if(j<path.steps.length){
+        if (j < path.steps.length) {
           const transferAt = segEnd.station;
-          steps.push({ action:`Transfer`, details:`Change lines at ${transferAt}` });
+          steps.push({ action: `Transfer`, details: `Change lines at ${transferAt}` });
         }
-        i=j;
+        i = j;
       }
-      steps.push({ action:`Arrive`, details:`${end} — journey complete` });
+      steps.push({ action: `Arrive`, details: `${end} — journey complete` });
 
-      steps.forEach((s, idx)=>{
-        html += `<div class="route-step"><strong>Step ${idx+1}:</strong> ${s.action}<br><small>${s.details}</small></div>`;
+      steps.forEach((s, idx) => {
+        html += `<div class="route-step"><strong>Step ${idx + 1}:</strong> ${s.action}<br><small>${s.details}</small></div>`;
       });
 
       out.innerHTML = html;
     }
-    function getStopsCount(a,b){
+    function getStopsCount(a, b) {
       // count stations between a and b on line a.line
       const list = MRT_STATIONS[a.line] || [];
       const ia = list.indexOf(a.station), ib = list.indexOf(b.station);
-      return Math.abs(ib-ia);
+      return Math.abs(ib - ia);
     }
 
     // ====== MEET-UP ======
-    function addMeetupLocation(){
+    function addMeetupLocation() {
       const container = document.getElementById('meetupLocations');
       const personNumber = container.children.length + 1;
       const personCard = document.createElement('div');
@@ -2306,7 +2748,7 @@
         <div class="station-selector">
           <select class="form-select meetup-station" onchange="updatePersonCard(this)">
             <option value="">-- Select Station --</option>
-            ${ALL_STATIONS.map(s=>`<option value="${s}">${s}</option>`).join('')}
+            ${ALL_STATIONS.map(s => `<option value="${s}">${s}</option>`).join('')}
           </select>
         </div>
         <div class="d-flex justify-content-end mt-3">
@@ -2317,22 +2759,22 @@
         </div>
       `;
       container.appendChild(personCard);
-      
+
       // Add animation
       setTimeout(() => {
         personCard.classList.add('animate__fadeInUp');
       }, 50);
     }
-    
+
     function updatePersonCard(selectElement) {
       const personCard = selectElement.closest('.person-card');
       const station = selectElement.value;
-      
+
       if (station) {
         personCard.classList.add('active');
         const personInfo = personCard.querySelector('.person-info small');
         personInfo.textContent = `Starting from ${station}`;
-        
+
         // Add success animation
         personCard.style.animation = 'none';
         setTimeout(() => {
@@ -2344,33 +2786,33 @@
         personInfo.textContent = 'Select their starting station';
       }
     }
-    
+
     function removePersonCard(button) {
       const personCard = button.closest('.person-card');
       personCard.classList.add('animate__fadeOutDown');
-      
+
       setTimeout(() => {
         personCard.remove();
         updatePersonNumbers();
       }, 300);
     }
-    
+
     function updatePersonNumbers() {
       const personCards = document.querySelectorAll('.person-card');
       personCards.forEach((card, index) => {
         const personNumber = index + 1;
         const avatar = card.querySelector('.person-avatar');
         const title = card.querySelector('.person-info h6');
-        
+
         avatar.textContent = personNumber;
         title.textContent = `Person ${personNumber}`;
       });
     }
-    
+
     function quickSelectStation(stationName) {
       const allSelects = document.querySelectorAll('#meetupLocations .meetup-station');
       let emptySelect = null;
-      
+
       // Find first empty dropdown
       for (let select of allSelects) {
         if (!select.value || select.value === '') {
@@ -2378,11 +2820,11 @@
           break;
         }
       }
-      
+
       if (emptySelect) {
         emptySelect.value = stationName;
         updatePersonCard(emptySelect);
-        
+
         // Add success feedback
         const quickBtn = event.target;
         quickBtn.style.background = 'var(--sg-red)';
@@ -2404,7 +2846,7 @@
         }, 100);
       }
     }
-    
+
     function clearAllLocations() {
       const personCards = document.querySelectorAll('.person-card');
       personCards.forEach((card, index) => {
@@ -2413,21 +2855,21 @@
           setTimeout(() => card.remove(), 300);
         }, index * 100);
       });
-      
+
       // Clear results
       const output = document.getElementById('meetupOutput');
       output.classList.add('d-none');
-      
+
       showToast('All locations cleared', false);
     }
 
-    function findMeetupPoint(){
-      const stations = Array.from(document.querySelectorAll('.meetup-station')).map(s=>s.value).filter(Boolean);
+    function findMeetupPoint() {
+      const stations = Array.from(document.querySelectorAll('.meetup-station')).map(s => s.value).filter(Boolean);
       const out = document.getElementById('meetupOutput');
-      
-      if(stations.length<2){ 
+
+      if (stations.length < 2) {
         showToast('Please add at least 2 locations to find a meeting point', true);
-        return; 
+        return;
       }
 
       // Show capybara loading animation over the map
@@ -2438,20 +2880,20 @@
 
         // brute force: evaluate each candidate as meetup, choose minimal totalWeight sum
         const candidates = ALL_STATIONS;
-        let best = { station:null, sum: Infinity, times:[] };
+        let best = { station: null, sum: Infinity, times: [] };
 
-        candidates.forEach(cand=>{
-          let total=0, times=[];
-          for(const s of stations){
+        candidates.forEach(cand => {
+          let total = 0, times = [];
+          for (const s of stations) {
             const p = shortestPath(s, cand);
-            if(!p){ total=Infinity; break; }
+            if (!p) { total = Infinity; break; }
             total += p.totalWeight;
             times.push(estimateTimeMinutes(p.totalWeight));
           }
-          if(total < best.sum){ best = { station:cand, sum:total, times }; }
+          if (total < best.sum) { best = { station: cand, sum: total, times }; }
         });
 
-        if(!best.station){ 
+        if (!best.station) {
           out.innerHTML = `
             <div class="text-center py-4">
               <span class="material-icons text-danger mb-2" style="font-size: 48px;">error_outline</span>
@@ -2459,7 +2901,7 @@
               <p class="text-muted">Unable to find a common reachable station for all locations.</p>
             </div>
           `;
-          return; 
+          return;
         }
 
         // Calculate average travel time
@@ -2506,13 +2948,13 @@
           
           <div class="travel-times">`;
 
-        stations.forEach((s, i)=>{
+        stations.forEach((s, i) => {
           const personCard = document.querySelectorAll('.person-card')[i];
-          const personName = personCard ? personCard.querySelector('.person-info h6').textContent : `Person ${i+1}`;
-          
+          const personName = personCard ? personCard.querySelector('.person-info h6').textContent : `Person ${i + 1}`;
+
           html += `
             <div class="travel-time-item animate-slide-in" style="animation-delay: ${i * 0.1}s;">
-              <div class="person-avatar" style="width: 40px; height: 40px; font-size: 16px;">${i+1}</div>
+              <div class="person-avatar" style="width: 40px; height: 40px; font-size: 16px;">${i + 1}</div>
               <div class="flex-grow-1">
                 <div class="fw-semibold" style="font-size: var(--text-base); color: var(--neutral-900);">${personName}</div>
                 <small class="text-muted" style="font-size: var(--text-sm);">From ${s}</small>
@@ -2546,25 +2988,25 @@
             </small>
           </div>
         `;
-        
+
         out.innerHTML = html;
         out.classList.remove('d-none');
-        
+
         // Hide the map loading animation and scroll to results
         hideMapLoadingAnimation();
-        
+
         // Scroll to results after a short delay to ensure elements are restored
         setTimeout(() => {
           out.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }, 100);
-        
+
         showToast(`Found perfect meeting point: ${best.station}!`, false);
       }, 2000);
     }
-    
+
     function shareMeetingPoint(meetingPoint, locations) {
-      const shareText = `Let's meet at ${meetingPoint}! 🚇\n\nOur starting locations:\n${locations.map((loc, i) => `${i+1}. ${loc}`).join('\n')}\n\nFound using SingaTrain Meet-up Finder`;
-      
+      const shareText = `Let's meet at ${meetingPoint}! 🚇\n\nOur starting locations:\n${locations.map((loc, i) => `${i + 1}. ${loc}`).join('\n')}\n\nFound using SingaTrain Meet-up Finder`;
+
       if (navigator.share) {
         navigator.share({
           title: 'Meeting Point',
@@ -2577,13 +3019,13 @@
         });
       }
     }
-    
+
     function getDirections(station) {
       // This would integrate with Google Maps or Apple Maps
       const mapsUrl = `https://www.google.com/maps/search/${encodeURIComponent(station + ' MRT Station Singapore')}`;
       window.open(mapsUrl, '_blank');
     }
-    
+
     function createCapybaraLoader() {
       return `
         <div class="capybaraloader">
@@ -2615,29 +3057,29 @@
         </div>
       `;
     }
-    
+
     function showMapLoadingAnimation() {
       const mapContainer = document.getElementById('meetupMap');
       if (!mapContainer) return;
-      
+
       // Hide all form elements during loading
       const meetupSection = document.getElementById('meetup');
       const formElements = meetupSection.querySelectorAll('.meetup-container, .meetup-actions');
       const mapSection = meetupSection.querySelector('.mt-6'); // Map container
-      
+
       // Store original display states
       window.meetupFormStates = [];
       formElements.forEach((element, index) => {
         window.meetupFormStates[index] = element.style.display;
         element.style.display = 'none';
       });
-      
+
       // Show only the map section
       if (mapSection) {
         mapSection.style.display = 'block';
         mapSection.style.marginTop = '0';
       }
-      
+
       // Create overlay if it doesn't exist
       let overlay = mapContainer.querySelector('.map-loading-overlay');
       if (!overlay) {
@@ -2653,17 +3095,17 @@
         mapContainer.style.position = 'relative';
         mapContainer.appendChild(overlay);
       }
-      
+
       // Show the overlay
       setTimeout(() => {
         overlay.classList.add('show');
       }, 100);
     }
-    
+
     function hideMapLoadingAnimation() {
       const mapContainer = document.getElementById('meetupMap');
       if (!mapContainer) return;
-      
+
       const overlay = mapContainer.querySelector('.map-loading-overlay');
       if (overlay) {
         overlay.classList.remove('show');
@@ -2674,12 +3116,12 @@
           }
         }, 300);
       }
-      
+
       // Restore form elements after loading
       const meetupSection = document.getElementById('meetup');
       const formElements = meetupSection.querySelectorAll('.meetup-container, .meetup-actions');
       const mapSection = meetupSection.querySelector('.mt-6'); // Map container
-      
+
       // Restore original display states
       if (window.meetupFormStates) {
         formElements.forEach((element, index) => {
@@ -2690,57 +3132,57 @@
           }
         });
       }
-      
+
       // Restore map section margin
       if (mapSection) {
         mapSection.style.marginTop = '';
       }
-      
+
       // Clear stored states
       window.meetupFormStates = null;
     }
 
     // ====== ALTERNATIVE ROUTES ======
-    async function findAlternatives(){
+    async function findAlternatives() {
       const start = document.getElementById('altStart').value;
       const end = document.getElementById('altEnd').value;
       const affectedLine = document.getElementById('affectedLine').value;
       const out = document.getElementById('altOutput');
-      if(!start || !end){ out.innerHTML = '<span class="text-danger">Please select both start and destination.</span>'; return; }
+      if (!start || !end) { out.innerHTML = '<span class="text-danger">Please select both start and destination.</span>'; return; }
 
       out.innerHTML = '<div class="text-secondary">Finding alternative routes…</div>';
 
       // get disrupted lines (if not provided)
       let affected = [];
-      try{
-        if(affectedLine){
+      try {
+        if (affectedLine) {
           affected = [affectedLine];
-        }else{
-          try{
+        } else {
+          try {
             const alertUrl = `${PROXY}${encodeURIComponent(API_BASE + "/TrainServiceAlerts")}`;
-            const res = await fetch(alertUrl, { headers:{ AccountKey: ACCOUNT_KEY, accept:"application/json" } });
-            if(res.ok){
+            const res = await fetch(alertUrl, { headers: { AccountKey: ACCOUNT_KEY, accept: "application/json" } });
+            if (res.ok) {
               const data = await res.json();
-              const alerts = Array.isArray(data.value||data.Value) ? (data.value||data.Value) : (Array.isArray(data)?data:[]);
-              affected = alerts.filter(a=>a.Status==2).map(a=>a.Line||a.line).filter(Boolean);
+              const alerts = Array.isArray(data.value || data.Value) ? (data.value || data.Value) : (Array.isArray(data) ? data : []);
+              affected = alerts.filter(a => a.Status == 2).map(a => a.Line || a.line).filter(Boolean);
             }
-          }catch(e){ 
+          } catch (e) {
             console.log('Alternative routes API unavailable, no affected lines detected');
-            affected = []; 
+            affected = [];
           }
         }
-      }catch(e){ /* ignore, show no affected */ }
+      } catch (e) { /* ignore, show no affected */ }
 
       let html = '<h5>Alternative Routes</h5>';
-      if(affected.length){
+      if (affected.length) {
         html += `<div class="alert-card alert-disrupted mb-2"><strong>⚠️ Disruption:</strong> ${affected.join(', ')}</div>`;
       }
 
       // Option 1: MRT alternative — we’ll just return normal route (path planner will likely avoid nothing without full GTFS);
       const p = shortestPath(start, end);
-      if(p){
+      if (p) {
         html += renderAltCard('Alternative MRT Route', p);
-      }else{
+      } else {
         html += `<div class="text-danger">No MRT path found.</div>`;
       }
 
@@ -2750,19 +3192,19 @@
 
       out.innerHTML = html;
     }
-    function renderAltCard(title, path){
+    function renderAltCard(title, path) {
       const mins = estimateTimeMinutes(path.totalWeight);
       let stepsHTML = '';
       // collapse steps by line
       const segs = [];
-      let i=0;
-      while(i<path.steps.length-1){
-        const cur=path.steps[i]; let j=i+1;
-        while(j<path.steps.length && path.steps[j].line===cur.line) j++;
-        segs.push({from:cur.station, to:path.steps[j-1].station, line:cur.line, stops:getStopsCount(cur, path.steps[j-1])});
-        i=j;
+      let i = 0;
+      while (i < path.steps.length - 1) {
+        const cur = path.steps[i]; let j = i + 1;
+        while (j < path.steps.length && path.steps[j].line === cur.line) j++;
+        segs.push({ from: cur.station, to: path.steps[j - 1].station, line: cur.line, stops: getStopsCount(cur, path.steps[j - 1]) });
+        i = j;
       }
-      stepsHTML += segs.map(s=>`<div class="route-step">Take <strong>${s.line}</strong>: ${s.from} → ${s.to} (${s.stops} stops)</div>`).join('');
+      stepsHTML += segs.map(s => `<div class="route-step">Take <strong>${s.line}</strong>: ${s.from} → ${s.to} (${s.stops} stops)</div>`).join('');
       return `
         <div class="border rounded-3 p-3 my-2">
           <h6 class="text-danger">${title}</h6>
@@ -2772,7 +3214,7 @@
         </div>
       `;
     }
-    function renderSimpleAlt(title, text){
+    function renderSimpleAlt(title, text) {
       return `
         <div class="border rounded-3 p-3 my-2">
           <h6 class="text-danger">${title}</h6>
@@ -2782,211 +3224,211 @@
 
     // ====== FARES ======
     // --- Adult (Card) ---
-const fareBandsAdult = [
-  { max: 3.2, fare: 1.19 }, { max: 4.2, fare: 1.29 }, { max: 5.2, fare: 1.40 },
-  { max: 6.2, fare: 1.50 }, { max: 7.2, fare: 1.59 }, { max: 8.2, fare: 1.66 },
-  { max: 9.2, fare: 1.73 }, { max: 10.2, fare: 1.77 }, { max: 11.2, fare: 1.81 },
-  { max: 12.2, fare: 1.85 }, { max: 13.2, fare: 1.89 }, { max: 14.2, fare: 1.93 },
-  { max: 15.2, fare: 1.98 }, { max: 16.2, fare: 2.02 }, { max: 17.2, fare: 2.06 },
-  { max: 18.2, fare: 2.10 }, { max: 19.2, fare: 2.14 }, { max: 20.2, fare: 2.17 },
-  { max: 21.2, fare: 2.20 }, { max: 22.2, fare: 2.23 }, { max: 23.2, fare: 2.26 },
-  { max: 24.2, fare: 2.28 }, { max: 25.2, fare: 2.30 }, { max: 26.2, fare: 2.32 },
-  { max: 27.2, fare: 2.33 }, { max: 28.2, fare: 2.34 }, { max: 29.2, fare: 2.35 },
-  { max: 30.2, fare: 2.36 }, { max: 31.2, fare: 2.37 }, { max: 32.2, fare: 2.38 },
-  { max: 33.2, fare: 2.39 }, { max: 34.2, fare: 2.40 }, { max: 35.2, fare: 2.41 },
-  { max: 36.2, fare: 2.42 }, { max: 37.2, fare: 2.43 }, { max: 38.2, fare: 2.44 },
-  { max: 39.2, fare: 2.45 }, { max: 40.2, fare: 2.46 }, { max: Infinity, fare: 2.47 }
-];
+    const fareBandsAdult = [
+      { max: 3.2, fare: 1.19 }, { max: 4.2, fare: 1.29 }, { max: 5.2, fare: 1.40 },
+      { max: 6.2, fare: 1.50 }, { max: 7.2, fare: 1.59 }, { max: 8.2, fare: 1.66 },
+      { max: 9.2, fare: 1.73 }, { max: 10.2, fare: 1.77 }, { max: 11.2, fare: 1.81 },
+      { max: 12.2, fare: 1.85 }, { max: 13.2, fare: 1.89 }, { max: 14.2, fare: 1.93 },
+      { max: 15.2, fare: 1.98 }, { max: 16.2, fare: 2.02 }, { max: 17.2, fare: 2.06 },
+      { max: 18.2, fare: 2.10 }, { max: 19.2, fare: 2.14 }, { max: 20.2, fare: 2.17 },
+      { max: 21.2, fare: 2.20 }, { max: 22.2, fare: 2.23 }, { max: 23.2, fare: 2.26 },
+      { max: 24.2, fare: 2.28 }, { max: 25.2, fare: 2.30 }, { max: 26.2, fare: 2.32 },
+      { max: 27.2, fare: 2.33 }, { max: 28.2, fare: 2.34 }, { max: 29.2, fare: 2.35 },
+      { max: 30.2, fare: 2.36 }, { max: 31.2, fare: 2.37 }, { max: 32.2, fare: 2.38 },
+      { max: 33.2, fare: 2.39 }, { max: 34.2, fare: 2.40 }, { max: 35.2, fare: 2.41 },
+      { max: 36.2, fare: 2.42 }, { max: 37.2, fare: 2.43 }, { max: 38.2, fare: 2.44 },
+      { max: 39.2, fare: 2.45 }, { max: 40.2, fare: 2.46 }, { max: Infinity, fare: 2.47 }
+    ];
 
-// --- Student (Card) ---
-const fareBandsStudent = [
-  { max: 3.2, fare: 0.52 }, { max: 4.2, fare: 0.57 }, { max: 5.2, fare: 0.63 },
-  { max: 6.2, fare: 0.68 }, { max: 7.2, fare: 0.71 }, { max: Infinity, fare: 0.74 }
-];
+    // --- Student (Card) ---
+    const fareBandsStudent = [
+      { max: 3.2, fare: 0.52 }, { max: 4.2, fare: 0.57 }, { max: 5.2, fare: 0.63 },
+      { max: 6.2, fare: 0.68 }, { max: 7.2, fare: 0.71 }, { max: Infinity, fare: 0.74 }
+    ];
 
-// --- Senior Citizens / Persons with Disabilities (Card) ---
-const fareBandsSenior = [
-  { max: 3.2, fare: 0.69 }, { max: 4.2, fare: 0.76 }, { max: 5.2, fare: 0.84 },
-  { max: 6.2, fare: 0.91 }, { max: 7.2, fare: 0.97 }, { max: Infinity, fare: 1.03 }
-];
+    // --- Senior Citizens / Persons with Disabilities (Card) ---
+    const fareBandsSenior = [
+      { max: 3.2, fare: 0.69 }, { max: 4.2, fare: 0.76 }, { max: 5.2, fare: 0.84 },
+      { max: 6.2, fare: 0.91 }, { max: 7.2, fare: 0.97 }, { max: Infinity, fare: 1.03 }
+    ];
 
-// --- Workfare Transport Concession (Card) ---
-const fareBandsWorkfare = [
-  { max: 3.2, fare: 0.78 }, { max: 4.2, fare: 0.86 }, { max: 5.2, fare: 0.95 },
-  { max: 6.2, fare: 1.03 }, { max: 7.2, fare: 1.10 }, { max: 8.2, fare: 1.16 },
-  { max: 9.2, fare: 1.22 }, { max: 10.2, fare: 1.25 }, { max: 11.2, fare: 1.28 },
-  { max: 12.2, fare: 1.31 }, { max: 13.2, fare: 1.34 }, { max: 14.2, fare: 1.37 },
-  { max: 15.2, fare: 1.40 }, { max: 16.2, fare: 1.43 }, { max: 17.2, fare: 1.46 },
-  { max: 18.2, fare: 1.49 }, { max: 19.2, fare: 1.52 }, { max: 20.2, fare: 1.55 },
-  { max: 21.2, fare: 1.58 }, { max: 22.2, fare: 1.61 }, { max: 23.2, fare: 1.64 },
-  { max: 24.2, fare: 1.66 }, { max: 25.2, fare: 1.67 }, { max: 26.2, fare: 1.68 },
-  { max: 27.2, fare: 1.69 }, { max: 28.2, fare: 1.70 }, { max: 29.2, fare: 1.71 },
-  { max: 30.2, fare: 1.72 }, { max: 31.2, fare: 1.73 }, { max: 32.2, fare: 1.74 },
-  { max: 33.2, fare: 1.75 }, { max: 34.2, fare: 1.76 }, { max: 35.2, fare: 1.77 },
-  { max: 36.2, fare: 1.78 }, { max: 37.2, fare: 1.79 }, { max: 38.2, fare: 1.80 },
-  { max: 39.2, fare: 1.81 }, { max: 40.2, fare: 1.82 }, { max: Infinity, fare: 1.83 }
-];
+    // --- Workfare Transport Concession (Card) ---
+    const fareBandsWorkfare = [
+      { max: 3.2, fare: 0.78 }, { max: 4.2, fare: 0.86 }, { max: 5.2, fare: 0.95 },
+      { max: 6.2, fare: 1.03 }, { max: 7.2, fare: 1.10 }, { max: 8.2, fare: 1.16 },
+      { max: 9.2, fare: 1.22 }, { max: 10.2, fare: 1.25 }, { max: 11.2, fare: 1.28 },
+      { max: 12.2, fare: 1.31 }, { max: 13.2, fare: 1.34 }, { max: 14.2, fare: 1.37 },
+      { max: 15.2, fare: 1.40 }, { max: 16.2, fare: 1.43 }, { max: 17.2, fare: 1.46 },
+      { max: 18.2, fare: 1.49 }, { max: 19.2, fare: 1.52 }, { max: 20.2, fare: 1.55 },
+      { max: 21.2, fare: 1.58 }, { max: 22.2, fare: 1.61 }, { max: 23.2, fare: 1.64 },
+      { max: 24.2, fare: 1.66 }, { max: 25.2, fare: 1.67 }, { max: 26.2, fare: 1.68 },
+      { max: 27.2, fare: 1.69 }, { max: 28.2, fare: 1.70 }, { max: 29.2, fare: 1.71 },
+      { max: 30.2, fare: 1.72 }, { max: 31.2, fare: 1.73 }, { max: 32.2, fare: 1.74 },
+      { max: 33.2, fare: 1.75 }, { max: 34.2, fare: 1.76 }, { max: 35.2, fare: 1.77 },
+      { max: 36.2, fare: 1.78 }, { max: 37.2, fare: 1.79 }, { max: 38.2, fare: 1.80 },
+      { max: 39.2, fare: 1.81 }, { max: 40.2, fare: 1.82 }, { max: Infinity, fare: 1.83 }
+    ];
 
 
 
     // ====== Monthly Pass Tables (LTA Dec 2024) ======
-const monthlyPasses = {
-  // --- Train-only passes ---
-  train: {
-    primary: 21.00,
-    secondary: 26.50,
-    polytechnic: 26.50,
-    university: 48.00,
-    ns: 48.00,
-    senior: 58.00,
-    disability: 58.00,
-    workfare: 96.00,
-    adult: 128.00
-  },
+    const monthlyPasses = {
+      // --- Train-only passes ---
+      train: {
+        primary: 21.00,
+        secondary: 26.50,
+        polytechnic: 26.50,
+        university: 48.00,
+        ns: 48.00,
+        senior: 58.00,
+        disability: 58.00,
+        workfare: 96.00,
+        adult: 128.00
+      },
 
-  // --- Bus-only passes ---
-  bus: {
-    primary: 24.00,
-    secondary: 29.00,
-    polytechnic: 29.00,
-    university: 55.50,
-    ns: 55.50,
-    senior: 58.00,
-    disability: 58.00,
-    workfare: 96.00,
-    adult: 128.00
-  },
+      // --- Bus-only passes ---
+      bus: {
+        primary: 24.00,
+        secondary: 29.00,
+        polytechnic: 29.00,
+        university: 55.50,
+        ns: 55.50,
+        senior: 58.00,
+        disability: 58.00,
+        workfare: 96.00,
+        adult: 128.00
+      },
 
-  // --- Hybrid (Bus + Train) passes ---
-  hybrid: {
-    primary: 39.00,
-    secondary: 49.00,
-    polytechnic: 49.00,
-    university: 81.00,
-    ns: 81.00,
-    senior: 58.00,
-    disability: 58.00,
-    workfare: 96.00,
-    adult: 128.00
-  }
-};
+      // --- Hybrid (Bus + Train) passes ---
+      hybrid: {
+        primary: 39.00,
+        secondary: 49.00,
+        polytechnic: 49.00,
+        university: 81.00,
+        ns: 81.00,
+        senior: 58.00,
+        disability: 58.00,
+        workfare: 96.00,
+        adult: 128.00
+      }
+    };
 
 
-function fareByType(km, type = "adult") {
-  let bands;
+    function fareByType(km, type = "adult") {
+      let bands;
 
-  switch (type) {
-    // 🧒 Students up to Polytechnic → Student table
-    case "primary":
-    case "secondary":
-    case "polytechnic":
-      bands = fareBandsStudent;
-      break;
+      switch (type) {
+        // 🧒 Students up to Polytechnic → Student table
+        case "primary":
+        case "secondary":
+        case "polytechnic":
+          bands = fareBandsStudent;
+          break;
 
-    // 👴 Seniors & PWD → Senior table
-    case "senior":
-    case "disability":
-      bands = fareBandsSenior;
-      break;
+        // 👴 Seniors & PWD → Senior table
+        case "senior":
+        case "disability":
+          bands = fareBandsSenior;
+          break;
 
-    // 🧑‍🏭 Workfare → Workfare table
-    case "workfare":
-      bands = fareBandsWorkfare;
-      break;
+        // 🧑‍🏭 Workfare → Workfare table
+        case "workfare":
+          bands = fareBandsWorkfare;
+          break;
 
-    // 🎓 University & NS use the same fare as Adults
-    case "university":
-    case "ns":
-    case "adult":
-    default:
-      bands = fareBandsAdult;
-  }
+        // 🎓 University & NS use the same fare as Adults
+        case "university":
+        case "ns":
+        case "adult":
+        default:
+          bands = fareBandsAdult;
+      }
 
-  for (const b of bands) {
-    if (km <= b.max) return b.fare;
-  }
-  return bands[bands.length - 1].fare;
-}
-   
-    
-    function calculateFare(){
-  const start = document.getElementById('fareStart').value;
-  const end = document.getElementById('fareEnd').value;
-  const type = document.getElementById('commuterType').value;
-  const out = document.getElementById('fareOutput');
+      for (const b of bands) {
+        if (km <= b.max) return b.fare;
+      }
+      return bands[bands.length - 1].fare;
+    }
 
-  if(!start || !end){
-    out.innerHTML = '<span class="text-danger">Please select both stations.</span>';
-    return;
-  }
 
-  const p = shortestPath(start, end);
-  if(!p){
-    out.innerHTML = '<span class="text-danger">No route found.</span>';
-    return;
-  }
+    function calculateFare() {
+      const start = document.getElementById('fareStart').value;
+      const end = document.getElementById('fareEnd').value;
+      const type = document.getElementById('commuterType').value;
+      const out = document.getElementById('fareOutput');
 
-  const km = estimateDistanceKm(p.totalWeight);
-  const fare = fareByType(km, type);
-  const typeText = document.querySelector(`#commuterType option[value="${type}"]`).textContent;
+      if (!start || !end) {
+        out.innerHTML = '<span class="text-danger">Please select both stations.</span>';
+        return;
+      }
 
-  let html = `<h5>Fare Calculation</h5>`;
-  html += `<div class="fare-result">
+      const p = shortestPath(start, end);
+      if (!p) {
+        out.innerHTML = '<span class="text-danger">No route found.</span>';
+        return;
+      }
+
+      const km = estimateDistanceKm(p.totalWeight);
+      const fare = fareByType(km, type);
+      const typeText = document.querySelector(`#commuterType option[value="${type}"]`).textContent;
+
+      let html = `<h5>Fare Calculation</h5>`;
+      html += `<div class="fare-result">
     <div class="fs-3 mb-1">$${fare.toFixed(2)}</div>
     <div class="small">Estimated fare (${typeText})</div>
   </div>`;
-  html += `<div class="border rounded p-3 bg-light">
+      html += `<div class="border rounded p-3 bg-light">
     <p class="mb-1"><strong>Journey:</strong> ${start} → ${end}</p>
     <p class="mb-1"><strong>Approx Distance:</strong> ${km} km (stops-based estimate)</p>
   </div>`;
-  out.innerHTML = html;
-}
+      out.innerHTML = html;
+    }
 
     function calculatePassValue() {
-  const start = document.getElementById('fareStart').value;
-  const end = document.getElementById('fareEnd').value;
-  const type = document.getElementById('commuterType').value;
-  const dailyTrips = parseInt(document.getElementById('dailyTrips').value) || 2;
-  const workingDays = parseInt(document.getElementById('workingDays').value) || 22;
-  const out = document.getElementById('passOutput');
+      const start = document.getElementById('fareStart').value;
+      const end = document.getElementById('fareEnd').value;
+      const type = document.getElementById('commuterType').value;
+      const dailyTrips = parseInt(document.getElementById('dailyTrips').value) || 2;
+      const workingDays = parseInt(document.getElementById('workingDays').value) || 22;
+      const out = document.getElementById('passOutput');
 
-  if (!start || !end) {
-    out.innerHTML = '<span class="text-danger">Select journey in the fare calculator above.</span>';
-    return;
-  }
+      if (!start || !end) {
+        out.innerHTML = '<span class="text-danger">Select journey in the fare calculator above.</span>';
+        return;
+      }
 
-  const path = shortestPath(start, end);
-  if (!path) {
-    out.innerHTML = '<span class="text-danger">No route found.</span>';
-    return;
-  }
+      const path = shortestPath(start, end);
+      if (!path) {
+        out.innerHTML = '<span class="text-danger">No route found.</span>';
+        return;
+      }
 
-  // Estimate trip fare
-  const km = estimateDistanceKm(path.totalWeight);
-  const singleFare = fareByType(km, type);
-  const monthlyTotal = singleFare * dailyTrips * workingDays;
+      // Estimate trip fare
+      const km = estimateDistanceKm(path.totalWeight);
+      const singleFare = fareByType(km, type);
+      const monthlyTotal = singleFare * dailyTrips * workingDays;
 
-  // Decide relevant pass types
-  const travelModes = ["train", "bus", "hybrid"];
-  const results = [];
+      // Decide relevant pass types
+      const travelModes = ["train", "bus", "hybrid"];
+      const results = [];
 
-  for (const mode of travelModes) {
-    const passPrice = monthlyPasses[mode][type] ?? monthlyPasses[mode]["adult"];
-    const savings = monthlyTotal - passPrice;
-    const worth = savings > 0;
-    results.push({ mode, passPrice, savings, worth });
-  }
+      for (const mode of travelModes) {
+        const passPrice = monthlyPasses[mode][type] ?? monthlyPasses[mode]["adult"];
+        const savings = monthlyTotal - passPrice;
+        const worth = savings > 0;
+        results.push({ mode, passPrice, savings, worth });
+      }
 
-  // Render output
-  let html = `<h5>Monthly Pass Analysis</h5>`;
-  html += `<div class="border rounded p-3 bg-light mb-3">
+      // Render output
+      let html = `<h5>Monthly Pass Analysis</h5>`;
+      html += `<div class="border rounded p-3 bg-light mb-3">
     <p><strong>Single Trip Fare:</strong> $${singleFare.toFixed(2)}</p>
     <p><strong>Daily Trips:</strong> ${dailyTrips}</p>
     <p><strong>Working Days:</strong> ${workingDays}</p>
     <p><strong>Estimated Monthly Spend (Pay-Per-Ride):</strong> $${monthlyTotal.toFixed(2)}</p>
   </div>`;
 
-  html += `<div class="table-responsive">
+      html += `<div class="table-responsive">
     <table class="table table-striped align-middle">
       <thead class="table-danger text-center">
         <tr>
@@ -2998,8 +3440,8 @@ function fareByType(km, type = "adult") {
       </thead>
       <tbody class="text-center">`;
 
-  for (const r of results) {
-    html += `<tr>
+      for (const r of results) {
+        html += `<tr>
       <td class="text-capitalize">${r.mode}</td>
       <td>${r.passPrice.toFixed(2)}</td>
       <td class="${r.worth ? 'text-success' : 'text-danger'}">
@@ -3007,208 +3449,148 @@ function fareByType(km, type = "adult") {
       </td>
       <td>${r.worth ? '✅ Worth It' : '❌ Not Worth It'}</td>
     </tr>`;
-  }
-
-  html += `</tbody></table></div>`;
-
-  out.innerHTML = html;
-}
-
-    // ====== PROFILE / FAVORITES ======
-    function saveProfile(){
-      const name = document.getElementById('profileName').value.trim();
-      if(name){
-        userData.name = name;
-        document.getElementById('userName').textContent = name;
-        showToast('Profile saved.', false);
       }
+
+      html += `</tbody></table></div>`;
+
+      out.innerHTML = html;
     }
-    function addFavorite(){
-      const label = document.getElementById('favoriteLabel').value.trim();
-      const station = document.getElementById('favoriteStation').value;
-      if(!label || !station){ showToast('Please enter label and station.'); return; }
-      if(userData.favorites.some(f=>f.label===label)){ showToast('Duplicate label.'); return; }
-      userData.favorites.push({ label, station });
-      document.getElementById('favoriteLabel').value='';
-      document.getElementById('favoriteStation').value='';
-      displayFavorites();
-      renderLiveArrivals();
-      showToast('Favorite added.', false);
-    }
-    function removeFavorite(idx){
-      userData.favorites.splice(idx,1);
-      displayFavorites();
-      renderLiveArrivals();
-    }
-    function displayFavorites(){
-      const container = document.getElementById('dashboardFavorites');
-      if(userData.favorites.length===0){
-        container.innerHTML = '<div class="text-secondary">No favorite stations yet.</div>'; return;
-      }
-      container.innerHTML = userData.favorites.map((f,i)=>`
-        <div class="d-flex justify-content-between align-items-center border rounded p-2 mb-2">
-          <div><strong>${f.label}</strong><div class="text-secondary small">${f.station}</div></div>
-          <button class="btn btn-outline-danger btn-sm" onclick="removeFavorite(${i})">Remove</button>
-        </div>`).join('');
-    }
-    function toggleFavoriteStation(station){
-      const existingIndex = userData.favorites.findIndex(f=>f.station===station);
-      if(existingIndex !== -1){
-        userData.favorites.splice(existingIndex,1);
-        showToast(`Removed ${station} from favorites.`, false);
-      }else{
-        const newEntry = { label: station, station };
-        userData.favorites.push(newEntry);
-        showToast(`Favorited ${station}.`, false);
-      }
-      displayFavorites();
-      renderLiveArrivals();
-    }
+
     let arrivalRenderIntervalId = null;
     let liveClockIntervalId = null;
-    function getStationsForArrivalDisplay(arrivalData){
-      if(!arrivalData) return [];
+    function getStationsForArrivalDisplay(arrivalData) {
+      if (!arrivalData) return [];
       const favoriteStations = Array.isArray(userData?.favorites)
-        ? userData.favorites.map(f=>f.station)
+        ? userData.favorites.map(f => f.station)
         : [];
       const availableStations = Object.keys(arrivalData);
-      const validFavorites = favoriteStations.filter(station=>arrivalData[station]);
-      if(validFavorites.length>0){ return validFavorites; }
+      const validFavorites = favoriteStations.filter(station => arrivalData[station]);
+      if (validFavorites.length > 0) { return validFavorites; }
       return availableStations.slice(0, 4);
     }
-    function formatArrivalCountdown(totalSeconds){
-      if(totalSeconds <= 0){ return 'Arriving'; }
+    function formatArrivalCountdown(totalSeconds) {
+      if (totalSeconds <= 0) { return 'Arriving'; }
       const minutes = Math.floor(totalSeconds / 60);
       const seconds = totalSeconds % 60;
-      if(minutes === 0){ return `${seconds}s`; }
-      return `${minutes}m ${seconds.toString().padStart(2,'0')}s`;
+      if (minutes === 0) { return `${seconds}s`; }
+      return `${minutes}m ${seconds.toString().padStart(2, '0')}s`;
     }
-    function renderLiveArrivals(){
-      const container = document.getElementById('liveArrivals');
-      if(!container){ return; }
+  function renderLiveArrivals() {
+    const container = document.getElementById('liveArrivals');
+    if (!container) return;
 
-      const simulator = window.trainArrivalSimulator;
-      const delayToggle = document.getElementById('delayToggle');
-      if(delayToggle && simulator?.config?.delay){
-        delayToggle.checked = !!simulator.config.delay.enabled;
-      }
-
-      if(!simulator){
-        container.innerHTML = '<div class="text-secondary">Arrival simulator is still loading…</div>';
-        return;
-      }
-
-      const arrivalData = simulator.getArrivals({ returnSeconds: true });
-      let stations = getStationsForArrivalDisplay(arrivalData);
-      const favoriteStations = Array.isArray(userData?.favorites)
-        ? userData.favorites.map(f=>f.station)
-        : [];
-      const filterLine = document.getElementById('liveTrainLine')?.value || '';
-      if(filterLine){
-        // Extend the station list with any that match the active line filter
-        const filterStations = Object.entries(arrivalData)
-          .filter(([, lineMap]) => lineMap && lineMap[filterLine])
-          .map(([station]) => station);
-        if(filterStations.length){
-          const ordered = [];
-          const seen = new Set();
-          [...stations.filter(st=>filterStations.includes(st)), ...filterStations].forEach((station)=>{
-            if(!seen.has(station)){
-              ordered.push(station);
-              seen.add(station);
-            }
-          });
-          stations = ordered;
-        }
-      }
-
-      if(stations.length === 0){
-        const supported = Object.keys(simulator.config.stationLines || {}).join(', ');
-        container.innerHTML = `<div class="text-secondary">Add a favorite station to see simulated countdowns. Supported demo stations: ${supported || 'loading…'}.</div>`;
-        return;
-      }
-
-      const cards = [];
-      stations.forEach(station=>{
-        const lineMap = arrivalData[station];
-        if(!lineMap) return;
-        let hasMatchingLine = false;
-        let soonestCountdown = Infinity;
-
-        const lineSectionsHtml = Object.entries(lineMap).map(([lineName, arrivals])=>{
-          if(filterLine && lineName !== filterLine){ return ''; }
-          if(!Array.isArray(arrivals) || arrivals.length === 0){ return ''; }
-          hasMatchingLine = true;
-          const lineColor = getLineColor(lineName);
-          const maxSeconds = getLineMaxSeconds(simulator, lineName);
-
-          const rows = arrivals.map((seconds, idx)=>{
-            const label = formatArrivalCountdown(seconds);
-            if(seconds < soonestCountdown){ soonestCountdown = seconds; }
-            // Animate the progress bar so it feels like a live countdown
-            const progress = Math.min(1, Math.max(0, 1 - seconds / maxSeconds));
-            const styleColor = lineColor;
-            const iconStyles = `background:${styleColor}1a;color:${styleColor};box-shadow:inset 0 0 0 1px ${styleColor}55;`;
-            return `<div class="arrival-row">
-                <div class="train-icon" style="${iconStyles}">
-                  <span class="material-icons">${idx === 0 ? 'train' : 'tram'}</span>
-                </div>
-                <div class="countdown">${label}</div>
-                <div class="progress-bar" aria-hidden="true">
-                  <div class="progress-fill" style="background:${styleColor};transform:scaleX(${progress.toFixed(2)});"></div>
-                  <div class="progress-glow" style="color:${styleColor};"></div>
-                </div>
-              </div>`;
-          }).join('');
-
-          return `<div class="line-section">
-              <div class="line-label" style="color:${lineColor}">
-                <span>${lineName}</span>
-                <span class="subtle">Next ${arrivals.length} trains</span>
-              </div>
-              ${rows}
-            </div>`;
-        }).filter(Boolean).join('');
-
-        if(!hasMatchingLine){ return; }
-
-        const isFavorite = favoriteStations.includes(station);
-        const favoriteClass = isFavorite ? 'favorite-toggle active' : 'favorite-toggle';
-        const badgeTone = isFavorite ? 'bg-danger-subtle text-danger' : 'bg-secondary-subtle text-secondary';
-        // Glow the card when a train is under 45 seconds away to mimic platform alerts
-        const soonClass = soonestCountdown <= 45 ? 'arrival-card arriving-soon' : 'arrival-card';
-        const stationForJs = station.replace(/\\/g, '\\\\').replace(/'/g, '\\\'');
-        cards.push(`<div class="${soonClass}">
-            <div class="arrival-header">
-              <div>
-                <div class="station-name">${station}</div>
-                <span class="badge ${badgeTone}">Next trains</span>
-              </div>
-              <button class="${favoriteClass}" type="button" onclick="toggleFavoriteStation('${stationForJs}')">
-                <span class="material-icons">${isFavorite ? 'star' : 'star_border'}</span>
-              </button>
-            </div>
-            ${lineSectionsHtml}
-          </div>`);
-      });
-
-      if(cards.length === 0){
-        container.innerHTML = '<div class="text-secondary">No simulated data available for your selected stations yet.</div>';
-        return;
-      }
-
-      container.innerHTML = cards.join('');
+    const simulator = window.trainArrivalSimulator;
+    const delayToggle = document.getElementById('delayToggle');
+    if (delayToggle && simulator?.config?.delay) {
+      delayToggle.checked = !!simulator.config.delay.enabled;
     }
-    function manualRefreshArrivals(){
-      renderLiveArrivals();
+
+    if (!simulator) {
+      container.innerHTML = '<div class="text-secondary">Arrival simulator is still loading…</div>';
+      return;
     }
-    function toggleSimulatedDelay(isEnabled){
-      if(window.trainArrivalSimulator?.config?.delay){
-        window.trainArrivalSimulator.config.delay.enabled = isEnabled;
-        renderLiveArrivals();
+
+    const arrivalData = simulator.getArrivals({ returnSeconds: true });
+    let stations = getStationsForArrivalDisplay(arrivalData);
+
+    // Favorite stations for highlighting
+    const favoriteStations = Array.isArray(userData?.favorites)
+      ? userData.favorites.map(f => f.station)
+      : [];
+
+    const filterLine = document.getElementById('liveTrainLine')?.value || '';
+    if (filterLine) {
+      const filterStations = Object.entries(arrivalData)
+        .filter(([, lineMap]) => lineMap && lineMap[filterLine])
+        .map(([station]) => station);
+
+      if (filterStations.length) {
+        const ordered = [];
+        const seen = new Set();
+        [...stations.filter(st => filterStations.includes(st)), ...filterStations].forEach(station => {
+          if (!seen.has(station)) {
+            ordered.push(station);
+            seen.add(station);
+          }
+        });
+        stations = ordered;
       }
     }
-    function triggerDemoNarration(){
+
+    if (stations.length === 0) {
+      const supported = Object.keys(simulator.config.stationLines || {}).join(', ');
+      container.innerHTML = `<div class="text-secondary">Add a favorite station to see simulated countdowns. Supported demo stations: ${supported || 'loading…'}.</div>`;
+      return;
+    }
+
+    const cards = [];
+    stations.forEach(station => {
+      const lineMap = arrivalData[station];
+      if (!lineMap) return;
+
+      let hasMatchingLine = false;
+      let soonestCountdown = Infinity;
+
+      const lineSectionsHtml = Object.entries(lineMap).map(([lineName, arrivals]) => {
+        if (filterLine && lineName !== filterLine) return '';
+        if (!Array.isArray(arrivals) || arrivals.length === 0) return '';
+
+        hasMatchingLine = true;
+        const lineColor = getLineColor(lineName);
+        const maxSeconds = getLineMaxSeconds(simulator, lineName);
+
+        const rows = arrivals.map((seconds, idx) => {
+          const label = formatArrivalCountdown(seconds);
+          if (seconds < soonestCountdown) soonestCountdown = seconds;
+          const progress = Math.min(1, Math.max(0, 1 - seconds / maxSeconds));
+          const styleColor = lineColor;
+          const iconStyles = `background:${styleColor}1a;color:${styleColor};box-shadow:inset 0 0 0 1px ${styleColor}55;`;
+          return `<div class="arrival-row">
+          <div class="train-icon" style="${iconStyles}">
+            <span class="material-icons">${idx === 0 ? 'train' : 'tram'}</span>
+          </div>
+          <div class="countdown">${label}</div>
+          <div class="progress-bar" aria-hidden="true">
+            <div class="progress-fill" style="background:${styleColor};transform:scaleX(${progress.toFixed(2)});"></div>
+            <div class="progress-glow" style="color:${styleColor};"></div>
+          </div>
+        </div>`;
+        }).join('');
+
+        return `<div class="line-section">
+        <div class="line-label" style="color:${lineColor}">
+          <span>${lineName}</span>
+          <span class="subtle">Next ${arrivals.length} trains</span>
+        </div>
+        ${rows}
+      </div>`;
+      }).filter(Boolean).join('');
+
+      if (!hasMatchingLine) return;
+
+      const isFavorite = favoriteStations.includes(station);
+      const favoriteClass = isFavorite ? 'favorite-toggle active' : 'favorite-toggle';
+      const badgeTone = isFavorite ? 'bg-danger-subtle text-danger' : 'bg-secondary-subtle text-secondary';
+      const soonClass = soonestCountdown <= 45 ? 'arrival-card arriving-soon' : 'arrival-card';
+      const stationForJs = station.replace(/\\/g, '\\\\').replace(/'/g, '\\\'');
+
+      cards.push(`<div class="${soonClass}">
+      <div class="arrival-header">
+        <div>
+          <div class="station-name">${station}</div>
+          <span class="badge ${badgeTone}">Next trains</span>
+        </div>
+        <button class="${favoriteClass}" type="button" onclick="toggleFavorite('${stationForJs}')">
+          <span class="material-icons">${isFavorite ? 'star' : 'star_border'}</span>
+        </button>
+      </div>
+      ${lineSectionsHtml}
+    </div>`);
+    });
+
+    container.innerHTML = cards.length ? cards.join('') : '<div class="text-secondary">No simulated data available for your selected stations yet.</div>';
+  }
+    function triggerDemoNarration() {
       // Quick script cue card for presenters to highlight hero interactions
       const message = [
         'Demo Tips:',
@@ -3219,168 +3601,201 @@ function fareByType(km, type = "adult") {
       ].join('\n');
       alert(message);
     }
-    function updateLiveClockDisplay(){
+    function updateLiveClockDisplay() {
       const clockEl = document.getElementById('liveClock');
-      if(!clockEl) return;
+      if (!clockEl) return;
       const now = new Date();
       const parts = now.toLocaleTimeString(undefined, { hour12: false });
       clockEl.innerHTML = `<span>${parts}</span>`;
     }
-    function startLiveClock(){
-      if(liveClockIntervalId === null){
+    function startLiveClock() {
+      if (liveClockIntervalId === null) {
         liveClockIntervalId = setInterval(updateLiveClockDisplay, 1000);
       }
       updateLiveClockDisplay();
     }
-    function startArrivalRenderLoop(){
-      if(arrivalRenderIntervalId === null){
+    function startArrivalRenderLoop() {
+      if (arrivalRenderIntervalId === null) {
         arrivalRenderIntervalId = setInterval(renderLiveArrivals, 1000);
       }
       renderLiveArrivals();
     }
-    function stopArrivalRenderLoop(){
-      if(arrivalRenderIntervalId !== null){
+    function stopArrivalRenderLoop() {
+      if (arrivalRenderIntervalId !== null) {
         clearInterval(arrivalRenderIntervalId);
         arrivalRenderIntervalId = null;
       }
     }
-    function setTheme(mode){
+    function setTheme(mode) {
       const bodyEl = document.body;
       const toggleBtn = document.getElementById('themeToggle');
       // Update global palette and button state, storing preference for later visits
-      if(mode === 'dark'){
+      if (mode === 'dark') {
         bodyEl.classList.add('dark-mode');
         toggleBtn?.classList.add('active');
-        if(toggleBtn){
+        if (toggleBtn) {
           toggleBtn.querySelector('.material-icons').textContent = 'light_mode';
           toggleBtn.querySelector('.toggle-label').textContent = 'Day Mode';
         }
         localStorage.setItem('singatrain-theme', 'dark');
-      }else{
+      } else {
         bodyEl.classList.remove('dark-mode');
         toggleBtn?.classList.remove('active');
-        if(toggleBtn){
+        if (toggleBtn) {
           toggleBtn.querySelector('.material-icons').textContent = 'dark_mode';
           toggleBtn.querySelector('.toggle-label').textContent = 'Night Mode';
         }
         localStorage.setItem('singatrain-theme', 'light');
       }
     }
-    function initializeThemeToggle(){
+    function initializeThemeToggle() {
       const saved = localStorage.getItem('singatrain-theme');
       const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
       const initialMode = saved || (prefersDark ? 'dark' : 'light');
       setTheme(initialMode);
-      document.getElementById('themeToggle')?.addEventListener('click', ()=>{
+      document.getElementById('themeToggle')?.addEventListener('click', () => {
         const isDark = document.body.classList.contains('dark-mode');
         setTheme(isDark ? 'light' : 'dark');
       });
     }
-    function loadDashboard(){
-      // favorites
+    // robust loadDashboard that waits for visibility + forces reflow
+    async function loadDashboard() {
       const favContainer = document.getElementById('dashboardFavorites');
-      if(userData.favorites.length===0){
-        favContainer.innerHTML = '<div class="text-secondary">No favorites. Add some in Profile.</div>';
-      }else{
-        favContainer.innerHTML = userData.favorites.map(f=>`
-          <div class="col-md-6">
-            <div class="border rounded p-3 h-100" role="button" onclick="viewFavoriteDetails('${f.station.replace(/'/g,"\\'")}')">
-              <div class="fw-semibold">${f.label}</div>
-              <div class="text-danger">${f.station}</div>
-              <div class="small text-secondary">Click for live info</div>
-            </div>
-          </div>
-        `).join('');
+      const alertContainer = document.getElementById('dashboardAlerts');
+
+      if (!favContainer) {
+        console.warn('loadDashboard: #dashboardFavorites not found in DOM yet');
+        return;
       }
 
-      // alerts
-      const alertContainer = document.getElementById('dashboardAlerts');
+      // Clear quickly to avoid duplicate content
+      favContainer.innerHTML = '';
+
+      // If dashboardSection is hidden, make it visible first so CSS/layout can settle
+      const dashboardSectionEl = document.getElementById('dashboard');
+      if (dashboardSectionEl && dashboardSectionEl.classList.contains('d-none')) {
+        dashboardSectionEl.classList.remove('d-none');
+        // if you use .hidden instead of .d-none, adjust accordingly
+      }
+
+      // Wait for the next two animation frames so browser can apply styles / layout
+      await new Promise(requestAnimationFrame);
+      await new Promise(requestAnimationFrame);
+
+      // Small extra tick to allow fonts/CSS to settle
+      await new Promise(res => setTimeout(res, 25));
+
+      // Debug info
+      console.debug('loadDashboard: userData.favorites length =', userData?.favorites?.length);
+      console.debug('loadDashboard: favContainer clientWidth,height =', favContainer.clientWidth, favContainer.clientHeight);
+
+      // Populate favorites grid
+      if (!userData || !Array.isArray(userData.favorites) || userData.favorites.length === 0) {
+        favContainer.innerHTML = '<div class="text-secondary">No favorites. Add some in Profile.</div>';
+      } else {
+        favContainer.innerHTML = userData.favorites.map(f => `
+      <div class="col-md-6">
+        <div class="border rounded p-3 h-100" role="button" onclick="viewFavoriteDetails('${f.station.replace(/'/g, "\\'")}')">
+          <div class="fw-semibold">${f.label}</div>
+          <div class="text-danger">${f.station}</div>
+          <div class="small text-secondary">Click for live info</div>
+        </div>
+      </div>
+    `).join('');
+      }
+
+      // Force synchronous reflow / repaint to ensure bootstrap columns lay out
+      // reading offsetHeight triggers reflow
+      // eslint-disable-next-line no-unused-expressions
+      favContainer.offsetHeight;
+
+      // Trigger a window resize event (some layouts respond to it)
+      window.dispatchEvent(new Event('resize'));
+
+      // --- Alerts (unchanged, but wrapped so it doesn't block) ---
       alertContainer.innerHTML = '<div class="text-secondary">Loading alerts…</div>';
-      (async ()=>{
-        try{
+      (async () => {
+        try {
           const url = `${PROXY}${encodeURIComponent(API_BASE + "/TrainServiceAlerts")}`;
-          const res = await fetch(url, { headers:{ AccountKey: ACCOUNT_KEY, accept:"application/json" } });
-          if(!res.ok) throw new Error('Alerts not available');
+          const res = await fetch(url, { headers: { AccountKey: ACCOUNT_KEY, accept: "application/json" } });
+          if (!res.ok) throw new Error('Alerts not available');
           const data = await res.json();
-          let alerts = Array.isArray(data.value||data.Value) ? (data.value||data.Value) : (Array.isArray(data)?data:[]);
-          if(alerts.length===0){
+          let alerts = Array.isArray(data.value || data.Value) ? (data.value || data.Value) : (Array.isArray(data) ? data : []);
+          if (alerts.length === 0) {
             alertContainer.innerHTML = '<div class="alert-card alert-normal">✅ All train lines operating normally</div>';
-          }else{
-            alertContainer.innerHTML = alerts.map(a=>{
-              const disrupted = a.Status==2;
-              return `<div class="alert-card ${disrupted?'alert-disrupted':'alert-normal'} mb-2">
-                <strong>${disrupted?'⚠️':'✅'} ${a.Line||'Line'}</strong><br>
-                <small>${a.Message||'No details'}</small>
-              </div>`;
+          } else {
+            alertContainer.innerHTML = alerts.map(a => {
+              const disrupted = a.Status == 2;
+              return `<div class="alert-card ${disrupted ? 'alert-disrupted' : 'alert-normal'} mb-2">
+            <strong>${disrupted ? '⚠️' : '✅'} ${a.Line || 'Line'}</strong><br>
+            <small>${a.Message || 'No details'}</small>
+          </div>`;
             }).join('');
           }
-        }catch(err){
+        } catch (err) {
           console.log('Dashboard alerts API unavailable, showing normal status');
           alertContainer.innerHTML = '<div class="alert-card alert-normal">✅ All train lines operating normally (demo mode)</div>';
         }
       })();
     }
-    function viewFavoriteDetails(station){
-      alert(`Live details for ${station} would appear here.\n\nIn a full build: live arrivals, crowd level, service alerts, nearby facilities.`);
-    }
 
     // ====== MAPBOX ======
-    function initMeetupMap(){
+    function initMeetupMap() {
       mapboxgl.accessToken = 'pk.eyJ1IjoiY2hlZWF1biIsImEiOiJja2NydG83cWMwaGJsMnBqdjR5aHc3MzdlIn0.YGTZpi7JQMquEOv9E8K_bg';
       const map = new mapboxgl.Map({
         container: 'meetupMap',
         style: 'mapbox://styles/mapbox/streets-v11',
-        center: [103.8475, 1.3011], zoom: 11, renderWorldCopies:false
+        center: [103.8475, 1.3011], zoom: 11, renderWorldCopies: false
       });
       map.addControl(new mapboxgl.NavigationControl());
 
-      map.on('load', async ()=>{
-        try{
+      map.on('load', async () => {
+        try {
           const response = await fetch('./rail-map-standalone/sg-rail.geo.66ea655e.json');
-          if(!response.ok) throw new Error(`HTTP ${response.status}`);
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
           const data = await response.json();
 
-          map.addSource('mrt-stations', { type:'geojson', data });
+          map.addSource('mrt-stations', { type: 'geojson', data });
           map.addLayer({
-            id:'mrt-lines', source:'mrt-stations', filter:['==',['geometry-type'],'LineString'], type:'line',
-            paint:{
-              'line-width':['interpolate',['linear'],['zoom'],10,2,16,6],
-              'line-color':[
-                'match',['get','line_color'],
-                'orangered','#d42e12','mediumseagreen','#009645','orange','#fa9e0d','saddlebrown','#9D5B25',
-                'darkmagenta','#9900aa','darkslateblue','#005ec4','gray','#748477', '#748477'
-              ], 'line-opacity':0.8
-            }, layout:{ 'line-cap':'round','line-join':'round' }
+            id: 'mrt-lines', source: 'mrt-stations', filter: ['==', ['geometry-type'], 'LineString'], type: 'line',
+            paint: {
+              'line-width': ['interpolate', ['linear'], ['zoom'], 10, 2, 16, 6],
+              'line-color': [
+                'match', ['get', 'line_color'],
+                'orangered', '#d42e12', 'mediumseagreen', '#009645', 'orange', '#fa9e0d', 'saddlebrown', '#9D5B25',
+                'darkmagenta', '#9900aa', 'darkslateblue', '#005ec4', 'gray', '#748477', '#748477'
+              ], 'line-opacity': 0.8
+            }, layout: { 'line-cap': 'round', 'line-join': 'round' }
           });
           map.addLayer({
-            id:'stations', source:'mrt-stations', filter:['==',['get','stop_type'],'station'], type:'circle',
-            paint:{
-              'circle-radius':6,
-              'circle-color':[
-                'match',['get','station_colors'],
-                'red','#d42e12','green','#009645','orange','#fa9e0d','brown','#9D5B25','purple','#9900aa','blue','#005ec4','#748477'
+            id: 'stations', source: 'mrt-stations', filter: ['==', ['get', 'stop_type'], 'station'], type: 'circle',
+            paint: {
+              'circle-radius': 6,
+              'circle-color': [
+                'match', ['get', 'station_colors'],
+                'red', '#d42e12', 'green', '#009645', 'orange', '#fa9e0d', 'brown', '#9D5B25', 'purple', '#9900aa', 'blue', '#005ec4', '#748477'
               ],
-              'circle-stroke-color':'#fff','circle-stroke-width':2
+              'circle-stroke-color': '#fff', 'circle-stroke-width': 2
             }
           });
           map.addLayer({
-            id:'station-labels', source:'mrt-stations', filter:['==',['get','stop_type'],'station'], type:'symbol',
-            layout:{ 'text-field':['get','name'],'text-size':12,'text-anchor':'bottom','text-offset':[0,-1] },
-            paint:{ 'text-halo-color':'#fff','text-halo-width':2 }
+            id: 'station-labels', source: 'mrt-stations', filter: ['==', ['get', 'stop_type'], 'station'], type: 'symbol',
+            layout: { 'text-field': ['get', 'name'], 'text-size': 12, 'text-anchor': 'bottom', 'text-offset': [0, -1] },
+            paint: { 'text-halo-color': '#fff', 'text-halo-width': 2 }
           });
 
           // Store avatar markers
           const avatarMarkers = new Map();
-          
-          map.on('click','stations',(e)=>{
+
+          map.on('click', 'stations', (e) => {
             const f = e.features[0];
             const props = f.properties;
             const name = props.name;
             const coordinates = e.lngLat;
-            
+
             // Create click ripple animation
             createMapClickRipple(e.point);
-            
+
             // Add station selection animation
             const stationElement = e.originalEvent.target;
             if (stationElement) {
@@ -3389,10 +3804,10 @@ function fareByType(km, type = "adult") {
                 stationElement.classList.remove('station-selected');
               }, 800);
             }
-            
+
             // Get all dropdowns
             const allSelects = document.querySelectorAll('#meetupLocations .meetup-station');
-            
+
             // Check if this station is already selected
             let selectedIndex = -1;
             for (let i = 0; i < allSelects.length; i++) {
@@ -3401,7 +3816,7 @@ function fareByType(km, type = "adult") {
                 break;
               }
             }
-            
+
             if (selectedIndex !== -1) {
               // Station already selected - remove it
               allSelects[selectedIndex].value = '';
@@ -3410,7 +3825,7 @@ function fareByType(km, type = "adult") {
             } else {
               // Station not selected - add it
               let emptySelect = null;
-              
+
               // Look for first empty dropdown
               for (let select of allSelects) {
                 if (!select.value || select.value === '') {
@@ -3418,7 +3833,7 @@ function fareByType(km, type = "adult") {
                   break;
                 }
               }
-              
+
               if (emptySelect) {
                 // Fill the empty slot
                 emptySelect.value = name;
@@ -3447,7 +3862,7 @@ function fareByType(km, type = "adult") {
               }
             }
           });
-          
+
           function createMapClickRipple(point) {
             const mapContainer = document.getElementById('meetupMap');
             const ripple = document.createElement('div');
@@ -3458,18 +3873,18 @@ function fareByType(km, type = "adult") {
             ripple.style.height = '20px';
             ripple.style.marginLeft = '-10px';
             ripple.style.marginTop = '-10px';
-            
+
             mapContainer.appendChild(ripple);
-            
+
             setTimeout(() => {
               ripple.remove();
             }, 600);
           }
-          
+
           function addAvatarMarker(stationName, coordinates, personNumber) {
             // Remove existing marker if any
             removeAvatarMarker(stationName);
-            
+
             // Create simple emoji marker
             const avatarEl = document.createElement('div');
             avatarEl.className = 'avatar-marker';
@@ -3487,16 +3902,16 @@ function fareByType(km, type = "adult") {
               box-shadow: 0 2px 8px rgba(0,0,0,0.2);
               border: 2px solid var(--sg-red);
             `;
-            
+
             // Add marker to map
             const marker = new mapboxgl.Marker(avatarEl)
               .setLngLat([coordinates.lng, coordinates.lat])
               .addTo(map);
-            
+
             avatarMarkers.set(stationName, marker);
           }
-          
-          
+
+
           function removeAvatarMarker(stationName) {
             const marker = avatarMarkers.get(stationName);
             if (marker) {
@@ -3504,16 +3919,16 @@ function fareByType(km, type = "adult") {
               avatarMarkers.delete(stationName);
             }
           }
-          
+
           function getAvatarEmoji(personNumber) {
             const cars = ['🚗', '🚙', '🚕', '🚓', '🚑', '🚒', '🚐', '🚚', '🚛', '🏎️'];
             return cars[(personNumber - 1) % cars.length];
           }
-          
+
           // Driving animation functions
           function showMeetingPointInfo(meetingStation) {
             showToast(`📍 Meeting Point: ${meetingStation}`, false);
-            
+
             // Center the map on the meeting point
             const stationCoords = getStationCoordinates(meetingStation);
             if (stationCoords) {
@@ -3524,7 +3939,7 @@ function fareByType(km, type = "adult") {
               });
             }
           }
-          
+
           function getStationCoordinates(stationName) {
             // This would normally query the GeoJSON data
             // For now, return some sample coordinates
@@ -3539,23 +3954,25 @@ function fareByType(km, type = "adult") {
               'Napier': { lng: 103.8080, lat: 1.3048 },
               'Orchard Boulevard': { lng: 103.8320, lat: 1.3048 }
             };
-            
+
             return sampleCoords[stationName] || null;
           }
-          map.on('mouseenter','stations',()=>map.getCanvas().style.cursor='pointer');
-          map.on('mouseleave','stations',()=>map.getCanvas().style.cursor='');
-        }catch(error){
+          map.on('mouseenter', 'stations', () => map.getCanvas().style.cursor = 'pointer');
+          map.on('mouseleave', 'stations', () => map.getCanvas().style.cursor = '');
+        } catch (error) {
           console.error('Meetup map load error, using fallback:', error);
           const fallback = {
-            type:'FeatureCollection', features:[
-              { type:'Feature', properties:{ name:'City Hall', station_codes:'NS25-EW13', station_colors:'red', 'name_zh-Hans':'政府大厦', name_ta:'சிட்டி ஹால்' }, geometry:{ type:'Point', coordinates:[103.8523,1.2931] } },
-              { type:'Feature', properties:{ name:'Raffles Place', station_codes:'NS26-EW14', station_colors:'green', 'name_zh-Hans':'莱佛士坊', name_ta:'ராஃபிள்ஸ் பிளேஸ்' }, geometry:{ type:'Point', coordinates:[103.8514,1.2834] } },
-              { type:'Feature', properties:{ name:'Marina Bay', station_codes:'NS27-CC4-TE2', station_colors:'orange', 'name_zh-Hans':'滨海湾', name_ta:'மரினா பே' }, geometry:{ type:'Point', coordinates:[103.8546,1.2767] } }
+            type: 'FeatureCollection', features: [
+              { type: 'Feature', properties: { name: 'City Hall', station_codes: 'NS25-EW13', station_colors: 'red', 'name_zh-Hans': '政府大厦', name_ta: 'சிட்டி ஹால்' }, geometry: { type: 'Point', coordinates: [103.8523, 1.2931] } },
+              { type: 'Feature', properties: { name: 'Raffles Place', station_codes: 'NS26-EW14', station_colors: 'green', 'name_zh-Hans': '莱佛士坊', name_ta: 'ராஃபிள்ஸ் பிளேஸ்' }, geometry: { type: 'Point', coordinates: [103.8514, 1.2834] } },
+              { type: 'Feature', properties: { name: 'Marina Bay', station_codes: 'NS27-CC4-TE2', station_colors: 'orange', 'name_zh-Hans': '滨海湾', name_ta: 'மரினா பே' }, geometry: { type: 'Point', coordinates: [103.8546, 1.2767] } }
             ]
           };
-          map.addSource('mrt-stations',{ type:'geojson', data:fallback });
-          map.addLayer({ id:'stations', source:'mrt-stations', type:'circle',
-            paint:{ 'circle-radius':8,'circle-color':'#d42e12','circle-stroke-color':'#fff','circle-stroke-width':2 }});
+          map.addSource('mrt-stations', { type: 'geojson', data: fallback });
+          map.addLayer({
+            id: 'stations', source: 'mrt-stations', type: 'circle',
+            paint: { 'circle-radius': 8, 'circle-color': '#d42e12', 'circle-stroke-color': '#fff', 'circle-stroke-width': 2 }
+          });
         }
       });
     }
@@ -3579,25 +3996,25 @@ function fareByType(km, type = "adult") {
       'Jurong Region Line': '#00a0a8',
       'LRT Line': '#748477'
     };
-    function getLineColor(lineName){
+    function getLineColor(lineName) {
       return LINE_COLOR_MAP[lineName] || '#6b7280';
     }
-    function getLineMaxSeconds(simulator, lineName){
+    function getLineMaxSeconds(simulator, lineName) {
       const defaultIntervals = DEFAULT_LINE_INTERVALS.default;
       const lineIntervals = simulator?.config?.lineIntervals?.[lineName] || simulator?.config?.lineIntervals?.default || defaultIntervals;
       const candidates = [];
-      Object.values(lineIntervals || {}).forEach(range=>{
-        if(Array.isArray(range)){
-          range.forEach((value)=>{
-            if(Number.isFinite(value)) candidates.push(value);
+      Object.values(lineIntervals || {}).forEach(range => {
+        if (Array.isArray(range)) {
+          range.forEach((value) => {
+            if (Number.isFinite(value)) candidates.push(value);
           });
         }
       });
-      if(candidates.length === 0){
-        Object.values(defaultIntervals).forEach(range=>{
-          if(Array.isArray(range)){
-            range.forEach((value)=>{
-              if(Number.isFinite(value)) candidates.push(value);
+      if (candidates.length === 0) {
+        Object.values(defaultIntervals).forEach(range => {
+          if (Array.isArray(range)) {
+            range.forEach((value) => {
+              if (Number.isFinite(value)) candidates.push(value);
             });
           }
         });
@@ -3760,65 +4177,65 @@ function fareByType(km, type = "adult") {
     window.trainArrivalSimulator = trainArrivalSimulator;
     window.getSimulatedArrivals = () => trainArrivalSimulator.getArrivals();
 
-    function initMap(){
+    function initMap() {
       mapboxgl.accessToken = 'pk.eyJ1IjoiY2hlZWF1biIsImEiOiJja2NydG83cWMwaGJsMnBqdjR5aHc3MzdlIn0.YGTZpi7JQMquEOv9E8K_bg';
       const map = new mapboxgl.Map({
         container: 'singaporeMap',
         style: 'mapbox://styles/mapbox/streets-v11',
-        center: [103.8475, 1.3011], zoom: 11, renderWorldCopies:false
+        center: [103.8475, 1.3011], zoom: 11, renderWorldCopies: false
       });
       map.addControl(new mapboxgl.NavigationControl());
 
-      map.on('load', async ()=>{
-        try{
+      map.on('load', async () => {
+        try {
           const response = await fetch('./rail-map-standalone/sg-rail.geo.66ea655e.json');
-          if(!response.ok) throw new Error(`HTTP ${response.status}`);
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
           const data = await response.json();
 
-          map.addSource('mrt-stations', { type:'geojson', data });
+          map.addSource('mrt-stations', { type: 'geojson', data });
           map.addLayer({
-            id:'mrt-lines', source:'mrt-stations', filter:['==',['geometry-type'],'LineString'], type:'line',
-            paint:{
-              'line-width':['interpolate',['linear'],['zoom'],10,2,16,6],
-              'line-color':[
-                'match',['get','line_color'],
-                'orangered','#d42e12','mediumseagreen','#009645','orange','#fa9e0d','saddlebrown','#9D5B25',
-                'darkmagenta','#9900aa','darkslateblue','#005ec4','gray','#748477', '#748477'
-              ], 'line-opacity':0.8
-            }, layout:{ 'line-cap':'round','line-join':'round' }
+            id: 'mrt-lines', source: 'mrt-stations', filter: ['==', ['geometry-type'], 'LineString'], type: 'line',
+            paint: {
+              'line-width': ['interpolate', ['linear'], ['zoom'], 10, 2, 16, 6],
+              'line-color': [
+                'match', ['get', 'line_color'],
+                'orangered', '#d42e12', 'mediumseagreen', '#009645', 'orange', '#fa9e0d', 'saddlebrown', '#9D5B25',
+                'darkmagenta', '#9900aa', 'darkslateblue', '#005ec4', 'gray', '#748477', '#748477'
+              ], 'line-opacity': 0.8
+            }, layout: { 'line-cap': 'round', 'line-join': 'round' }
           });
           map.addLayer({
-            id:'stations', source:'mrt-stations', filter:['==',['get','stop_type'],'station'], type:'circle',
-            paint:{
-              'circle-radius':6,
-              'circle-color':[
-                'match',['get','station_colors'],
-                'red','#d42e12','green','#009645','orange','#fa9e0d','brown','#9D5B25','purple','#9900aa','blue','#005ec4','#748477'
+            id: 'stations', source: 'mrt-stations', filter: ['==', ['get', 'stop_type'], 'station'], type: 'circle',
+            paint: {
+              'circle-radius': 6,
+              'circle-color': [
+                'match', ['get', 'station_colors'],
+                'red', '#d42e12', 'green', '#009645', 'orange', '#fa9e0d', 'brown', '#9D5B25', 'purple', '#9900aa', 'blue', '#005ec4', '#748477'
               ],
-              'circle-stroke-color':'#fff','circle-stroke-width':2
+              'circle-stroke-color': '#fff', 'circle-stroke-width': 2
             }
           });
           map.addLayer({
-            id:'station-labels', source:'mrt-stations', filter:['==',['get','stop_type'],'station'], type:'symbol',
-            layout:{ 'text-field':['get','name'],'text-size':12,'text-anchor':'bottom','text-offset':[0,-1] },
-            paint:{ 'text-halo-color':'#fff','text-halo-width':2 }
+            id: 'station-labels', source: 'mrt-stations', filter: ['==', ['get', 'stop_type'], 'station'], type: 'symbol',
+            layout: { 'text-field': ['get', 'name'], 'text-size': 12, 'text-anchor': 'bottom', 'text-offset': [0, -1] },
+            paint: { 'text-halo-color': '#fff', 'text-halo-width': 2 }
           });
 
-          map.on('click','stations',(e)=>{
-            document.querySelectorAll('.mapboxgl-popup').forEach(p=>p.remove());
+          map.on('click', 'stations', (e) => {
+            document.querySelectorAll('.mapboxgl-popup').forEach(p => p.remove());
             const f = e.features[0];
             const props = f.properties;
             const name = props.name;
             const codes = props.station_codes;
             const colors = props.station_colors;
-            const nameZh = props['name_zh-Hans']||'';
-            const nameTa = props.name_ta||'';
+            const nameZh = props['name_zh-Hans'] || '';
+            const nameTa = props.name_ta || '';
             const lineName = {
-              'red':'North-South Line (NSL)','green':'East-West Line (EWL)','orange':'Circle Line (CCL)','brown':'Downtown Line (DTL)','purple':'North East Line (NEL)','blue':'Thomson-East Coast Line (TEL)','gray':'LRT Line'
+              'red': 'North-South Line (NSL)', 'green': 'East-West Line (EWL)', 'orange': 'Circle Line (CCL)', 'brown': 'Downtown Line (DTL)', 'purple': 'North East Line (NEL)', 'blue': 'Thomson-East Coast Line (TEL)', 'gray': 'LRT Line'
             }[colors] || 'Unknown Line';
-            const dot = (c)=> (c==='red'?'#d42e12':c==='green'?'#009645':c==='orange'?'#fa9e0d':c==='brown'?'#9D5B25':c==='purple'?'#9900aa':c==='blue'?'#005ec4':'#748477');
+            const dot = (c) => (c === 'red' ? '#d42e12' : c === 'green' ? '#009645' : c === 'orange' ? '#fa9e0d' : c === 'brown' ? '#9D5B25' : c === 'purple' ? '#9900aa' : c === 'blue' ? '#005ec4' : '#748477');
 
-            new mapboxgl.Popup({ maxWidth:'300px', closeButton:true, closeOnClick:false })
+            new mapboxgl.Popup({ maxWidth: '300px', closeButton: true, closeOnClick: false })
               .setLngLat(e.lngLat)
               .setHTML(`
                 <div style="padding:12px">
@@ -3828,32 +4245,34 @@ function fareByType(km, type = "adult") {
                   </div>
                   <div class="mb-1"><span class="text-secondary">Code:</span> <span class="fw-semibold text-danger">${codes}</span></div>
                   <div class="mb-1"><span class="text-secondary">Line:</span> ${lineName}</div>
-                  ${nameZh? `<div class="mb-1"><span class="text-secondary">中文:</span> ${nameZh}</div>`:''}
-                  ${nameTa? `<div class="mb-1"><span class="text-secondary">தமிழ்:</span> ${nameTa}</div>`:''}
+                  ${nameZh ? `<div class="mb-1"><span class="text-secondary">中文:</span> ${nameZh}</div>` : ''}
+                  ${nameTa ? `<div class="mb-1"><span class="text-secondary">தமிழ்:</span> ${nameTa}</div>` : ''}
                   <button class="btn btn-primary btn-sm w-100 mt-2" onclick="alert('Live arrivals & crowd levels shown here in a full build')">View Live Info</button>
                 </div>`)
               .addTo(map);
           });
-          map.on('mouseenter','stations',()=>map.getCanvas().style.cursor='pointer');
-          map.on('mouseleave','stations',()=>map.getCanvas().style.cursor='');
-        }catch(error){
+          map.on('mouseenter', 'stations', () => map.getCanvas().style.cursor = 'pointer');
+          map.on('mouseleave', 'stations', () => map.getCanvas().style.cursor = '');
+        } catch (error) {
           console.error('Map load error, using fallback:', error);
           const fallback = {
-            type:'FeatureCollection', features:[
-              { type:'Feature', properties:{ name:'City Hall', station_codes:'NS25-EW13', station_colors:'red', 'name_zh-Hans':'政府大厦', name_ta:'சிட்டி ஹால்' }, geometry:{ type:'Point', coordinates:[103.8523,1.2931] } },
-              { type:'Feature', properties:{ name:'Raffles Place', station_codes:'NS26-EW14', station_colors:'green', 'name_zh-Hans':'莱佛士坊', name_ta:'ராஃபிள்ஸ் பிளேஸ்' }, geometry:{ type:'Point', coordinates:[103.8514,1.2834] } },
-              { type:'Feature', properties:{ name:'Marina Bay', station_codes:'NS27-CC4-TE2', station_colors:'orange', 'name_zh-Hans':'滨海湾', name_ta:'மரினா பே' }, geometry:{ type:'Point', coordinates:[103.8546,1.2767] } }
+            type: 'FeatureCollection', features: [
+              { type: 'Feature', properties: { name: 'City Hall', station_codes: 'NS25-EW13', station_colors: 'red', 'name_zh-Hans': '政府大厦', name_ta: 'சிட்டி ஹால்' }, geometry: { type: 'Point', coordinates: [103.8523, 1.2931] } },
+              { type: 'Feature', properties: { name: 'Raffles Place', station_codes: 'NS26-EW14', station_colors: 'green', 'name_zh-Hans': '莱佛士坊', name_ta: 'ராஃபிள்ஸ் பிளேஸ்' }, geometry: { type: 'Point', coordinates: [103.8514, 1.2834] } },
+              { type: 'Feature', properties: { name: 'Marina Bay', station_codes: 'NS27-CC4-TE2', station_colors: 'orange', 'name_zh-Hans': '滨海湾', name_ta: 'மரினா பே' }, geometry: { type: 'Point', coordinates: [103.8546, 1.2767] } }
             ]
           };
-          map.addSource('mrt-stations',{ type:'geojson', data:fallback });
-          map.addLayer({ id:'stations', source:'mrt-stations', type:'circle',
-            paint:{ 'circle-radius':8,'circle-color':'#d42e12','circle-stroke-color':'#fff','circle-stroke-width':2 }});
+          map.addSource('mrt-stations', { type: 'geojson', data: fallback });
+          map.addLayer({
+            id: 'stations', source: 'mrt-stations', type: 'circle',
+            paint: { 'circle-radius': 8, 'circle-color': '#d42e12', 'circle-stroke-color': '#fff', 'circle-stroke-width': 2 }
+          });
         }
       });
     }
 
     // ====== ON LOAD ======
-    window.addEventListener('DOMContentLoaded', ()=>{
+    window.addEventListener('DOMContentLoaded', () => {
       // Initialize AOS (Animate On Scroll)
       AOS.init({
         duration: 800,
@@ -3861,30 +4280,31 @@ function fareByType(km, type = "adult") {
         once: true,
         offset: 100
       });
-      
+
       initializeThemeToggle();
       startLiveClock();
       initializeDropdowns();
-      displayFavorites();
-      loadDashboard();
       initMap();
       renderLiveArrivals();
       document.getElementById('liveTrainLine')?.addEventListener('change', renderLiveArrivals);
+      document.getElementById('saveProfileBtn').addEventListener('click', saveProfile);
+      document.getElementById('addFavoriteBtn').addEventListener('click', addFavorite);
+
 
       // make Dashboard default
       setActiveTab('dashboard');
     });
-    
+
   </script>
   <!-- 1. Import the core Firebase App module (ensure version consistency) -->
   <script type="module" src="https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js"></script>
-  
+
   <!-- 2. Import the Firebase Authentication module (ensure version consistency) -->
   <script type="module" src="https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js"></script>
-  
+
   <!-- Add other Firebase products here as needed, maintaining version consistency -->
-  <!-- Example: For Firestore: <script type="module" src="https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js"></script> -->
-  
+  <script type="module" src="https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js"></script>
+
   <!-- Your app's initialization script -->
   <script type="module">
     // Your Firebase project configuration (from Step 1)
@@ -3908,10 +4328,164 @@ function fareByType(km, type = "adult") {
       signOut,
       sendPasswordResetEmail
     } from 'https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js';
+    import {
+      getFirestore,
+      doc,
+      setDoc,
+      getDoc
+    } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
     // --- 3. Initialize Firebase App and Auth ---
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app); // This is your main Auth object
+    const db = getFirestore(app);
+
+    // ====== PROFILE / FAVORITES ======
+
+    // Save profile name to Firestore
+    window.saveProfile = async function () {
+      const name = document.getElementById('profileName').value.trim();
+      if (!name) { showToast('Name cannot be empty.'); return; }
+
+      userData.name = name;
+      document.getElementById('userName').textContent = name;
+
+      if (userData.uid) {
+        await setDoc(doc(db, 'users', userData.uid), { name: name }, { merge: true });
+        showToast('Profile saved.', false);
+      }
+    };
+
+    // Display favorites in dashboard
+    window.displayFavorites = function () {
+      const listContainer = document.getElementById('favoriteList'); // <ul> inside profile dashboard-section
+      const gridContainer = document.getElementById('dashboardFavorites'); // cards on main dashboard
+
+      // Handle profile dashboard list
+      if (listContainer) {
+        listContainer.innerHTML = '';
+        if (!userData.favorites || userData.favorites.length === 0) {
+          listContainer.innerHTML = '<li style="color:#6b7280;">No favorite stations yet.</li>';
+        } else {
+          userData.favorites.forEach((f, i) => {
+            const li = document.createElement('li');
+            li.style.marginBottom = '5px';
+            li.innerHTML = `<strong>${f.label}</strong> - ${f.station} `;
+            const btn = document.createElement('button');
+            btn.textContent = 'Remove';
+            btn.style.marginLeft = '10px';
+            btn.style.marginTop = '0px';
+            btn.classList.add('btn', 'btn-sm', 'btn-outline-danger');
+            btn.addEventListener('click', () => removeFavorite(i));
+            li.appendChild(btn);
+            listContainer.appendChild(li);
+          });
+        }
+      }
+
+      // Handle main dashboard grid
+      if (gridContainer) {
+        gridContainer.innerHTML = '';
+        if (!userData.favorites || userData.favorites.length === 0) {
+          gridContainer.innerHTML = '<p style="color:#6b7280;">No favorite stations yet.</p>';
+        } else {
+          userData.favorites.forEach((f) => {
+            const card = document.createElement('div');
+            card.className = 'col-md-4';
+            card.innerHTML = `
+          <div class="p-3 rounded shadow-sm" style="background:#fff;border:1px solid #ddd;">
+            <h6 style="margin-bottom:4px;">${f.label}</h6>
+            <p style="margin:0;color:#555;">${f.station}</p>
+          </div>`;
+            gridContainer.appendChild(card);
+          });
+        }
+      }
+    };
+      // --- Toggle favorite function ---
+        window.toggleFavorite = async function (station) {
+          // Ensure user is logged in
+          if (!userData?.uid) {
+            showToast('Please login to manage favorites.');
+            return;
+          }
+
+          // Ensure favorites array exists
+          if (!Array.isArray(userData.favorites)) userData.favorites = [];
+
+          // Toggle the favorite
+          const existingIndex = userData.favorites.findIndex(f => f.station === station);
+          if (existingIndex >= 0) {
+            // Remove from favorites
+            userData.favorites.splice(existingIndex, 1);
+          } else {
+            // Add to favorites (auto-label as station name if no label provided)
+            userData.favorites.push({ label: station, station });
+          }
+
+          // Log for debugging
+          console.log('Saving favorites:', userData.favorites);
+
+          // Save to Firestore with error handling
+          try {
+            await setDoc(
+              doc(db, 'users', userData.uid),
+              { favorite_stations: userData.favorites },
+              { merge: true }
+            );
+            showToast('Favorites updated!');
+          } catch (err) {
+            console.error('Failed to save favorites:', err);
+            showToast('Error saving favorites. Please try again.');
+            return; // stop UI refresh if save fails
+          }
+
+          // Refresh UI
+          renderLiveArrivals();
+          displayFavorites();
+        };
+
+    // Add favorite
+    window.addFavorite = async function () {
+      const label = document.getElementById('favoriteLabel').value.trim();
+      const station = document.getElementById('favoriteStation').value;
+      if (!label || !station) { showToast('Please enter label and station.'); return; }
+      if (userData.favorites.some(f => f.label === label)) { showToast('Duplicate label.'); return; }
+
+      userData.favorites.push({ label, station });
+      displayFavorites(); // Refresh dashboard display
+      document.getElementById('favoriteLabel').value = '';
+      document.getElementById('favoriteStation').value = '';
+
+      if (userData.uid) {
+        await setDoc(doc(db, 'users', userData.uid), { favorite_stations: userData.favorites }, { merge: true });
+        showToast('Favorite added.', false);
+      }
+    };
+
+    // Remove favorite
+    window.removeFavorite = async function (idx) {
+      userData.favorites.splice(idx, 1);
+      displayFavorites(); // Refresh dashboard display
+
+      if (userData.uid) {
+        await setDoc(doc(db, 'users', userData.uid), { favorite_stations: userData.favorites }, { merge: true });
+        showToast('Favorite removed.', false);
+      }
+    };
+
+    // Populate station dropdown
+    window.fillStationDropdown = function () {
+      const el = document.getElementById('favoriteStation');
+      el.innerHTML = '<option value="">-- Select Station --</option>' + ALL_STATIONS.map(s => `<option value="${s}">${s}</option>`).join('');
+    };
+
+    // Attach buttons
+    document.getElementById('saveProfileBtn').addEventListener('click', saveProfile);
+    document.getElementById('addFavoriteBtn').addEventListener('click', addFavorite);
+
+    // Populate dropdown on page load
+    fillStationDropdown();
 
     // --- 4. Get References to HTML Elements ---
     const authSection = document.getElementById('auth-section');
@@ -4135,33 +4709,76 @@ function fareByType(km, type = "adult") {
     });
 
     // --- 8. Monitor Authentication State Changes (Crucial for UI) ---
-    onAuthStateChanged(auth, (user) => {
-        clearMessages();
+    onAuthStateChanged(auth, async (user) => {
+      clearMessages();
 
-        const headerUserName = document.getElementById('userName');
+      const authSection = document.getElementById('auth-section');
+      const dashboardSection = document.getElementById('dashboard-section');
 
-        if (user) {
-          const name = user.displayName || user.email.split('@')[0]; 
+      if (user) {
+        // Update userData with Firebase Auth info
+        userData.uid = user.uid;
+        userData.email = user.email;
 
-          authStatusDiv.textContent = `Logged in as ${user.email}`;
-          userDisplayEmail.textContent = user.email;
-          headerUserName.textContent = name;
+        try {
+          // Load user info from Firestore
+          const userDocRef = doc(db, 'users', user.uid);
+          const docSnap = await getDoc(userDocRef);
 
-          authSection.classList.add('hidden');
-          passwordResetSection.classList.add('hidden');
-          dashboardSection.classList.remove('hidden');
-          passwordRequirementsDiv.classList.add('hidden');
-        } else {
-          authStatusDiv.textContent = "Not logged in.";
-          userDisplayEmail.textContent = "";
-          headerUserName.textContent = "Guest User"; 
-          authSection.classList.remove('hidden');
-          passwordResetSection.classList.add('hidden');
-          dashboardSection.classList.add('hidden');
+          if (docSnap.exists()) {
+            const data = docSnap.data();
+            userData.name = data.name || 'Anonymous';
+            userData.favorites = data.favorite_stations || [];
+          } else {
+            // Initialize Firestore for new user
+            const initData = {
+              name: 'Anonymous',
+              email: user.email,
+              created_at: new Date(),
+              favorite_stations: []
+            };
+            await setDoc(userDocRef, initData);
+            userData.name = initData.name;
+            userData.favorites = initData.favorite_stations;
+          }
+
+          // Update UI
+          document.getElementById('userName').textContent = userData.name;
+          document.getElementById('profileName').value = userData.name;
+          document.getElementById('user-display-email').textContent = userData.email;
+
+          displayFavorites();      // Populate favorite stations list
+          fillStationDropdown();   // Refill station dropdowns if needed
+
+
+          // Show dashboard first (make visible)
+          authSection?.classList.add('hidden');
+          dashboardSection?.classList.remove('hidden');
+
+          // Now load dashboard and await it, guaranteeing the grid is populated after visible
+          await loadDashboard();
+
+        } catch (err) {
+          console.error('Error fetching user data:', err);
+          showMessage('error', 'Failed to load user profile. Please try again.');
         }
-      });
 
+      } else {
+        // No user logged in — reset to guest
+        userData = { uid: null, name: 'Guest User', email: null, favorites: [] };
+
+        dashboardSection?.classList.add('hidden');
+        authSection?.classList.remove('hidden');
+
+        // Reset UI fields
+        document.getElementById('userName').textContent = 'Guest User';
+        document.getElementById('profileName').value = '';
+        displayFavorites();
+      }
+    }
+    );
 
   </script>
 </body>
+
 </html>
