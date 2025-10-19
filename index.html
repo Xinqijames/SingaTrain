@@ -32,17 +32,18 @@
   <style>
     :root {
       /* Neuralink-inspired color palette - muted and sophisticated */
-      --sg-red: #750000;
-      /* Primary brand red */
-      --sg-red-dark: #4d0000;
-      /* Darker hover red */
-      --sg-red-soft: #f8eaea;
+      --sg-red: #f97316;
+      /* Primary brand orange */
+      --sg-red-dark: #c2410c;
+      /* Darker hover orange */
+      --sg-red-soft: #fff4e6;
       /* Light background tint */
+      --sg-orange-rgb: 249, 115, 22;
       --sg-grey: #6b7280;
       --sg-border: #e5e7eb;
 
       /* Premium Neuralink-inspired variables */
-      --primary-gradient: linear-gradient(135deg, #750000 0%, #a00000 100%);
+      --primary-gradient: linear-gradient(135deg, #f97316 0%, #c2410c 100%);
       --card-shadow: 0 2px 40px rgba(0, 0, 0, 0.04);
       --card-shadow-hover: 0 8px 60px rgba(0, 0, 0, 0.08);
       --border-radius: 20px;
@@ -94,6 +95,7 @@
       letter-spacing: -0.01em;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+      padding-top: 112px;
     }
 
     /* Premium typography hierarchy */
@@ -117,30 +119,88 @@
     }
 
     header {
-      background: #fff;
-      border-bottom: 1px solid var(--sg-border);
-      position: sticky;
-      top: 0;
+      position: relative;
+    }
+
+    .premium-navbar {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(var(--sg-orange-rgb), 0.15);
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+      transition: background 0.4s ease, box-shadow 0.4s ease;
       z-index: 1000;
     }
 
-    .app-title {
-      color: var(--sg-red);
+    body.dark-mode .premium-navbar {
+      background: rgba(20, 24, 30, 0.88);
+      border-bottom-color: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
     }
 
-    .nav-pills .nav-link {
+    .premium-navbar .navbar-brand {
+      font-weight: 600;
+      color: var(--neutral-900);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .premium-navbar .navbar-brand span {
+      font-size: 1.125rem;
+      letter-spacing: -0.01em;
+    }
+
+    body.dark-mode .premium-navbar .navbar-brand {
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .premium-navbar .navbar-nav .nav-link {
+      font-weight: 500;
+      color: var(--neutral-600);
+      padding: 0.65rem 1.1rem;
       border-radius: 999px;
+      transition: color 0.3s ease, background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    body.dark-mode .premium-navbar .navbar-nav .nav-link {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .premium-navbar .navbar-nav .nav-link:hover {
+      color: var(--sg-red);
+      background: rgba(var(--sg-orange-rgb), 0.12);
+      transform: translateY(-1px);
+    }
+
+    .premium-navbar .navbar-nav .nav-link.active {
       color: #fff;
       background: var(--sg-red);
+      box-shadow: 0 10px 24px rgba(var(--sg-orange-rgb), 0.25);
     }
 
-    .nav-pills .nav-link:not(.active) {
-      background: #8b0000;
-      opacity: 0.85;
+    body.dark-mode .premium-navbar .navbar-nav .nav-link.active {
+      color: #fff;
     }
 
-    .nav-pills .nav-link:hover {
-      background: var(--sg-red-dark);
+    .premium-navbar .navbar-toggler {
+      border: none;
+      color: var(--sg-red);
+      padding: 0.35rem 0.65rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 18px rgba(var(--sg-orange-rgb), 0.18);
+      transition: transform 0.3s ease;
+    }
+
+    .premium-navbar .navbar-toggler:focus {
+      box-shadow: 0 0 0 0.2rem rgba(var(--sg-orange-rgb), 0.3);
+    }
+
+    .premium-navbar .navbar-toggler:hover {
+      transform: translateY(-1px);
+    }
+
+    .premium-navbar .navbar-toggler .material-icons {
+      font-size: 1.4rem;
     }
 
     .section-card {
@@ -183,18 +243,34 @@
 
     .feature-description {
       background: var(--sg-red-soft);
-      border: 1px solid #fecaca;
-      color: #991b1b;
+      border: 1px solid rgba(var(--sg-orange-rgb), 0.35);
+      color: #92400e;
     }
 
     .btn-primary {
       background: var(--sg-red);
       border-color: var(--sg-red);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
     }
 
     .btn-primary:hover {
       background: var(--sg-red-dark);
       border-color: var(--sg-red-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 12px 26px rgba(var(--sg-orange-rgb), 0.25);
+    }
+
+    .btn-outline-danger {
+      color: var(--sg-red);
+      border-color: rgba(var(--sg-orange-rgb), 0.55);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    }
+
+    .btn-outline-danger:hover {
+      background: var(--sg-red);
+      color: #fff;
+      transform: translateY(-1px);
+      box-shadow: 0 10px 20px rgba(var(--sg-orange-rgb), 0.25);
     }
 
     .btn-success {
@@ -237,11 +313,17 @@
     }
 
     .route-step {
-      background: #f3f4f6;
+      background: rgba(var(--sg-orange-rgb), 0.08);
       border-left: 4px solid var(--sg-red);
-      border-radius: 8px;
-      padding: 12px;
+      border-radius: 14px;
+      padding: 14px 18px;
       margin: .5rem 0;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .route-step:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 28px rgba(var(--sg-orange-rgb), 0.18);
     }
 
     .fare-result {
@@ -251,6 +333,13 @@
       border-radius: 12px;
       text-align: center;
       font-size: 1.1rem;
+      box-shadow: 0 18px 30px rgba(var(--sg-orange-rgb), 0.28);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .fare-result:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 24px 42px rgba(var(--sg-orange-rgb), 0.32);
     }
 
     .mapboxgl-popup-content {
@@ -296,7 +385,7 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: linear-gradient(135deg, rgba(117, 0, 0, 0.02) 0%, rgba(14, 165, 233, 0.02) 100%);
+      background: linear-gradient(135deg, rgba(var(--sg-orange-rgb), 0.02) 0%, rgba(14, 165, 233, 0.02) 100%);
       pointer-events: none;
     }
 
@@ -320,8 +409,8 @@
 
     .person-card.active {
       border-color: var(--sg-red);
-      background: linear-gradient(135deg, #ffffff 0%, rgba(117, 0, 0, 0.02) 100%);
-      box-shadow: 0 8px 40px rgba(117, 0, 0, 0.08);
+      background: linear-gradient(135deg, #ffffff 0%, rgba(var(--sg-orange-rgb), 0.02) 100%);
+      box-shadow: 0 8px 40px rgba(var(--sg-orange-rgb), 0.08);
     }
 
     .person-card.active::before {
@@ -352,7 +441,7 @@
       color: white;
       font-weight: 600;
       font-size: 20px;
-      box-shadow: 0 8px 24px rgba(117, 0, 0, 0.15);
+      box-shadow: 0 8px 24px rgba(var(--sg-orange-rgb), 0.15);
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       position: relative;
       overflow: hidden;
@@ -437,7 +526,7 @@
 
     .btn-modern:hover {
       transform: translateY(-3px);
-      box-shadow: 0 12px 40px rgba(117, 0, 0, 0.25);
+      box-shadow: 0 12px 40px rgba(var(--sg-orange-rgb), 0.25);
       color: white;
     }
 
@@ -452,7 +541,7 @@
       background: var(--neutral-100);
       border-color: var(--sg-red);
       color: var(--sg-red);
-      box-shadow: 0 8px 24px rgba(117, 0, 0, 0.1);
+      box-shadow: 0 8px 24px rgba(var(--sg-orange-rgb), 0.1);
     }
 
     .meetup-results {
@@ -486,7 +575,7 @@
       margin-bottom: 32px;
       position: relative;
       overflow: hidden;
-      box-shadow: 0 12px 40px rgba(117, 0, 0, 0.2);
+      box-shadow: 0 12px 40px rgba(var(--sg-orange-rgb), 0.2);
     }
 
     .meeting-point::before {
@@ -548,7 +637,7 @@
       font-weight: 600;
       min-width: 80px;
       text-align: center;
-      box-shadow: 0 4px 12px rgba(117, 0, 0, 0.15);
+      box-shadow: 0 4px 12px rgba(var(--sg-orange-rgb), 0.15);
       letter-spacing: -0.01em;
     }
 
@@ -591,7 +680,7 @@
       justify-content: center;
       color: white;
       font-size: 24px;
-      box-shadow: 0 8px 25px rgba(117, 0, 0, 0.3);
+      box-shadow: 0 8px 25px rgba(var(--sg-orange-rgb), 0.3);
       cursor: pointer;
       transition: all 0.3s ease;
       z-index: 1000;
@@ -599,7 +688,7 @@
 
     .floating-action:hover {
       transform: scale(1.1);
-      box-shadow: 0 12px 35px rgba(117, 0, 0, 0.4);
+      box-shadow: 0 12px 35px rgba(var(--sg-orange-rgb), 0.4);
     }
 
     /* ===== PROFILE / AUTH SECTIONS ===== */
@@ -703,7 +792,7 @@
     }
 
     #password-requirements span.not-met {
-      color: #991b1b;
+      color: var(--sg-red-dark);
     }
 
     #favoriteList {
@@ -737,24 +826,24 @@
     }
 
     /* Remove button styling */
-#favoriteList li button {
-  background-color: #e74c3c;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  padding: 4px 8px;       /* vertical + horizontal padding */
-  cursor: pointer;
-  transition: background-color 0.2s;
-  height: auto;
-  align-self: center;      /* center vertically */
-  font-size: 0.85rem;
-  min-width: 0;            /* prevent flex stretch */
-  width: auto;             /* let width fit content */
-}
-
+    #favoriteList li button {
+      background-color: var(--sg-red);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 4px 12px;
+      cursor: pointer;
+      transition: background-color 0.2s ease, transform 0.2s ease;
+      height: auto;
+      align-self: center;
+      font-size: 0.85rem;
+      min-width: 0;
+      width: auto;
+    }
 
     #favoriteList li button:hover {
-      background-color: #c0392b;
+      background-color: var(--sg-red-dark);
+      transform: translateY(-1px);
     }
 
     #error-message,
@@ -765,7 +854,7 @@
     }
 
     #error-message {
-      color: #b91c1c;
+      color: var(--sg-red-dark);
     }
 
     #success-message {
@@ -828,17 +917,17 @@
     @keyframes stationSelect {
       0% {
         transform: scale(1);
-        box-shadow: 0 0 0 0 rgba(117, 0, 0, 0.4);
+        box-shadow: 0 0 0 0 rgba(var(--sg-orange-rgb), 0.4);
       }
 
       50% {
         transform: scale(1.2);
-        box-shadow: 0 0 0 20px rgba(117, 0, 0, 0.1);
+        box-shadow: 0 0 0 20px rgba(var(--sg-orange-rgb), 0.1);
       }
 
       100% {
         transform: scale(1);
-        box-shadow: 0 0 0 0 rgba(117, 0, 0, 0);
+        box-shadow: 0 0 0 0 rgba(var(--sg-orange-rgb), 0);
       }
     }
 
@@ -925,7 +1014,7 @@
     .map-click-ripple {
       position: absolute;
       border-radius: 50%;
-      background: rgba(117, 0, 0, 0.3);
+      background: rgba(var(--sg-orange-rgb), 0.3);
       pointer-events: none;
       animation: mapClickRipple 0.6s ease-out;
     }
@@ -990,8 +1079,8 @@
       height: 10em;
       position: relative;
       z-index: 1;
-      --color: rgb(117, 0, 0);
-      --color2: rgb(77, 0, 0);
+      --color: rgb(249, 115, 22);
+      --color2: rgb(194, 65, 12);
       transform: scale(0.75);
     }
 
@@ -1248,7 +1337,7 @@
     /* Enhanced hover effects */
     .person-card:hover .person-avatar {
       transform: scale(1.1);
-      box-shadow: 0 6px 20px rgba(117, 0, 0, 0.4);
+      box-shadow: 0 6px 20px rgba(var(--sg-orange-rgb), 0.4);
     }
 
     .btn-modern:active {
@@ -1299,12 +1388,32 @@
       }
     }
 
+    .feature-result-animate {
+      animation: fadeSlideUp 0.6s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+    }
+
+    @keyframes fadeSlideUp {
+      0% {
+        opacity: 0;
+        transform: translateY(22px) scale(0.97);
+      }
+
+      60% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
     /* === WOW-FACTOR ENHANCEMENTS === */
     body::before {
       content: '';
       position: fixed;
       inset: 0;
-      background: linear-gradient(120deg, rgba(212, 46, 18, 0.15), rgba(0, 150, 69, 0.12), rgba(250, 158, 13, 0.1));
+      background: linear-gradient(120deg, rgba(var(--sg-orange-rgb), 0.15), rgba(0, 150, 69, 0.12), rgba(250, 158, 13, 0.1));
       background-size: 180% 180%;
       animation: bg-shift 18s ease infinite;
       z-index: -2;
@@ -1345,7 +1454,7 @@
     }
 
     body.dark-mode::before {
-      background: linear-gradient(135deg, rgba(117, 0, 0, 0.35), rgba(0, 94, 196, 0.3), rgba(153, 0, 170, 0.25));
+      background: linear-gradient(135deg, rgba(var(--sg-orange-rgb), 0.35), rgba(0, 94, 196, 0.3), rgba(153, 0, 170, 0.25));
     }
 
     body.dark-mode::after {
@@ -1358,9 +1467,6 @@
       box-shadow: 0 14px 32px rgba(0, 0, 0, 0.45);
     }
 
-    body.dark-mode .nav-pills .nav-link:not(.active) {
-      background: rgba(255, 255, 255, 0.08);
-    }
 
     .live-tools {
       display: flex;
@@ -1383,13 +1489,124 @@
       box-shadow: 0 12px 24px rgba(0, 0, 0, 0.45);
     }
 
+    .live-ticker-card {
+      position: relative;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      padding: 24px 28px;
+      border-radius: 24px;
+      background: linear-gradient(135deg, rgba(var(--sg-orange-rgb), 0.12), rgba(255, 255, 255, 0.95));
+      border: 1px solid rgba(var(--sg-orange-rgb), 0.25);
+      box-shadow: 0 18px 40px rgba(var(--sg-orange-rgb), 0.18);
+      overflow: hidden;
+    }
+
+    .live-ticker-card::after {
+      content: '';
+      position: absolute;
+      inset: -40% 60% 40% -40%;
+      background: radial-gradient(circle, rgba(var(--sg-orange-rgb), 0.25), transparent 55%);
+      opacity: 0.5;
+      transform: rotate(12deg);
+      pointer-events: none;
+    }
+
+    .live-ticker-card > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    body.dark-mode .live-ticker-card {
+      background: linear-gradient(135deg, rgba(24, 27, 33, 0.9), rgba(15, 17, 21, 0.85));
+      border-color: rgba(var(--sg-orange-rgb), 0.35);
+      box-shadow: 0 20px 36px rgba(0, 0, 0, 0.55);
+    }
+
+    .live-ticker-card .ticker-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--sg-red);
+      margin-bottom: 0.35rem;
+    }
+
+    .live-ticker-card .ticker-station {
+      font-size: var(--text-2xl);
+      font-weight: 600;
+      color: var(--neutral-900);
+      letter-spacing: -0.01em;
+    }
+
+    body.dark-mode .live-ticker-card .ticker-station {
+      color: rgba(255, 255, 255, 0.92);
+    }
+
+    .live-ticker-card .ticker-line {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-weight: 600;
+      font-size: var(--text-sm);
+    }
+
+    .live-ticker-card .ticker-line .material-icons {
+      font-size: 1.1rem;
+    }
+
+    .live-ticker-card .ticker-times {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+      justify-content: flex-end;
+      min-width: 180px;
+    }
+
+    .ticker-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: var(--text-sm);
+      border: 1px solid currentColor;
+      background: rgba(var(--sg-orange-rgb), 0.1);
+      box-shadow: 0 10px 20px rgba(var(--sg-orange-rgb), 0.15);
+    }
+
+    body.dark-mode .ticker-pill {
+      background: rgba(var(--sg-orange-rgb), 0.22);
+      color: #fff;
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.45);
+    }
+
+    .live-ticker-card.cycle {
+      animation: tickerSwap 0.6s ease both;
+    }
+
+    @keyframes tickerSwap {
+      0% {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     .theme-toggle {
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
       border-radius: 999px;
       padding: 6px 14px;
-      background: rgba(117, 0, 0, 0.08);
+      background: rgba(var(--sg-orange-rgb), 0.08);
       color: var(--sg-red);
       cursor: pointer;
       transition: background 0.35s ease, color 0.35s ease;
@@ -1402,7 +1619,7 @@
     .theme-toggle.active {
       background: var(--sg-red);
       color: #fff;
-      box-shadow: 0 14px 24px rgba(117, 0, 0, 0.35);
+      box-shadow: 0 14px 24px rgba(var(--sg-orange-rgb), 0.35);
     }
 
     body.dark-mode .theme-toggle {
@@ -1449,7 +1666,7 @@
     .arrival-card:hover {
       transform: translateY(-6px) scale(1.01);
       box-shadow: var(--card-shadow-hover);
-      border-color: rgba(117, 0, 0, 0.25);
+      border-color: rgba(var(--sg-orange-rgb), 0.25);
     }
 
     .arrival-card::after {
@@ -1468,7 +1685,7 @@
 
     body.dark-mode .arrival-card {
       background: rgba(19, 21, 25, 0.85);
-      border-color: rgba(117, 0, 0, 0.15);
+      border-color: rgba(var(--sg-orange-rgb), 0.15);
     }
 
     .arrival-card.arriving-soon {
@@ -1479,11 +1696,11 @@
 
       0%,
       100% {
-        box-shadow: 0 10px 30px rgba(212, 46, 18, 0.25);
+        box-shadow: 0 10px 30px rgba(var(--sg-orange-rgb), 0.25);
       }
 
       50% {
-        box-shadow: 0 18px 40px rgba(212, 46, 18, 0.4);
+        box-shadow: 0 18px 40px rgba(var(--sg-orange-rgb), 0.4);
       }
     }
 
@@ -1506,7 +1723,7 @@
       letter-spacing: 0.12em;
       padding: 6px 12px;
       border-radius: 999px;
-      background: rgba(117, 0, 0, 0.08);
+      background: rgba(var(--sg-orange-rgb), 0.08);
       color: var(--sg-red);
     }
 
@@ -1523,7 +1740,7 @@
       width: 34px;
       height: 34px;
       border-radius: 50%;
-      background: rgba(117, 0, 0, 0.08);
+      background: rgba(var(--sg-orange-rgb), 0.08);
       color: var(--sg-red);
       transition: transform 0.35s ease, background 0.35s ease, color 0.35s ease;
     }
@@ -1531,7 +1748,7 @@
     .favorite-toggle.active {
       background: var(--sg-red);
       color: #fff;
-      box-shadow: 0 10px 20px rgba(117, 0, 0, 0.35);
+      box-shadow: 0 10px 20px rgba(var(--sg-orange-rgb), 0.35);
     }
 
     .favorite-toggle:hover {
@@ -1577,8 +1794,8 @@
       display: grid;
       place-items: center;
       font-size: 1.2rem;
-      background: rgba(117, 0, 0, 0.12);
-      box-shadow: inset 0 0 0 1px rgba(117, 0, 0, 0.18);
+      background: rgba(var(--sg-orange-rgb), 0.12);
+      box-shadow: inset 0 0 0 1px rgba(var(--sg-orange-rgb), 0.18);
     }
 
     .arrival-row .countdown {
@@ -1590,7 +1807,7 @@
       flex: 1;
       height: 10px;
       border-radius: 999px;
-      background: rgba(117, 0, 0, 0.1);
+      background: rgba(var(--sg-orange-rgb), 0.1);
       overflow: hidden;
       position: relative;
     }
@@ -1656,8 +1873,8 @@
       min-height: 320px;
       border-radius: 24px;
       padding: 32px;
-      background: linear-gradient(135deg, rgba(212, 46, 18, 0.35), rgba(0, 150, 69, 0.25), rgba(0, 94, 196, 0.3));
-      box-shadow: 0 24px 60px rgba(117, 0, 0, 0.35);
+      background: linear-gradient(135deg, rgba(var(--sg-orange-rgb), 0.35), rgba(0, 150, 69, 0.2), rgba(0, 94, 196, 0.28));
+      box-shadow: 0 24px 60px rgba(var(--sg-orange-rgb), 0.35);
       overflow: hidden;
     }
 
@@ -1685,7 +1902,7 @@
     .hero-train .material-icons {
       font-size: 42px;
       color: var(--sg-red);
-      text-shadow: 0 8px 20px rgba(212, 46, 18, 0.45);
+      text-shadow: 0 8px 20px rgba(var(--sg-orange-rgb), 0.45);
       animation: glow 2.4s ease-in-out infinite alternate;
     }
 
@@ -1707,7 +1924,7 @@
       font-size: 0.9rem;
       background: rgba(255, 255, 255, 0.85);
       color: var(--sg-red);
-      box-shadow: 0 12px 20px rgba(117, 0, 0, 0.15);
+      box-shadow: 0 12px 20px rgba(var(--sg-orange-rgb), 0.15);
       animation: float 5.2s ease-in-out infinite;
     }
 
@@ -1730,7 +1947,7 @@
     }
 
     body.dark-mode .hero-illustration {
-      background: linear-gradient(135deg, rgba(117, 0, 0, 0.55), rgba(0, 94, 196, 0.45), rgba(153, 0, 170, 0.45));
+      background: linear-gradient(135deg, rgba(var(--sg-orange-rgb), 0.55), rgba(0, 94, 196, 0.45), rgba(153, 0, 170, 0.45));
       box-shadow: 0 24px 40px rgba(0, 0, 0, 0.55);
     }
 
@@ -1759,18 +1976,18 @@
 
     @keyframes glow {
       0% {
-        text-shadow: 0 8px 20px rgba(212, 46, 18, 0.45);
+        text-shadow: 0 8px 20px rgba(var(--sg-orange-rgb), 0.45);
       }
 
       100% {
-        text-shadow: 0 16px 35px rgba(212, 46, 18, 0.65);
+        text-shadow: 0 16px 35px rgba(var(--sg-orange-rgb), 0.65);
       }
     }
 
     .gradient-divider {
       height: 1px;
       margin: 28px 0;
-      background: linear-gradient(90deg, transparent, rgba(117, 0, 0, 0.35), rgba(0, 94, 196, 0.35), transparent);
+      background: linear-gradient(90deg, transparent, rgba(var(--sg-orange-rgb), 0.35), rgba(0, 94, 196, 0.35), transparent);
     }
 
     /* ===== AUTH SECTIONS ===== */
@@ -1956,6 +2173,16 @@
         min-height: 260px;
       }
 
+      .live-ticker-card {
+        padding: 20px;
+        gap: 1rem;
+      }
+
+      .live-ticker-card .ticker-times {
+        justify-content: flex-start;
+        min-width: 100%;
+      }
+
       .meetup-container {
         padding: 16px;
       }
@@ -1988,8 +2215,22 @@
     }
 
     @media (max-width: 576px) {
+      body {
+        padding-top: 96px;
+      }
+
       .section-card {
         padding: 20px;
+      }
+
+      .live-ticker-card {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .live-ticker-card .ticker-times {
+        width: 100%;
+        justify-content: flex-start;
       }
 
       .meetup-container {
@@ -2014,28 +2255,33 @@
 
 <body>
   <!-- HEADER -->
-  <header class="py-3">
-    <div class="container d-flex flex-wrap align-items-center justify-content-between">
-      <div class="d-flex align-items-center gap-2">
-        <img src="./singatrainlogo.png" alt="SingaTrain Logo" width="38" height="38" style="border-radius:8px;">
-        <h1 class="h4 m-0 app-title">SingaTrain</h1>
+  <header>
+    <nav class="premium-navbar navbar navbar-expand-lg fixed-top py-3">
+      <div class="container">
+        <a class="navbar-brand" href="#">
+          <img src="./singatrainlogo.png" alt="SingaTrain Logo" width="38" height="38" class="rounded-3">
+          <span>SingaTrain</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#primaryNav" aria-controls="primaryNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="material-icons">menu</span>
+        </button>
+        <div class="collapse navbar-collapse mt-3 mt-lg-0" id="primaryNav">
+          <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+            <li class="nav-item"><a class="nav-link active" href="#" data-tab="dashboard">Dashboard</a></li>
+            <li class="nav-item"><a class="nav-link" href="#" data-tab="live">Live Tracking</a></li>
+            <li class="nav-item"><a class="nav-link" href="#" data-tab="route">Route Planner</a></li>
+            <li class="nav-item"><a class="nav-link" href="#" data-tab="meetup">Meet-up</a></li>
+            <li class="nav-item"><a class="nav-link" href="#" data-tab="alternatives">Alt Routes</a></li>
+            <li class="nav-item"><a class="nav-link" href="#" data-tab="fare">Fare</a></li>
+            <li class="nav-item"><a class="nav-link" href="#" data-tab="profile">Profile</a></li>
+          </ul>
+          <div class="d-flex align-items-center gap-3 ms-lg-4 pt-3 pt-lg-0">
+            <span class="fw-semibold text-secondary" id="userName">Guest User</span>
+            <button class="btn btn-outline-danger btn-sm" onclick="showTab('profile')">Profile</button>
+          </div>
+        </div>
       </div>
-      <div class="d-flex align-items-center gap-2">
-        <span class="fw-semibold text-secondary" id="userName">Guest User</span>
-        <button class="btn btn-outline-danger btn-sm" onclick="showTab('profile')">Profile</button>
-      </div>
-      <div class="w-100 mt-3">
-        <ul class="nav nav-pills justify-content-center gap-2">
-          <li class="nav-item"><button class="nav-link active" data-tab="dashboard">Dashboard</button></li>
-          <li class="nav-item"><button class="nav-link" data-tab="live">Live Tracking</button></li>
-          <li class="nav-item"><button class="nav-link" data-tab="route">Route Planner</button></li>
-          <li class="nav-item"><button class="nav-link" data-tab="meetup">Meet-up</button></li>
-          <li class="nav-item"><button class="nav-link" data-tab="alternatives">Alt Routes</button></li>
-          <li class="nav-item"><button class="nav-link" data-tab="fare">Fare</button></li>
-          <li class="nav-item"><button class="nav-link" data-tab="profile">Profile</button></li>
-        </ul>
-      </div>
-    </div>
+    </nav>
   </header>
 
   <section class="hero container">
@@ -2116,6 +2362,21 @@
         </div>
         <div class="live-clock" id="liveClock">
           <span>--:--:--</span>
+        </div>
+      </div>
+
+      <div class="live-ticker-card mb-4" id="liveTickerCard">
+        <div>
+          <div class="ticker-label">Simulated Live Feed</div>
+          <div class="ticker-station">Marina Bay</div>
+          <div class="ticker-line text-secondary">
+            <span class="material-icons">train</span>North-South Line
+          </div>
+        </div>
+        <div class="ticker-times">
+          <span class="ticker-pill">2 min</span>
+          <span class="ticker-pill">4 min</span>
+          <span class="ticker-pill">7 min</span>
         </div>
       </div>
 
@@ -2481,12 +2742,17 @@
       }
       if (tabName === 'live') {
         startArrivalRenderLoop();
+        startLiveTicker();
       } else {
         stopArrivalRenderLoop();
+        stopLiveTicker();
       }
     }
     document.querySelectorAll('.nav-link').forEach(btn => {
-      btn.addEventListener('click', () => setActiveTab(btn.dataset.tab));
+      btn.addEventListener('click', (event) => {
+        event.preventDefault();
+        setActiveTab(btn.dataset.tab);
+      });
     });
     function showTab(tab) { setActiveTab(tab); }
 
@@ -2686,11 +2952,11 @@
       const start = document.getElementById('routeStart').value;
       const end = document.getElementById('routeEnd').value;
       const out = document.getElementById('routeOutput');
-      if (!start || !end) { out.innerHTML = '<span class="text-danger">Please select both stations.</span>'; return; }
-      if (start === end) { out.innerHTML = '<span class="text-secondary">You are already at your destination 😊</span>'; return; }
+      if (!start || !end) { out.innerHTML = '<span class="text-danger">Please select both stations.</span>'; animateResult(out); return; }
+      if (start === end) { out.innerHTML = '<span class="text-secondary">You are already at your destination 😊</span>'; animateResult(out); return; }
 
       const path = shortestPath(start, end);
-      if (!path) { out.innerHTML = '<span class="text-danger">No route found.</span>'; return; }
+      if (!path) { out.innerHTML = '<span class="text-danger">No route found.</span>'; animateResult(out); return; }
 
       const mins = estimateTimeMinutes(path.totalWeight);
       const dist = estimateDistanceKm(path.totalWeight);
@@ -2723,6 +2989,7 @@
       });
 
       out.innerHTML = html;
+      animateResult(out);
     }
     function getStopsCount(a, b) {
       // count stations between a and b on line a.line
@@ -3359,12 +3626,14 @@
 
       if (!start || !end) {
         out.innerHTML = '<span class="text-danger">Please select both stations.</span>';
+        animateResult(out);
         return;
       }
 
       const p = shortestPath(start, end);
       if (!p) {
         out.innerHTML = '<span class="text-danger">No route found.</span>';
+        animateResult(out);
         return;
       }
 
@@ -3382,6 +3651,7 @@
     <p class="mb-1"><strong>Approx Distance:</strong> ${km} km (stops-based estimate)</p>
   </div>`;
       out.innerHTML = html;
+      animateResult(out);
     }
 
     function calculatePassValue() {
@@ -3394,12 +3664,14 @@
 
       if (!start || !end) {
         out.innerHTML = '<span class="text-danger">Select journey in the fare calculator above.</span>';
+        animateResult(out);
         return;
       }
 
       const path = shortestPath(start, end);
       if (!path) {
         out.innerHTML = '<span class="text-danger">No route found.</span>';
+        animateResult(out);
         return;
       }
 
@@ -3430,7 +3702,7 @@
 
       html += `<div class="table-responsive">
     <table class="table table-striped align-middle">
-      <thead class="table-danger text-center">
+      <thead class="table-warning text-center">
         <tr>
           <th>Pass Type</th>
           <th>Price ($)</th>
@@ -3454,10 +3726,20 @@
       html += `</tbody></table></div>`;
 
       out.innerHTML = html;
+      animateResult(out);
+    }
+
+    function animateResult(element) {
+      if (!element) return;
+      element.classList.remove('feature-result-animate');
+      void element.offsetWidth;
+      element.classList.add('feature-result-animate');
     }
 
     let arrivalRenderIntervalId = null;
     let liveClockIntervalId = null;
+    let liveTickerIntervalId = null;
+    let liveTickerIndex = 0;
     function getStationsForArrivalDisplay(arrivalData) {
       if (!arrivalData) return [];
       const favoriteStations = Array.isArray(userData?.favorites)
@@ -3470,10 +3752,54 @@
     }
     function formatArrivalCountdown(totalSeconds) {
       if (totalSeconds <= 0) { return 'Arriving'; }
-      const minutes = Math.floor(totalSeconds / 60);
-      const seconds = totalSeconds % 60;
-      if (minutes === 0) { return `${seconds}s`; }
-      return `${minutes}m ${seconds.toString().padStart(2, '0')}s`;
+      const minutes = Math.max(1, Math.ceil(totalSeconds / 60));
+      return `${minutes} min${minutes > 1 ? 's' : ''}`;
+    }
+    function generateTickerTimes() {
+      const count = Math.floor(Math.random() * 2) + 2; // 2 or 3 trains
+      const times = Array.from({ length: count }, () => Math.floor(Math.random() * 6) + 1);
+      times.sort((a, b) => a - b);
+      return times;
+    }
+    function renderLiveTickerCard(animate = true) {
+      const card = document.getElementById('liveTickerCard');
+      if (!card) return;
+      const entry = LIVE_TICKER_STATIONS[liveTickerIndex % LIVE_TICKER_STATIONS.length];
+      const lineColor = getLineColor(entry.line);
+      const times = generateTickerTimes();
+      const timeBadges = times.map(min => `<span class="ticker-pill" style="color:${lineColor};border-color:${lineColor};">${min} min${min > 1 ? 's' : ''}</span>`).join('');
+      card.innerHTML = `
+        <div>
+          <div class="ticker-label">Simulated Live Feed</div>
+          <div class="ticker-station">${entry.station}</div>
+          <div class="ticker-line" style="color:${lineColor}">
+            <span class="material-icons">train</span>${entry.line}
+          </div>
+        </div>
+        <div class="ticker-times">
+          ${timeBadges}
+        </div>
+      `;
+      if (animate) {
+        card.classList.remove('cycle');
+        void card.offsetWidth;
+        card.classList.add('cycle');
+      }
+    }
+    function startLiveTicker() {
+      if (liveTickerIntervalId !== null) return;
+      liveTickerIndex = Math.floor(Math.random() * LIVE_TICKER_STATIONS.length);
+      renderLiveTickerCard();
+      liveTickerIntervalId = setInterval(() => {
+        liveTickerIndex = (liveTickerIndex + 1) % LIVE_TICKER_STATIONS.length;
+        renderLiveTickerCard();
+      }, LIVE_TICKER_ROTATION_MS);
+    }
+    function stopLiveTicker() {
+      if (liveTickerIntervalId !== null) {
+        clearInterval(liveTickerIntervalId);
+        liveTickerIntervalId = null;
+      }
     }
   function renderLiveArrivals() {
     const container = document.getElementById('liveArrivals');
@@ -3588,8 +3914,19 @@
     </div>`);
     });
 
-    container.innerHTML = cards.length ? cards.join('') : '<div class="text-secondary">No simulated data available for your selected stations yet.</div>';
-  }
+      container.innerHTML = cards.length ? cards.join('') : '<div class="text-secondary">No simulated data available for your selected stations yet.</div>';
+    }
+    window.manualRefreshArrivals = function () {
+      renderLiveArrivals();
+      renderLiveTickerCard();
+    };
+    window.toggleSimulatedDelay = function (isEnabled) {
+      if (window.trainArrivalSimulator?.config?.delay) {
+        window.trainArrivalSimulator.config.delay.enabled = isEnabled;
+      }
+      renderLiveArrivals();
+      renderLiveTickerCard();
+    };
     function triggerDemoNarration() {
       // Quick script cue card for presenters to highlight hero interactions
       const message = [
@@ -3996,6 +4333,14 @@
       'Jurong Region Line': '#00a0a8',
       'LRT Line': '#748477'
     };
+    const LIVE_TICKER_STATIONS = [
+      { station: 'Marina Bay', line: 'North-South Line' },
+      { station: 'Paya Lebar', line: 'Circle Line' },
+      { station: 'Woodlands', line: 'Thomson-East Coast Line' },
+      { station: 'Dhoby Ghaut', line: 'North-East Line' },
+      { station: 'Jurong East', line: 'East-West Line' }
+    ];
+    const LIVE_TICKER_ROTATION_MS = 5000;
     function getLineColor(lineName) {
       return LINE_COLOR_MAP[lineName] || '#6b7280';
     }
@@ -4286,9 +4631,10 @@
       initializeDropdowns();
       initMap();
       renderLiveArrivals();
+      renderLiveTickerCard(false);
       document.getElementById('liveTrainLine')?.addEventListener('change', renderLiveArrivals);
-      document.getElementById('saveProfileBtn').addEventListener('click', saveProfile);
-      document.getElementById('addFavoriteBtn').addEventListener('click', addFavorite);
+      document.getElementById('saveProfileBtn')?.addEventListener('click', saveProfile);
+      document.getElementById('addFavoriteBtn')?.addEventListener('click', addFavorite);
 
 
       // make Dashboard default
@@ -4442,6 +4788,7 @@
 
           // Refresh UI
           renderLiveArrivals();
+          renderLiveTickerCard();
           displayFavorites();
         };
 
