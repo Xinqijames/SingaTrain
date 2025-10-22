@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Singapore MRT Assistant</title>
+  <title>SingaTrain</title>
 
   <!-- Bootstrap 5 -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -28,12 +28,16 @@
   <!-- Mapbox -->
   <script src="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.js"></script>
   <link href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css" rel="stylesheet" />
-  
+
   <!-- Leaflet for Route Map Overlay -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-8b30J6k9OWJx7fniRAzE16E7YbgaJ6IAX7AnCM1j403rwhhtjfiPgk41IrT9jp+1rssZCvGSqtEtFPd0PfrNqw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js" integrity="sha512-7YxrIizSnM4tUHgZfzkWPx4L4/O6Bu0AQOilKjMwrYRnALsivC8Wm0NRrLphEd9w8nCjsUq9zbnmEPTrU3FnaA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
+    integrity="sha512-8b30J6k9OWJx7fniRAzE16E7YbgaJ6IAX7AnCM1j403rwhhtjfiPgk41IrT9jp+1rssZCvGSqtEtFPd0PfrNqw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"
+    integrity="sha512-7YxrIizSnM4tUHgZfzkWPx4L4/O6Bu0AQOilKjMwrYRnALsivC8Wm0NRrLphEd9w8nCjsUq9zbnmEPTrU3FnaA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
   <style>
     :root {
@@ -327,7 +331,7 @@
       transition: transform 0.3s ease, box-shadow 0.3s ease;
       color: var(--neutral-900);
     }
-    
+
     .route-step strong,
     .route-step small {
       color: var(--neutral-900);
@@ -705,7 +709,6 @@
 
     /* ===== PROFILE / AUTH SECTIONS ===== */
     #profile {
-      max-width: 500px;
       margin: 2rem auto;
     }
 
@@ -807,9 +810,59 @@
       color: var(--sg-red-dark);
     }
 
+    /* Container for login + register */
+    .auth-buttons {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    /* Login button: stretch to fill remaining space */
+    #login-btn {
+      flex: 1 1 auto;
+      /* grow, shrink, auto basis */
+      min-width: 0;
+      /* allow it to shrink in flex */
+      width: auto !important;
+      /* override global width:100% */
+      display: inline-flex !important;
+      /* override block */
+      justify-content: center;
+      padding: 12px 0;
+      background: var(--sg-red);
+      color: #fff;
+      border-radius: var(--border-radius-sm);
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+    }
+
+    #auth-section #register-btn {
+      flex: 0 0 auto;
+      width: auto !important;
+      display: inline-flex !important;
+      background: none !important;
+      border: none !important;
+      color: #777 !important;
+      font-weight: 600 !important;
+      cursor: pointer !important;
+      padding: 0.5rem 1rem !important;
+      transition: color 0.3s, text-decoration 0.3s !important;
+    }
+
+    #auth-section #register-btn:hover {
+      color: var(--sg-red-dark) !important;
+      text-decoration: underline !important;
+    }
+
     #favoriteList {
-      max-height: 250px;
       overflow-y: auto;
+      max-height: 400px;
+      /* optional: limits height */
+      padding: 0;
+      list-style: none;
+      margin: 0;
     }
 
     /* Each favorite item */
@@ -817,17 +870,19 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background-color: #f9f9f9;
+      background-color: #fff;
+      /* white background like cards */
       border: 1px solid #ddd;
-      border-radius: 8px;
+      border-radius: 10px;
       padding: 10px 15px;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
       transition: background-color 0.2s, transform 0.2s;
+      gap: 10px;
     }
 
     /* Hover effect */
     #favoriteList li:hover {
-      background-color: #f1f1f1;
+      background-color: #f5f5f5;
       transform: scale(1.02);
     }
 
@@ -835,28 +890,44 @@
     #favoriteList li strong {
       font-weight: 600;
       color: #333;
+      margin-right: 5px;
+    }
+
+    /* Station name styling */
+    #favoriteList li span {
+      color: #555;
+      flex: 1;
+      /* takes up remaining space */
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     /* Remove button styling */
     #favoriteList li button {
-      background-color: var(--sg-red);
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      padding: 4px 12px;
-      cursor: pointer;
-      transition: background-color 0.2s ease, transform 0.2s ease;
-      height: auto;
-      align-self: center;
-      font-size: 0.85rem;
-      min-width: 0;
-      width: auto;
+      background-color: var(--sg-red) !important;
+      color: #fff !important;
+      border: none !important;
+      border-radius: 8px !important;
+      padding: 4px 10px !important;
+      cursor: pointer !important;
+      font-size: 0.85rem !important;
+      flex-shrink: 0 !important;
+      width: auto !important;
+      /* override full-width */
+      display: inline-block !important;
+      /* override block */
+      margin-left: 10px;
+      /* small spacing from station name */
+      margin-top: 0px;
     }
 
     #favoriteList li button:hover {
-      background-color: var(--sg-red-dark);
+      background-color: var(--sg-red-dark) !important;
       transform: translateY(-1px);
     }
+
+
 
     #error-message,
     #success-message {
@@ -1526,7 +1597,7 @@
       pointer-events: none;
     }
 
-    .live-ticker-card > * {
+    .live-ticker-card>* {
       position: relative;
       z-index: 1;
     }
@@ -1885,8 +1956,15 @@
     }
 
     @keyframes statusPulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.05); }
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.05);
+      }
     }
 
     .hero {
@@ -2159,7 +2237,6 @@
       border-radius: 12px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
       padding: 24px 28px;
-      max-width: 380px;
       margin: 40px auto;
       text-align: left;
       transition: all 0.3s ease;
@@ -2271,7 +2348,6 @@
     /* ===== MESSAGE STYLES ===== */
     #success-message,
     #error-message {
-      max-width: 380px;
       margin: 10px auto;
       padding: 10px 14px;
       border-radius: 8px;
@@ -2426,6 +2502,297 @@
         padding: 4px 8px;
       }
     }
+
+    /* === PROFILE LAYOUT === */
+    .profile-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .left-column {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .card {
+      background-color: var(--card-bg, #fff);
+      padding: 16px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-header,
+    #user-display-name {
+      background-color: transparent !important;
+    }
+
+    .card-header hr {
+      margin: 0 12px;
+      border: 1px solid #ddd;
+    }
+
+    .logout-btn {
+      margin-top: 30px;
+      width: 100%;
+      padding: 10px;
+      background: #dc2626;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .logout-btn:hover {
+      background: #b91c1c;
+    }
+
+    /* === FLIP CARD BASE === */
+    .flip-card {
+      background-color: transparent;
+      perspective: 1000px;
+      width: 100%;
+      max-width: 100%;
+      margin: 0 auto;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 2px solid red;
+      /* for debugging */
+    }
+
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 0;
+      padding-top: 100%;
+      /* square aspect ratio */
+      transition: transform 0.6s ease-in-out;
+      transform-style: preserve-3d;
+      cursor: pointer;
+    }
+
+    .flip-card-inner.is-flipped {
+      transform: rotateY(180deg);
+    }
+
+    .flip-card-front,
+    .flip-card-back {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 10px;
+      padding: 20px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      backface-visibility: hidden;
+      overflow-y: auto;
+      scrollbar-width: none;
+      /* Firefox */
+      -ms-overflow-style: none;
+      /* IE/Edge */
+    }
+
+    .flip-card-front::-webkit-scrollbar,
+    .flip-card-back::-webkit-scrollbar {
+      display: none;
+      /* Chrome/Safari/Opera */
+    }
+
+    .flip-card-front {
+      background-color: var(--card-bg, #fff);
+      color: #111827;
+      z-index: 2;
+    }
+
+    .flip-card-back {
+      background-color: var(--card-bg, #fff);
+      color: #111827;
+      transform: rotateY(180deg);
+      gap: 16px;
+      justify-content: flex-start;
+      padding-top: 10px;
+    }
+
+
+
+    /* Header inside card */
+    .card-header h2 {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #111827;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 8px;
+      width: 100%;
+      text-align: center;
+    }
+
+    /* Account Info */
+    .account-info {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .account-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .account-row .icon {
+      width: 20px;
+      height: 20px;
+      background-color: #7A0000;
+      border-radius: 50%;
+    }
+
+    .label {
+      font-size: 0.8rem;
+      color: #6b7280;
+      margin: 0;
+    }
+
+    .value {
+      font-weight: 500;
+      margin: 0;
+    }
+
+    /* Favorites */
+    .favorites-list {
+      width: 100%;
+      max-height: 150px;
+      overflow-y: auto;
+      flex-shrink: 0;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .favorites-list::-webkit-scrollbar {
+      display: none;
+    }
+
+    .favorites-title {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    #favoriteList div {
+      background-color: #f9f9f9;
+      border: 1px solid #ddd;
+      padding: 6px 10px;
+      border-radius: 6px;
+      margin-bottom: 4px;
+    }
+
+    .logo {
+      max-width: 50%;
+      height: auto;
+      border-radius: 5%;
+      margin-bottom: 20px;
+    }
+
+    /* Hover hint */
+    .hover-hint {
+      font-size: 1.3rem;
+      font-weight: 600;
+      text-align: center;
+      animation: pulseHintObvious 1.5s infinite ease-in-out;
+      transition: opacity 0.3s, transform 0.3s, color 0.3s;
+    }
+
+    .flip-card-inner.is-flipped .hover-hint {
+      opacity: 0;
+    }
+
+    @keyframes pulseHintObvious {
+
+      0%,
+      100% {
+        transform: scale(1);
+        opacity: 0.6;
+        color: #222;
+      }
+
+      50% {
+        transform: scale(1.0.5);
+        opacity: 1;
+      }
+    }
+
+    /* === MEDIA QUERIES === */
+
+    /* Tablet (769–992px): tap flip only */
+    @media (min-width: 769px) and (max-width: 992px) {
+      .flip-card {
+        max-width: 360px;
+        margin: 0 auto;
+      }
+
+      .flip-card-inner {
+        height: auto;
+        min-height: 500px;
+        padding-top: 0;
+      }
+
+      .flip-card:hover .flip-card-inner {
+        transform: rotateY(0deg);
+        /* disable hover */
+      }
+
+      .flip-card:hover .flip-card-inner.is-flipped {
+        transform: rotateY(180deg);
+        /* keep flip if tapped */
+      }
+    }
+
+    /* Desktop (≥993px): hover flip */
+    @media (min-width: 993px) {
+      .flip-card:hover .flip-card-inner {
+        transform: rotateY(180deg);
+      }
+
+      .flip-card:hover .hover-hint {
+        opacity: 0;
+      }
+    }
+
+    /* Mobile (≤768px) */
+    @media (max-width: 768px) {
+      .profile-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .left-column {
+        order: 2;
+      }
+
+      #user-info-card {
+        order: 1;
+      }
+
+      .logout-btn {
+        order: 3;
+      }
+
+      .flip-card-inner {
+        height: auto;
+        padding-top: 0;
+        min-height: 400px;
+        /* prevents collapse, adjust as needed */
+      }
+    }
   </style>
 </head>
 
@@ -2438,7 +2805,8 @@
           <img src="./singatrainlogo.png" alt="SingaTrain Logo" width="38" height="38" class="rounded-3">
           <span>SingaTrain</span>
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#primaryNav" aria-controls="primaryNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#primaryNav"
+          aria-controls="primaryNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="material-icons">menu</span>
         </button>
         <div class="collapse navbar-collapse mt-3 mt-lg-0" id="primaryNav">
@@ -2586,7 +2954,8 @@
             <span class="material-icons text-warning">schedule</span>
             First &amp; Last Train Timings
           </h5>
-          <button class="btn btn-outline-danger btn-sm hover-float" type="button" data-bs-toggle="collapse" data-bs-target="#trainTimingsPanel" aria-expanded="true" aria-controls="trainTimingsPanel">
+          <button class="btn btn-outline-danger btn-sm hover-float" type="button" data-bs-toggle="collapse"
+            data-bs-target="#trainTimingsPanel" aria-expanded="true" aria-controls="trainTimingsPanel">
             <span class="material-icons me-1">unfold_more</span>
             Toggle View
           </button>
@@ -2639,13 +3008,16 @@
       <div class="output-box mt-3" id="routeOutput">
         <div class="text-secondary">Enter start & destination to plan your route.</div>
       </div>
-      
+
       <!-- Dynamic Route Map Visualization -->
       <div class="mt-4" id="routeMapContainer" style="display:none;">
         <h5 class="mb-3">📍 Visual Route Map</h5>
-        <div id="routeVisualizerMap" style="width:100%;height:500px;border:1px solid var(--neutral-200);border-radius:var(--border-radius);background:var(--neutral-50);box-shadow: 0 4px 20px rgba(0,0,0,0.04);position:relative;"></div>
+        <div id="routeVisualizerMap"
+          style="width:100%;height:500px;border:1px solid var(--neutral-200);border-radius:var(--border-radius);background:var(--neutral-50);box-shadow: 0 4px 20px rgba(0,0,0,0.04);position:relative;">
+        </div>
         <div class="mt-2" style="font-size: var(--text-sm); color: var(--neutral-800);">
-          <span class="material-icons" style="font-size: 18px; vertical-align: middle; margin-right: 8px; color: var(--neutral-600);">info</span>
+          <span class="material-icons"
+            style="font-size: 18px; vertical-align: middle; margin-right: 8px; color: var(--neutral-600);">info</span>
           Interactive route visualization with station markers and path overlay
         </div>
       </div>
@@ -2836,8 +3208,11 @@
           <span id="req-special" class="not-met">- A special character (!@#$%^&*)</span>
         </div>
 
-        <button id="login-btn">Sign In</button>
-        <button id="register-btn">Register</button>
+        <div class="auth-buttons">
+          <button id="login-btn">Sign In</button>
+          <button id="register-btn">Register New Account</button>
+        </div>
+
 
         <div class="text-center">
           <a href="#" id="forgot-password-link">Forgot Password?</a>
@@ -2858,30 +3233,79 @@
       </div>
 
       <!-- USER DASHBOARD -->
+      <!-- USER DASHBOARD -->
       <div id="dashboard-section" class="hidden">
         <h2>Welcome to SingaTrain!</h2>
         <p style="color:#111827">You are logged in as: <strong id="user-display-email"></strong></p>
 
-        <div id="profile-info">
-          <label for="profileName" style="color:#111827">Display Name:</label>
-          <input type="text" id="profileName" placeholder="Enter your name">
-          <button id="saveProfileBtn">Save Profile</button>
+        <!-- 🧩 Profile Layout -->
+        <div class="profile-layout">
+          <!-- LEFT COLUMN -->
+          <div class="left-column">
+            <!-- Change Display Name -->
+            <div class="card" id="change-name-div">
+              <h3>Change Display Name</h3>
+              <input type="text" id="profileName" placeholder="Current name">
+              <button id="saveProfileBtn">Save Profile</button>
+            </div>
 
-          <p style="margin-top: 10px; color:#111827">Your Favorites:</p>
-          <div id="favoriteList"></div>
+            <!-- Add New Favorite Station -->
+            <div class="card" id="add-favorite-div">
+              <h3>Add New Favorite Station</h3>
+              <label for="favoriteLabel">Label:</label>
+              <input type="text" id="favoriteLabel" placeholder="Favorite name">
 
-          <label for="favoriteLabel" style="color:#111827">Label:</label>
-          <input type="text" id="favoriteLabel" placeholder="Favorite name">
+              <label for="favoriteStation">Station:</label>
+              <select id="favoriteStation"></select>
+              <button id="addFavoriteBtn">Add Favorite Station</button>
+            </div>
+          </div>
 
-          <label for="favoriteStation" style="color:#111827">Station:</label>
-          <select id="favoriteStation"></select>
-          <button id="addFavoriteBtn">Add Favorite</button>
+          <!-- RIGHT COLUMN (User Info Card) -->
+          <div class="card flip-card" id="user-info-card">
+            <div class="flip-card-inner">
+              <div class="flip-card-front">
+                <img src="singatrainlogo.png" alt="SingaTrain Logo" class="logo">
+                <p class="hover-hint">Hover to see profile details</p>
+              </div>
+              <div class="flip-card-back">
+                <!-- Header -->
+                <div class="card-header">
+                  <h2 id="user-display-name">User Name</h2>
+                </div>
+
+                <!-- Account Info -->
+                <div class="account-info">
+                  <div class="account-row">
+                    <span class="material-icons" style="color:#7A0000;">calendar_today</span>
+                    <div>
+                      <p class="label">Member Since</p>
+                      <p id="member-since" class="value">--/--/----</p>
+                    </div>
+                  </div>
+
+                  <div class="account-row">
+                    <span class="material-icons" style="color:#7A0000;">star</span>
+                    <div>
+                      <p class="label">Favorite Stations</p>
+                      <p id="favorite-count" class="value">0 stations</p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Favorite Stations List -->
+                <div class="favorites-list">
+                  <h3 class="favorites-title">Your Favorite Stations</h3>
+                  <div id="favoriteList"></div>
+                </div>
+              </div>
+
+            </div>
+          </div>
         </div>
 
-        <button id="logout-btn">Sign Out</button>
-      </div>
-
-
+        <!-- Sign Out Button -->
+        <button id="logout-btn" class="logout-btn">Sign Out</button>
 
 
     </section>
@@ -3178,7 +3602,7 @@
         console.error(err);
       }
     }
-    
+
     // ====== STATION COORDINATES FOR ROUTE VISUALIZATION ======
     const STATION_COORDINATES = `EW1 Pasir Ris/ 6840, 1600
 EW2,DT32 Tampines/ 6840,1895
@@ -3366,7 +3790,7 @@ TE29 Bayshore/6680,3222`;
     coordLines.forEach(line => {
       line = line.trim();
       if (!line) return;
-      
+
       const match = line.match(/^([A-Z0-9,]+)\s+(.+?)\/\s*(\d+)\s*,\s*(\d+)/);
       if (match) {
         const [, codes, name, x, y] = match;
@@ -3388,11 +3812,11 @@ TE29 Bayshore/6680,3222`;
     // Initialize route visualizer map
     function initRouteVisualizerMap() {
       if (routeMapInstance) return; // Already initialized
-      
+
       const imageUrl = './MRT-Map.png';
       const img = new Image();
-      
-      img.onload = function() {
+
+      img.onload = function () {
         const imgW = img.width;
         const imgH = img.height;
 
@@ -3407,7 +3831,7 @@ TE29 Bayshore/6680,3222`;
           routeMapInstance.unproject([0, imgH], routeMapInstance.getMaxZoom()),
           routeMapInstance.unproject([imgW, 0], routeMapInstance.getMaxZoom())
         ]);
-        
+
         L.imageOverlay(imageUrl, imageLatLngBounds).addTo(routeMapInstance);
         routeMapInstance.fitBounds(imageLatLngBounds);
 
@@ -3416,18 +3840,18 @@ TE29 Bayshore/6680,3222`;
           const latlng = routeMapInstance.unproject([station.x, station.y], routeMapInstance.getMaxZoom());
           station.latlng = latlng;
         });
-        
+
         // Force map to invalidate size for proper alignment
         setTimeout(() => {
           routeMapInstance.invalidateSize();
         }, 100);
       };
-      
-      img.onerror = function() {
+
+      img.onerror = function () {
         console.error('Failed to load MRT map image for route visualization');
         document.getElementById('routeMapContainer').innerHTML = '<div class="alert alert-warning">Route map image not available. Please ensure MRT-Map.png is in the main folder.</div>';
       };
-      
+
       img.src = imageUrl;
     }
 
@@ -3491,13 +3915,13 @@ TE29 Bayshore/6680,3222`;
       // Build route line from all stations in the path and add markers
       const routeLatLngs = [];
       const routeStationNames = new Set();
-      
+
       routeSteps.forEach((step, idx) => {
         const coord = findStationCoords(step.station);
         if (coord && coord.latlng) {
           routeLatLngs.push(coord.latlng);
           routeStationNames.add(step.station.toLowerCase());
-          
+
           // Add intermediate markers (not start or end)
           if (idx > 0 && idx < routeSteps.length - 1) {
             const intermediateMarker = L.circleMarker(coord.latlng, {
@@ -3523,7 +3947,7 @@ TE29 Bayshore/6680,3222`;
         // Fit map to show the route with padding
         const bounds = L.latLngBounds(routeLatLngs);
         routeMapInstance.fitBounds(bounds, { padding: [80, 80] });
-        
+
         // Ensure proper alignment
         setTimeout(() => {
           routeMapInstance.invalidateSize();
@@ -3531,7 +3955,7 @@ TE29 Bayshore/6680,3222`;
         }, 100);
       }
     }
-    
+
     // ====== ROUTE PLANNER ======
     function planRoute() {
       const start = document.getElementById('routeStart').value;
@@ -3575,11 +3999,11 @@ TE29 Bayshore/6680,3222`;
 
       out.innerHTML = html;
       animateResult(out);
-      
+
       // Show and initialize the route visualizer map
       const mapContainer = document.getElementById('routeMapContainer');
       mapContainer.style.display = 'block';
-      
+
       // Initialize map if not already done
       if (!routeMapInstance) {
         initRouteVisualizerMap();
@@ -4410,97 +4834,97 @@ TE29 Bayshore/6680,3222`;
         liveTickerIntervalId = null;
       }
     }
-  function renderLiveArrivals() {
-    const container = document.getElementById('liveArrivals');
-    if (!container) return;
+    function renderLiveArrivals() {
+      const container = document.getElementById('liveArrivals');
+      if (!container) return;
 
-    const simulator = window.trainArrivalSimulator;
-    const delayToggle = document.getElementById('delayToggle');
-    if (delayToggle && simulator?.config?.delay) {
-      delayToggle.checked = !!simulator.config.delay.enabled;
-    }
-
-    if (!simulator) {
-      container.innerHTML = '<div class="text-secondary">Arrival simulator is still loading…</div>';
-      return;
-    }
-
-    const arrivalData = simulator.getArrivals({ returnSeconds: true });
-    const delayFlags = typeof simulator.getDelayFlags === 'function' ? simulator.getDelayFlags() : {};
-    let stations = getStationsForArrivalDisplay(arrivalData);
-
-    // Favorite stations for highlighting
-    const favoriteStations = Array.isArray(userData?.favorites)
-      ? userData.favorites.map(f => f.station)
-      : [];
-
-    const filterLine = document.getElementById('liveTrainLine')?.value || '';
-    if (filterLine) {
-      const filterStations = Object.entries(arrivalData)
-        .filter(([, lineMap]) => lineMap && lineMap[filterLine])
-        .map(([station]) => station);
-
-      if (filterStations.length) {
-        const ordered = [];
-        const seen = new Set();
-        [...stations.filter(st => filterStations.includes(st)), ...filterStations].forEach(station => {
-          if (!seen.has(station)) {
-            ordered.push(station);
-            seen.add(station);
-          }
-        });
-        stations = ordered;
+      const simulator = window.trainArrivalSimulator;
+      const delayToggle = document.getElementById('delayToggle');
+      if (delayToggle && simulator?.config?.delay) {
+        delayToggle.checked = !!simulator.config.delay.enabled;
       }
-    }
 
-    if (stations.length === 0) {
-      const supported = Object.keys(simulator.config.stationLines || {}).join(', ');
-      container.innerHTML = `<div class="text-secondary">Add a favorite station to see simulated countdowns. Supported demo stations: ${supported || 'loading…'}.</div>`;
-      return;
-    }
-
-    const cards = [];
-    const buildStatus = (seconds, idx, isDelayed) => {
-      if (isDelayed) {
-        return { label: 'Delayed', css: 'status-delayed', icon: 'report_problem' };
+      if (!simulator) {
+        container.innerHTML = '<div class="text-secondary">Arrival simulator is still loading…</div>';
+        return;
       }
-      if (seconds <= 20) {
-        return { label: 'Departing', css: 'status-departing', icon: 'directions_walk' };
+
+      const arrivalData = simulator.getArrivals({ returnSeconds: true });
+      const delayFlags = typeof simulator.getDelayFlags === 'function' ? simulator.getDelayFlags() : {};
+      let stations = getStationsForArrivalDisplay(arrivalData);
+
+      // Favorite stations for highlighting
+      const favoriteStations = Array.isArray(userData?.favorites)
+        ? userData.favorites.map(f => f.station)
+        : [];
+
+      const filterLine = document.getElementById('liveTrainLine')?.value || '';
+      if (filterLine) {
+        const filterStations = Object.entries(arrivalData)
+          .filter(([, lineMap]) => lineMap && lineMap[filterLine])
+          .map(([station]) => station);
+
+        if (filterStations.length) {
+          const ordered = [];
+          const seen = new Set();
+          [...stations.filter(st => filterStations.includes(st)), ...filterStations].forEach(station => {
+            if (!seen.has(station)) {
+              ordered.push(station);
+              seen.add(station);
+            }
+          });
+          stations = ordered;
+        }
       }
-      if (seconds <= 75) {
-        return { label: 'Arriving', css: 'status-arriving', icon: 'south_east' };
+
+      if (stations.length === 0) {
+        const supported = Object.keys(simulator.config.stationLines || {}).join(', ');
+        container.innerHTML = `<div class="text-secondary">Add a favorite station to see simulated countdowns. Supported demo stations: ${supported || 'loading…'}.</div>`;
+        return;
       }
-      if (idx === 0 && seconds <= 120) {
-        return { label: 'Approaching', css: 'status-arriving', icon: 'schedule' };
-      }
-      return { label: 'On Time', css: 'status-on-time', icon: 'check_circle' };
-    };
 
-    stations.forEach(station => {
-      const lineMap = arrivalData[station];
-      if (!lineMap) return;
+      const cards = [];
+      const buildStatus = (seconds, idx, isDelayed) => {
+        if (isDelayed) {
+          return { label: 'Delayed', css: 'status-delayed', icon: 'report_problem' };
+        }
+        if (seconds <= 20) {
+          return { label: 'Departing', css: 'status-departing', icon: 'directions_walk' };
+        }
+        if (seconds <= 75) {
+          return { label: 'Arriving', css: 'status-arriving', icon: 'south_east' };
+        }
+        if (idx === 0 && seconds <= 120) {
+          return { label: 'Approaching', css: 'status-arriving', icon: 'schedule' };
+        }
+        return { label: 'On Time', css: 'status-on-time', icon: 'check_circle' };
+      };
 
-      let hasMatchingLine = false;
-      let soonestCountdown = Infinity;
+      stations.forEach(station => {
+        const lineMap = arrivalData[station];
+        if (!lineMap) return;
 
-      const lineSectionsHtml = Object.entries(lineMap).map(([lineName, arrivals]) => {
-        if (filterLine && lineName !== filterLine) return '';
-        if (!Array.isArray(arrivals) || arrivals.length === 0) return '';
+        let hasMatchingLine = false;
+        let soonestCountdown = Infinity;
 
-        hasMatchingLine = true;
-        const lineColor = getLineColor(lineName);
-        const maxSeconds = getLineMaxSeconds(simulator, lineName);
-        const isDelayed = Boolean(delayFlags?.[station]?.[lineName] && delayFlags[station][lineName] > Date.now());
+        const lineSectionsHtml = Object.entries(lineMap).map(([lineName, arrivals]) => {
+          if (filterLine && lineName !== filterLine) return '';
+          if (!Array.isArray(arrivals) || arrivals.length === 0) return '';
 
-        const rows = arrivals.map((seconds, idx) => {
-          const label = formatArrivalCountdown(seconds);
-          if (seconds < soonestCountdown) soonestCountdown = seconds;
-          const progress = Math.min(1, Math.max(0, 1 - seconds / maxSeconds));
-          const styleColor = lineColor;
-          const iconStyles = `background:${styleColor}1a;color:${styleColor};box-shadow:inset 0 0 0 1px ${styleColor}55;`;
-          const status = buildStatus(seconds, idx, isDelayed && idx === 0);
-          const statusPill = `<span class="status-pill ${status.css}"><span class="material-icons" style="font-size:14px;">${status.icon}</span>${status.label}</span>`;
-          return `<div class="arrival-row">
+          hasMatchingLine = true;
+          const lineColor = getLineColor(lineName);
+          const maxSeconds = getLineMaxSeconds(simulator, lineName);
+          const isDelayed = Boolean(delayFlags?.[station]?.[lineName] && delayFlags[station][lineName] > Date.now());
+
+          const rows = arrivals.map((seconds, idx) => {
+            const label = formatArrivalCountdown(seconds);
+            if (seconds < soonestCountdown) soonestCountdown = seconds;
+            const progress = Math.min(1, Math.max(0, 1 - seconds / maxSeconds));
+            const styleColor = lineColor;
+            const iconStyles = `background:${styleColor}1a;color:${styleColor};box-shadow:inset 0 0 0 1px ${styleColor}55;`;
+            const status = buildStatus(seconds, idx, isDelayed && idx === 0);
+            const statusPill = `<span class="status-pill ${status.css}"><span class="material-icons" style="font-size:14px;">${status.icon}</span>${status.label}</span>`;
+            return `<div class="arrival-row">
           <div class="train-icon" style="${iconStyles}">
             <span class="material-icons">${idx === 0 ? 'train' : 'tram'}</span>
           </div>
@@ -4515,26 +4939,26 @@ TE29 Bayshore/6680,3222`;
             </div>
           </div>
         </div>`;
-        }).join('');
+          }).join('');
 
-        return `<div class="line-section">
+          return `<div class="line-section">
         <div class="line-label" style="color:${lineColor}">
           <span>${lineName}</span>
           <span class="subtle">Next ${arrivals.length} trains</span>
         </div>
         ${rows}
       </div>`;
-      }).filter(Boolean).join('');
+        }).filter(Boolean).join('');
 
-      if (!hasMatchingLine) return;
+        if (!hasMatchingLine) return;
 
-      const isFavorite = favoriteStations.includes(station);
-      const favoriteClass = isFavorite ? 'favorite-toggle active' : 'favorite-toggle';
-      const badgeTone = isFavorite ? 'bg-danger-subtle text-danger' : 'bg-secondary-subtle text-secondary';
-      const soonClass = soonestCountdown <= 45 ? 'arrival-card arriving-soon' : 'arrival-card';
-      const stationForJs = station.replace(/\\/g, '\\\\').replace(/'/g, '\\\'');
+        const isFavorite = favoriteStations.includes(station);
+        const favoriteClass = isFavorite ? 'favorite-toggle active' : 'favorite-toggle';
+        const badgeTone = isFavorite ? 'bg-danger-subtle text-danger' : 'bg-secondary-subtle text-secondary';
+        const soonClass = soonestCountdown <= 45 ? 'arrival-card arriving-soon' : 'arrival-card';
+        const stationForJs = station.replace(/\\/g, '\\\\').replace(/'/g, '\\\'');
 
-      cards.push(`<div class="${soonClass}">
+        cards.push(`<div class="${soonClass}">
       <div class="arrival-header">
         <div>
           <div class="station-name">${station}</div>
@@ -4546,7 +4970,7 @@ TE29 Bayshore/6680,3222`;
       </div>
       ${lineSectionsHtml}
     </div>`);
-    });
+      });
 
       container.innerHTML = cards.length ? cards.join('') : '<div class="text-secondary">No simulated data available for your selected stations yet.</div>';
     }
@@ -4626,7 +5050,7 @@ TE29 Bayshore/6680,3222`;
 
       const results = query
         ? directionData.filter(item =>
-            item.station.toLowerCase().includes(query) || item.code.toLowerCase().includes(query))
+          item.station.toLowerCase().includes(query) || item.code.toLowerCase().includes(query))
         : directionData;
 
       if (!results.length) {
@@ -4846,6 +5270,13 @@ TE29 Bayshore/6680,3222`;
         }
       })();
     }
+
+  function viewFavoriteDetails(station) {
+    alert(`Live details for ${station} would appear here.
+
+In a full build: live arrivals, crowd level, service alerts, nearby facilities.`);
+  }
+
 
     // ====== MAPBOX ======
     function initMeetupMap() {
@@ -5542,7 +5973,38 @@ TE29 Bayshore/6680,3222`;
       // make Dashboard default
       setActiveTab('dashboard');
     });
+    // Select all flip cards
+    const flipCards = document.querySelectorAll('.flip-card-inner');
 
+    flipCards.forEach(card => {
+      const hoverHint = card.querySelector('.hover-hint');
+
+      // update hint text based on screen width
+      function updateHintText() {
+        if (window.innerWidth <= 992) {
+          // Mobile and tablet - tap to flip
+          if (hoverHint) hoverHint.textContent = 'Tap to see profile details';
+          card.classList.remove('is-flipped');
+        } else {
+          // Desktop - hover to flip
+          if (hoverHint) hoverHint.textContent = 'Hover to see profile details';
+          card.classList.remove('is-flipped');
+        }
+      }
+
+      // initial setup
+      updateHintText();
+
+      // update on resize
+      window.addEventListener('resize', updateHintText);
+
+      // tap flip for mobile and tablet
+      card.addEventListener('click', (e) => {
+        if (window.innerWidth <= 992) {
+          card.classList.toggle('is-flipped');
+        }
+      });
+    });
   </script>
   <!-- 1. Import the core Firebase App module (ensure version consistency) -->
   <script type="module" src="https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js"></script>
@@ -5597,6 +6059,7 @@ TE29 Bayshore/6680,3222`;
 
       userData.name = name;
       document.getElementById('userName').textContent = name;
+      document.getElementById('user-display-name').textContent = name;
 
       if (userData.uid) {
         await setDoc(doc(db, 'users', userData.uid), { name: name }, { merge: true });
@@ -5615,14 +6078,15 @@ TE29 Bayshore/6680,3222`;
         if (!userData.favorites || userData.favorites.length === 0) {
           listContainer.innerHTML = '<li style="color:#6b7280;">No favorite stations yet.</li>';
         } else {
+          const favoriteCountEl = document.getElementById('favorite-count');
+          if (favoriteCountEl) favoriteCountEl.textContent = userData.favorites?.length || 0;
           userData.favorites.forEach((f, i) => {
             const li = document.createElement('li');
             li.style.marginBottom = '5px';
-            li.innerHTML = `<strong>${f.label}</strong> - ${f.station} `;
+            // Include label and station
+            li.innerHTML = `<strong>${f.label}:</strong> ${f.station} `;
             const btn = document.createElement('button');
             btn.textContent = 'Remove';
-            btn.style.marginLeft = '10px';
-            btn.style.marginTop = '0px';
             btn.classList.add('btn', 'btn-sm', 'btn-outline-danger');
             btn.addEventListener('click', () => removeFavorite(i));
             li.appendChild(btn);
@@ -5650,44 +6114,45 @@ TE29 Bayshore/6680,3222`;
         }
       }
     };
+
     // --- Toggle favorite function ---
-        window.toggleFavorite = async function (station) {
-          const requiresSync = !!userData?.uid;
+    window.toggleFavorite = async function (station) {
+      const requiresSync = !!userData?.uid;
 
-          if (!Array.isArray(userData.favorites)) userData.favorites = [];
+      if (!Array.isArray(userData.favorites)) userData.favorites = [];
 
-          const existingIndex = userData.favorites.findIndex(f => f.station === station);
-          if (existingIndex >= 0) {
-            userData.favorites.splice(existingIndex, 1);
-            if (!requiresSync) {
-              showToast(`Removed ${station} from favorites.`, false);
-            }
-          } else {
-            userData.favorites.push({ label: station, station });
-            if (!requiresSync) {
-              showToast(`Favorited ${station} (local only).`, false);
-            }
-          }
+      const existingIndex = userData.favorites.findIndex(f => f.station === station);
+      if (existingIndex >= 0) {
+        userData.favorites.splice(existingIndex, 1);
+        if (!requiresSync) {
+          showToast(`Removed ${station} from favorites.`, false);
+        }
+      } else {
+        userData.favorites.push({ label: station, station });
+        if (!requiresSync) {
+          showToast(`Favorited ${station} (local only).`, false);
+        }
+      }
 
-          if (requiresSync) {
-            try {
-              await setDoc(
-                doc(db, 'users', userData.uid),
-                { favorite_stations: userData.favorites },
-                { merge: true }
-              );
-              showToast('Favorites synced.', false);
-            } catch (err) {
-              console.error('Failed to save favorites:', err);
-              showToast('Error saving favorites. Please try again.');
-              return;
-            }
-          }
+      if (requiresSync) {
+        try {
+          await setDoc(
+            doc(db, 'users', userData.uid),
+            { favorite_stations: userData.favorites },
+            { merge: true }
+          );
+          showToast('Favorites synced.', false);
+        } catch (err) {
+          console.error('Failed to save favorites:', err);
+          showToast('Error saving favorites. Please try again.');
+          return;
+        }
+      }
 
-          renderLiveArrivals();
-          renderLiveTickerCard();
-          displayFavorites();
-        };
+      renderLiveArrivals();
+      renderLiveTickerCard();
+      displayFavorites();
+    };
 
     // Add favorite
     window.addFavorite = async function () {
@@ -5700,6 +6165,8 @@ TE29 Bayshore/6680,3222`;
       displayFavorites(); // Refresh dashboard display
       document.getElementById('favoriteLabel').value = '';
       document.getElementById('favoriteStation').value = '';
+      const favoriteCountEl = document.getElementById('favorite-count');
+      if (favoriteCountEl) favoriteCountEl.textContent = userData.favorites?.length || 0;
 
       if (userData.uid) {
         await setDoc(doc(db, 'users', userData.uid), { favorite_stations: userData.favorites }, { merge: true });
@@ -5973,6 +6440,20 @@ TE29 Bayshore/6680,3222`;
             const data = docSnap.data();
             userData.name = data.name || 'Anonymous';
             userData.favorites = data.favorite_stations || [];
+
+            // --- Update flip-card fields dynamically ---
+            const userDisplayNameEl = document.getElementById('user-display-name');
+            const memberSinceEl = document.getElementById('member-since');
+            const favoriteCountEl = document.getElementById('favorite-count');
+
+            if (userDisplayNameEl) userDisplayNameEl.textContent = userData.name;
+
+            if (memberSinceEl) {
+              const createdAt = data.created_at;
+              memberSinceEl.textContent = createdAt?.toDate ? createdAt.toDate().toLocaleDateString() : '--/--/----';
+            }
+
+            if (favoriteCountEl) favoriteCountEl.textContent = userData.favorites?.length || 0;
           } else {
             // Initialize Firestore for new user
             const initData = {
@@ -5993,7 +6474,6 @@ TE29 Bayshore/6680,3222`;
 
           displayFavorites();      // Populate favorite stations list
           fillStationDropdown();   // Refill station dropdowns if needed
-
 
           // Show dashboard first (make visible)
           authSection?.classList.add('hidden');
