@@ -2990,36 +2990,38 @@
     <!-- ROUTE -->
     <section id="route" class="section-card d-none">
       <h2 class="section-title mb-2">🗺️ Interactive Route Planner</h2>
-      <div class="feature-description p-3 rounded mb-3">Shortest path (fewest stops) across lines & interchanges with
-        time estimate.</div>
+      <div class="feature-description p-3 rounded mb-3">Click on the map to select start and end stations, or use the dropdowns below.</div>
 
-      <div class="row g-3">
-        <div class="col-md-6">
-          <label class="form-label">Starting Station</label>
-          <select id="routeStart" class="form-select"></select>
-        </div>
-        <div class="col-md-6">
-          <label class="form-label">Destination Station</label>
-          <select id="routeEnd" class="form-select"></select>
-        </div>
-      </div>
-      <button class="btn btn-primary mt-3" onclick="planRoute()">Plan Route</button>
-
-      <div class="output-box mt-3" id="routeOutput">
-        <div class="text-secondary">Enter start & destination to plan your route.</div>
-      </div>
-
-      <!-- Dynamic Route Map Visualization -->
-      <div class="mt-4" id="routeMapContainer" style="display:none;">
-        <h5 class="mb-3">📍 Visual Route Map</h5>
+      <!-- Interactive Map Selection -->
+      <div class="mb-4">
+        <h5 class="mb-3">📍 Select Stations on Map</h5>
         <div id="routeVisualizerMap"
-          style="width:100%;height:500px;border:1px solid var(--neutral-200);border-radius:var(--border-radius);background:var(--neutral-50);box-shadow: 0 4px 20px rgba(0,0,0,0.04);position:relative;">
+          style="width:100%;height:70vh;min-height:400px;max-height:800px;border:1px solid var(--neutral-200);border-radius:var(--border-radius);background:var(--neutral-50);box-shadow: 0 4px 20px rgba(0,0,0,0.04);position:relative;overflow:hidden;">
         </div>
         <div class="mt-2" style="font-size: var(--text-sm); color: var(--neutral-800);">
           <span class="material-icons"
             style="font-size: 18px; vertical-align: middle; margin-right: 8px; color: var(--neutral-600);">info</span>
-          Interactive route visualization with station markers and path overlay
+          Click once for start station, click again for end station. Route calculates automatically.
         </div>
+      </div>
+
+      <!-- Manual Selection (Alternative) -->
+      <div class="row g-3">
+        <div class="col-md-5">
+          <label class="form-label">Starting Station</label>
+          <select id="routeStart" class="form-select" onchange="handleManualStationSelect()"></select>
+        </div>
+        <div class="col-md-5">
+          <label class="form-label">Destination Station</label>
+          <select id="routeEnd" class="form-select" onchange="handleManualStationSelect()"></select>
+        </div>
+        <div class="col-md-2 d-flex align-items-end">
+          <button class="btn btn-outline-secondary w-100" onclick="clearRouteSelection()">Clear</button>
+        </div>
+      </div>
+
+      <div class="output-box mt-3" id="routeOutput">
+        <div class="text-secondary">Click on two stations on the map or use the dropdowns above.</div>
       </div>
     </section>
 
@@ -3334,10 +3336,16 @@
     const MRT_STATIONS = {
       NSL: ['Jurong East', 'Bukit Batok', 'Bukit Gombak', 'Choa Chu Kang', 'Yew Tee', 'Kranji', 'Marsiling', 'Woodlands', 'Admiralty', 'Sembawang', 'Canberra', 'Yishun', 'Khatib', 'Yio Chu Kang', 'Ang Mo Kio', 'Bishan', 'Braddell', 'Toa Payoh', 'Novena', 'Newton', 'Orchard', 'Somerset', 'Dhoby Ghaut', 'City Hall', 'Raffles Place', 'Marina Bay', 'Marina South Pier'],
       EWL: ['Pasir Ris', 'Tampines', 'Simei', 'Tanah Merah', 'Bedok', 'Kembangan', 'Eunos', 'Paya Lebar', 'Aljunied', 'Kallang', 'Lavender', 'Bugis', 'City Hall', 'Raffles Place', 'Tanjong Pagar', 'Outram Park', 'Tiong Bahru', 'Redhill', 'Queenstown', 'Commonwealth', 'Buona Vista', 'Dover', 'Clementi', 'Jurong East', 'Chinese Garden', 'Lakeside', 'Boon Lay', 'Pioneer', 'Joo Koon', 'Gul Circle', 'Tuas Crescent', 'Tuas West Road', 'Tuas Link'],
+      CGL: ['Tanah Merah', 'Expo', 'Changi Airport'],
       DTL: ['Bukit Panjang', 'Cashew', 'Hillview', 'Beauty World', 'King Albert Park', 'Sixth Avenue', 'Tan Kah Kee', 'Botanic Gardens', 'Stevens', 'Newton', 'Little India', 'Rochor', 'Bugis', 'Promenade', 'Bayfront', 'Downtown', 'Telok Ayer', 'Chinatown', 'Fort Canning', 'Bencoolen', 'Jalan Besar', 'Bendemeer', 'Geylang Bahru', 'Mattar', 'MacPherson', 'Ubi', 'Kaki Bukit', 'Bedok North', 'Bedok Reservoir', 'Tampines West', 'Tampines', 'Tampines East', 'Upper Changi', 'Expo'],
-      CCL: ['Dhoby Ghaut', 'Bras Basah', 'Esplanade', 'Promenade', 'Nicoll Highway', 'Stadium', 'Mountbatten', 'Dakota', 'Paya Lebar', 'MacPherson', 'Tai Seng', 'Bartley', 'Serangoon', 'Lorong Chuan', 'Bishan', 'Marymount', 'Caldecott', 'Botanic Gardens', 'Farrer Road', 'Holland Village', 'Buona Vista', 'one-north', 'Kent Ridge', 'Haw Par Villa', 'Pasir Panjang', 'Labrador Park', 'Telok Blangah', 'HarbourFront'],
-      NEL: ['HarbourFront', 'Outram Park', 'Chinatown', 'Clarke Quay', 'Dhoby Ghaut', 'Little India', 'Farrer Park', 'Boon Keng', 'Potong Pasir', 'Woodleigh', 'Serangoon', 'Kovan', 'Hougang', 'Buangkok', 'Sengkang', 'Punggol'],
-      TEL: ['Woodlands North', 'Woodlands', 'Woodlands South', 'Springleaf', 'Lentor', 'Mayflower', 'Bright Hill', 'Upper Thomson', 'Caldecott', 'Mount Pleasant', 'Stevens', 'Napier', 'Orchard Boulevard', 'Orchard', 'Great World', 'Havelock', 'Outram Park', 'Maxwell', 'Shenton Way', 'Marina Bay', 'Marina South', 'Gardens by the Bay']
+      CCL: ['Dhoby Ghaut', 'Bras Basah', 'Esplanade', 'Promenade', 'Bayfront', 'Nicoll Highway', 'Stadium', 'Mountbatten', 'Dakota', 'Paya Lebar', 'MacPherson', 'Tai Seng', 'Bartley', 'Serangoon', 'Lorong Chuan', 'Bishan', 'Marymount', 'Caldecott', 'Botanic Gardens', 'Farrer Road', 'Holland Village', 'Buona Vista', 'one-north', 'Kent Ridge', 'Haw Par Villa', 'Pasir Panjang', 'Labrador Park', 'Telok Blangah', 'HarbourFront'],
+      NEL: ['HarbourFront', 'Outram Park', 'Chinatown', 'Clarke Quay', 'Dhoby Ghaut', 'Little India', 'Farrer Park', 'Boon Keng', 'Potong Pasir', 'Woodleigh', 'Serangoon', 'Kovan', 'Hougang', 'Buangkok', 'Sengkang', 'Punggol', 'Punggol Coast'],
+      TEL: ['Woodlands North', 'Woodlands', 'Woodlands South', 'Springleaf', 'Lentor', 'Mayflower', 'Bright Hill', 'Upper Thomson', 'Caldecott', 'Stevens', 'Napier', 'Orchard Boulevard', 'Orchard', 'Great World', 'Havelock', 'Outram Park', 'Maxwell', 'Shenton Way', 'Marina Bay', 'Gardens By The Bay', 'Tanjong Rhu', 'Katong Park', 'Tanjong Katong', 'Marine Parade', 'Marine Terrace', 'Siglap', 'Bayshore'],
+      BPL: ['Choa Chu Kang', 'South View', 'Keat Hong', 'Teck Whye', 'Phoenix', 'Bukit Panjang', 'Petir', 'Pending', 'Bangkit', 'Fajar', 'Segar', 'Jelapang', 'Senja'],
+      SWPL: ['Sengkang', 'Cheng Lim', 'Farmway', 'Kupang', 'Thanggam', 'Fernvale', 'Layar', 'Tongkang', 'Renjong'],
+      SEPL: ['Sengkang', 'Compassvale', 'Rumbia', 'Bakau', 'Kangkar', 'Ranggung'],
+      PEPLRT: ['Punggol', 'Cove', 'Meridian', 'Coral Edge', 'Riviera', 'Kadaloor', 'Oasis', 'Damai'],
+      PWLRT: ['Punggol', 'Sam Kee', 'Punggol Point', 'Samudera', 'Nibong', 'Sumang', 'Soo Teck']
     };
     const ALL_STATIONS = [...new Set(Object.values(MRT_STATIONS).flat())].sort();
 
@@ -3382,6 +3390,27 @@
 
       if (tabName === 'dashboard') {
         loadDashboard();
+      }
+      if (tabName === 'route') {
+        // Initialize route map when tab is opened
+        if (!routeMapInstance) {
+          initRouteVisualizerMap();
+        } else {
+          // Ensure proper sizing if already initialized
+          setTimeout(() => {
+            routeMapInstance.invalidateSize();
+            const container = document.getElementById('routeVisualizerMap');
+            if (container) {
+              const bounds = routeMapInstance.getBounds();
+              if (bounds) {
+                routeMapInstance.fitBounds(bounds, { padding: [20, 20] });
+              }
+            }
+          }, 100);
+          setTimeout(() => {
+            routeMapInstance.invalidateSize();
+          }, 300);
+        }
       }
       if (tabName === 'live') {
         startArrivalRenderLoop();
@@ -3436,6 +3465,10 @@
     }
     function buildGraph() {
       graph.clear();
+      
+      // Define which lines are LRT loops (connect last station back to first)
+      const loopLines = new Set(['BPL', 'SWPL', 'SEPL', 'PEPLRT', 'PWLRT']);
+      
       // connect consecutive stations on same line
       Object.entries(MRT_STATIONS).forEach(([line, stations]) => {
         stations.forEach((st, i) => {
@@ -3448,8 +3481,21 @@
             const C = nodeKey(stations[i + 1], line);
             addEdge(A, C, 1);
           }
+          
+          // For LRT loops: connect last station back to first (excluding interchange station)
+          if (loopLines.has(line) && i === stations.length - 1 && i > 0) {
+            // Connect last to second station (skip first which is interchange)
+            const firstNonInterchange = nodeKey(stations[1], line);
+            addEdge(A, firstNonInterchange, 1);
+          }
+          if (loopLines.has(line) && i === 1 && stations.length > 2) {
+            // Connect second station to last (completing the loop)
+            const lastStation = nodeKey(stations[stations.length - 1], line);
+            addEdge(A, lastStation, 1);
+          }
         });
       });
+      
       // connect interchanges (same physical station across lines)
       const stationToLines = new Map();
       Object.entries(MRT_STATIONS).forEach(([line, stations]) => {
@@ -3833,21 +3879,54 @@ TE29 Bayshore/6680,3222`;
         ]);
 
         L.imageOverlay(imageUrl, imageLatLngBounds).addTo(routeMapInstance);
-        routeMapInstance.fitBounds(imageLatLngBounds);
+        routeMapInstance.fitBounds(imageLatLngBounds, { padding: [20, 20] });
 
-        // Store lat/lng for all stations (but don't add markers yet)
+        // Add clickable station markers for interactive selection
         parsedStationCoords.forEach((station) => {
           const latlng = routeMapInstance.unproject([station.x, station.y], routeMapInstance.getMaxZoom());
           station.latlng = latlng;
+          
+          // Create clickable markers - larger size for easier selection
+          const marker = L.circleMarker(latlng, {
+            color: '#0074D9',
+            fillColor: '#7FDBFF',
+            fillOpacity: 0.7,
+            radius: 8,
+            weight: 2
+          }).addTo(routeMapInstance);
+          
+          marker.bindPopup(`<strong>${station.name}</strong><br><small>${station.codes}</small>`);
+          station.baseMarker = marker;
+          
+          // Click handler for station selection
+          marker.on('click', function(e) {
+            handleStationClickOnMap(station.name);
+            L.DomEvent.stopPropagation(e);
+          });
+          
+          marker.on('mouseover', function() {
+            marker.setStyle({ radius: 11, fillOpacity: 1 });
+          });
+          
+          marker.on('mouseout', function() {
+            // Don't reset if this is a selected marker
+            if (marker.options.fillColor === '#7FDBFF') {
+              marker.setStyle({ radius: 8, fillOpacity: 0.7 });
+            }
+          });
         });
-
+        
         // Force map to invalidate size for proper alignment
         setTimeout(() => {
           routeMapInstance.invalidateSize();
+          routeMapInstance.fitBounds(imageLatLngBounds, { padding: [20, 20] });
         }, 100);
-      };
-
-      img.onerror = function () {
+        
+        setTimeout(() => {
+          routeMapInstance.invalidateSize();
+          routeMapInstance.fitBounds(imageLatLngBounds, { padding: [20, 20] });
+        }, 500);
+      };      img.onerror = function () {
         console.error('Failed to load MRT map image for route visualization');
         document.getElementById('routeMapContainer').innerHTML = '<div class="alert alert-warning">Route map image not available. Please ensure MRT-Map.png is in the main folder.</div>';
       };
@@ -3956,16 +4035,207 @@ TE29 Bayshore/6680,3222`;
       }
     }
 
+    // ====== INTERACTIVE STATION SELECTION ======
+    let routeSelectionState = {
+      startStation: null,
+      endStation: null,
+      selectionStep: 0 // 0 = need start, 1 = need end
+    };
+
+    function handleStationClickOnMap(stationName) {
+      console.log('Station clicked:', stationName, 'Step:', routeSelectionState.selectionStep);
+      
+      if (routeSelectionState.selectionStep === 0) {
+        // Reset all markers to default first
+        parsedStationCoords.forEach((station) => {
+          if (station.baseMarker) {
+            station.baseMarker.setStyle({
+              color: '#0074D9',
+              fillColor: '#7FDBFF',
+              fillOpacity: 0.7,
+              radius: 8
+            });
+          }
+        });
+        
+        // Clear any existing route visualization
+        if (routeMapLine) {
+          routeMapInstance.removeLayer(routeMapLine);
+          routeMapLine = null;
+        }
+        if (routeMapStartMarker) {
+          routeMapInstance.removeLayer(routeMapStartMarker);
+          routeMapStartMarker = null;
+        }
+        if (routeMapEndMarker) {
+          routeMapInstance.removeLayer(routeMapEndMarker);
+          routeMapEndMarker = null;
+        }
+        routeIntermediateMarkers.forEach(marker => {
+          routeMapInstance.removeLayer(marker);
+        });
+        routeIntermediateMarkers = [];
+        
+        // Select start station
+        routeSelectionState.startStation = stationName;
+        routeSelectionState.selectionStep = 1;
+        document.getElementById('routeStart').value = stationName;
+        
+        // Visual feedback for start
+        const coord = parsedStationCoords.find(s => s.name === stationName);
+        if (coord && coord.baseMarker) {
+          coord.baseMarker.setStyle({
+            color: '#27ae60',
+            fillColor: '#2ecc71',
+            fillOpacity: 1,
+            radius: 10
+          });
+          coord.baseMarker.openPopup();
+        }
+        
+        showToast(`Start: ${stationName}. Now click on your destination station.`, false);
+      } else if (routeSelectionState.selectionStep === 1) {
+        // Check if same station
+        if (stationName === routeSelectionState.startStation) {
+          showToast('Please select a different destination station.', true);
+          return;
+        }
+        
+        // Select end station
+        routeSelectionState.endStation = stationName;
+        document.getElementById('routeEnd').value = stationName;
+        
+        // Visual feedback for end (keep start marker green)
+        const coord = parsedStationCoords.find(s => s.name === stationName);
+        if (coord && coord.baseMarker) {
+          coord.baseMarker.setStyle({
+            color: '#c0392b',
+            fillColor: '#e74c3c',
+            fillOpacity: 1,
+            radius: 10
+          });
+          coord.baseMarker.openPopup();
+        }
+        
+        console.log('About to calculate route from', routeSelectionState.startStation, 'to', stationName);
+        showToast(`Calculating route from ${routeSelectionState.startStation} to ${stationName}...`, false);
+        
+        // Auto-trigger route calculation immediately
+        planRoute();
+        
+        // Reset for next selection
+        routeSelectionState.selectionStep = 0;
+      }
+    }
+
+    function handleManualStationSelect() {
+      const start = document.getElementById('routeStart').value;
+      const end = document.getElementById('routeEnd').value;
+      
+      if (start && end && start !== end) {
+        routeSelectionState.startStation = start;
+        routeSelectionState.endStation = end;
+        routeSelectionState.selectionStep = 0;
+        
+        // Auto-trigger route calculation
+        planRoute();
+      }
+    }
+
+    function clearRouteSelection() {
+      // Reset state
+      routeSelectionState = {
+        startStation: null,
+        endStation: null,
+        selectionStep: 0
+      };
+      
+      // Clear dropdowns
+      document.getElementById('routeStart').value = '';
+      document.getElementById('routeEnd').value = '';
+      
+      // Clear output
+      document.getElementById('routeOutput').innerHTML = '<div class="text-secondary">Click on two stations on the map or use the dropdowns above.</div>';
+      
+      // Reset all base markers to default style
+      parsedStationCoords.forEach((station) => {
+        if (station.baseMarker) {
+          station.baseMarker.setStyle({
+            color: '#0074D9',
+            fillColor: '#7FDBFF',
+            fillOpacity: 0.7,
+            radius: 8
+          });
+        }
+      });
+      
+      // Clear route visualization
+      if (routeMapLine) {
+        routeMapInstance.removeLayer(routeMapLine);
+        routeMapLine = null;
+      }
+      if (routeMapStartMarker) {
+        routeMapInstance.removeLayer(routeMapStartMarker);
+        routeMapStartMarker = null;
+      }
+      if (routeMapEndMarker) {
+        routeMapInstance.removeLayer(routeMapEndMarker);
+        routeMapEndMarker = null;
+      }
+      routeIntermediateMarkers.forEach(marker => {
+        routeMapInstance.removeLayer(marker);
+      });
+      routeIntermediateMarkers = [];
+      
+      showToast('Selection cleared. Choose new stations.', false);
+    }
+
     // ====== ROUTE PLANNER ======
     function planRoute() {
       const start = document.getElementById('routeStart').value;
       const end = document.getElementById('routeEnd').value;
       const out = document.getElementById('routeOutput');
-      if (!start || !end) { out.innerHTML = '<span class="text-danger">Please select both stations.</span>'; animateResult(out); return; }
-      if (start === end) { out.innerHTML = '<span class="text-secondary">You are already at your destination 😊</span>'; animateResult(out); return; }
+      
+      console.log('planRoute called with:', { start, end });
+      
+      if (!start || !end) { 
+        out.innerHTML = '<span class="text-danger">Please select both stations.</span>'; 
+        animateResult(out); 
+        return; 
+      }
+      if (start === end) { 
+        out.innerHTML = '<span class="text-secondary">You are already at your destination 😊</span>'; 
+        animateResult(out); 
+        return; 
+      }
+
+      // Check if stations exist in MRT_STATIONS
+      const startLines = Object.keys(MRT_STATIONS).filter(l => MRT_STATIONS[l].includes(start));
+      const endLines = Object.keys(MRT_STATIONS).filter(l => MRT_STATIONS[l].includes(end));
+      
+      console.log('Start station lines:', startLines);
+      console.log('End station lines:', endLines);
+      
+      if (startLines.length === 0) {
+        out.innerHTML = `<span class="text-danger">Start station "${start}" not found in network.</span>`;
+        animateResult(out);
+        return;
+      }
+      
+      if (endLines.length === 0) {
+        out.innerHTML = `<span class="text-danger">End station "${end}" not found in network.</span>`;
+        animateResult(out);
+        return;
+      }
 
       const path = shortestPath(start, end);
-      if (!path) { out.innerHTML = '<span class="text-danger">No route found.</span>'; animateResult(out); return; }
+      console.log('Path result:', path);
+      
+      if (!path) { 
+        out.innerHTML = '<span class="text-danger">No route found between these stations.</span>'; 
+        animateResult(out); 
+        return; 
+      }
 
       const mins = estimateTimeMinutes(path.totalWeight);
       const dist = estimateDistanceKm(path.totalWeight);
@@ -4000,11 +4270,7 @@ TE29 Bayshore/6680,3222`;
       out.innerHTML = html;
       animateResult(out);
 
-      // Show and initialize the route visualizer map
-      const mapContainer = document.getElementById('routeMapContainer');
-      mapContainer.style.display = 'block';
-
-      // Initialize map if not already done
+      // Draw route on the map (map is always visible in route tab)
       if (!routeMapInstance) {
         initRouteVisualizerMap();
         // Wait for map to load before drawing route
@@ -5973,6 +6239,18 @@ In a full build: live arrivals, crowd level, service alerts, nearby facilities.`
       // make Dashboard default
       setActiveTab('dashboard');
     });
+    
+    // Handle window resize for map responsiveness
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        if (routeMapInstance) {
+          routeMapInstance.invalidateSize();
+        }
+      }, 250);
+    });
+    
     // Select all flip cards
     const flipCards = document.querySelectorAll('.flip-card-inner');
 
