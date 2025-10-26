@@ -164,8 +164,11 @@ function formatArrival(seconds) {
   return `${minutes} min`;
 }
 
+
+// Changed
 function refreshArrivals() {
-  const snapshot = simulator.getStationArrivals(selectedStation.value);
+  // Add { returnSeconds: true } to get values in seconds instead of minutes
+  const snapshot = simulator.getArrivals({ returnSeconds: true })[selectedStation.value] || {};
   stationArrivals.value = Object.entries(snapshot).map(([name, times]) => ({
     name,
     times,

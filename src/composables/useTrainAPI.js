@@ -80,11 +80,14 @@ export function createTrainArrivalSimulator(customConfig = {}) {
     ensureStation(station, lineName);
     const queue = state.arrivals[station][lineName];
     queue.length = 0;
-    let tail = 0;
     const period = getServicePeriod();
+    
+    // Start with a realistic initial arrival time (1-4 minutes)
+    let tail = randomInt(60, 240);
+    
     for (let i = 0; i < config.trainsPerLine; i += 1) {
-      tail = generateNextArrival(config.lineIntervals, lineName, tail, period);
       queue.push(tail);
+      tail = generateNextArrival(config.lineIntervals, lineName, tail, period);
     }
   }
 
@@ -97,7 +100,7 @@ export function createTrainArrivalSimulator(customConfig = {}) {
           seedLine(station, line);
         } else {
           while (queue.length < config.trainsPerLine) {
-            const tail = queue[queue.length - 1] || 0;
+            const tail = queue[queue.length - 1] || randomInt(120, 480);
             queue.push(generateNextArrival(config.lineIntervals, line, tail, getServicePeriod()));
           }
         }
@@ -162,7 +165,7 @@ export function createTrainArrivalSimulator(customConfig = {}) {
           queue.shift();
         }
         while (queue.length < config.trainsPerLine) {
-          const tail = queue.length ? queue[queue.length - 1] : 0;
+          const tail = queue.length ? queue[queue.length - 1] : randomInt(120, 480);
           queue.push(generateNextArrival(config.lineIntervals, line, tail, getServicePeriod()));
         }
       });
@@ -175,7 +178,7 @@ export function createTrainArrivalSimulator(customConfig = {}) {
     initialiseState();
     if (state.intervalId !== null) return;
     state.intervalId = setInterval(tick, config.updateIntervalMs);
-    tick();
+    // Don't call tick() immediately - let the initial state stand
   }
 
   function stop() {
