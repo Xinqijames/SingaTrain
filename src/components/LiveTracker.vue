@@ -71,27 +71,29 @@
     </div>
 
     <div class="mt-4">
-      <h5 class="mb-3">All arrivals at {{ selectedStation }}</h5>
+      <h5 class="mb-3">First Train & Crowd Level at {{ selectedStation }}</h5>
       <div class="arrival-row" v-for="line in stationArrivals" :key="line.name">
         <div class="train-icon" :style="{ color: getLineColor(line.name) }">
           <span class="material-icons">subway</span>
         </div>
-        <div class="arrival-details">
-          <div class="d-flex justify-content-between align-items-center">
+        <div class="arrival-details flex-grow-1">
+          <div class="d-flex justify-content-between align-items-center mb-2">
             <strong>{{ line.name }}</strong>
-            <span class="countdown">{{ formatArrival(line.times[0] ?? 0) }}</span>
+            <!-- <span class="text-muted small">Next: {{ formatArrival(line.times[0] ?? 0) }}</span> -->
           </div>
-          <div class="progress-bar">
-            <div
-              class="progress-fill"
-              :style="{ background: getLineColor(line.name), transform: `scaleX(${line.progress})` }"
-            ></div>
-            <div class="progress-glow" :style="{ background: getLineColor(line.name) }"></div>
-          </div>
-          <div class="d-flex gap-2 mt-2 flex-wrap">
-            <span class="pill" v-for="(time, idx) in line.times.slice(0, 3)" :key="idx">
-              {{ formatArrival(time) }}
-            </span>
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center gap-2">
+              <span class="material-icons" style="font-size: 18px;">schedule</span>
+              <span class="small text-muted">First Train:</span>
+              <strong>{{ line.firstTrainTime }}</strong>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+              <span class="material-icons" style="font-size: 18px;">people</span>
+              <span class="small text-muted">Crowd:</span>
+              <span :class="['crowd-badge', getCrowdClass(line.crowdLevel)]">
+                {{ getCrowdLabel(line.crowdLevel) }}
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -100,6 +102,7 @@
 </template>
 
 <script setup>
+import { LTA_API_KEY } from '../../config';
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { useAppState } from '../composables/useAppState';
 import { createTrainArrivalSimulator, getLineColor } from '../composables/useTrainAPI';
@@ -107,6 +110,22 @@ import { TRAIN_STATION_LINES } from '../data/stations';
 
 const simulator = createTrainArrivalSimulator({ updateIntervalMs: 1000 });
 const updateInterval = ref(null);
+
+// LTA API Configuration - Add your API key here
+
+const LTA_API_URL = 'https://datamall2.mytransport.sg/ltaodataservice/PCDRealTime';
+const crowdDataCache = ref({});
+const crowdDataTimestamp = ref(0);
+
+// First train timings for each line (static data - 5:30 AM default)
+const firstTrainTimings = {
+  'North South Line': '5:30 AM',
+  'East West Line': '5:31 AM',
+  'Circle Line': '5:32 AM',
+  'North East Line': '5:42 AM',
+  'Downtown Line': '5:33 AM',
+  'Thomson-East Coast Line': '5:30 AM'
+};
 
 const stations = Object.keys(TRAIN_STATION_LINES);
 const selectedStation = ref(stations[0]);
@@ -120,6 +139,8 @@ const trackedArrivals = computed(() => {
   const arrivals = stationArrivals.value.find((item) => item.name === selectedLine.value);
   return arrivals ? arrivals.times : [];
 });
+
+
 
 const lineColor = computed(() => getLineColor(selectedLine.value));
 
@@ -164,16 +185,96 @@ function formatArrival(seconds) {
   return `${minutes} min`;
 }
 
+async function fetchCrowdData() {
+  // Only fetch if we haven't fetched in the last 10 minutes
+  const now = Date.now();
+  if (now - crowdDataTimestamp.value < 600000 && Object.keys(crowdDataCache.value).length > 0) {
+    return; // Use cached data
+  }
 
-// Changed
+  try {
+    const response = await fetch(LTA_API_URL, {
+      method: 'GET',
+      headers: {
+        'AccountKey': LTA_API_KEY,
+        'Accept': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      console.error('Failed to fetch crowd data:', response.status);
+      return;
+    }
+
+    const data = await response.json();
+    
+    // Process and cache crowd data by station
+    const crowdMap = {};
+    
+    if (data.value && Array.isArray(data.value)) {
+      data.value.forEach(item => {
+        const stationCode = item.Station;
+        if (!crowdMap[stationCode]) {
+          crowdMap[stationCode] = {};
+        }
+        // Map crowd level (l = low, m = moderate, h = high)
+        crowdMap[stationCode] = item.CrowdLevel || 'l';
+      });
+    }
+    
+    crowdDataCache.value = crowdMap;
+    crowdDataTimestamp.value = now;
+  } catch (error) {
+    console.error('Error fetching crowd data:', error);
+  }
+}
+
+function getCrowdLevelForStation(stationName, lineName) {
+  // This is a simplified mapping - you'll need to map your station names to LTA station codes
+  // For now, return a simulated value if API key is not set or data not available
+  if (LTA_API_KEY || !Object.keys(crowdDataCache.value).length) {
+    const crowdLevels = ['l', 'm', 'h'];
+    return crowdLevels[Math.floor(Math.random() * crowdLevels.length)];
+  }
+  
+  // In a real implementation, you would map stationName to the correct station code
+  // and retrieve the crowd level from crowdDataCache.value
+  return 'l'; // default to low
+}
+
+function getFirstTrainTime(lineName) {
+  return firstTrainTimings[lineName] || '5:30 AM';
+}
+
 function refreshArrivals() {
-  // Add { returnSeconds: true } to get values in seconds instead of minutes
   const snapshot = simulator.getArrivals({ returnSeconds: true })[selectedStation.value] || {};
+  
   stationArrivals.value = Object.entries(snapshot).map(([name, times]) => ({
     name,
     times,
-    progress: times.length ? Math.max(0, 1 - Math.min(times[0], 600) / 600) : 0
+    progress: times.length ? Math.max(0, 1 - Math.min(times[0], 600) / 600) : 0,
+    // Add this line to include first train time:
+    firstTrainTime: firstTrainTimings[name] || '5:30 AM', // Fallback to default
+    crowdLevel: getCrowdLevelForStation(selectedStation.value, name)
   }));
+}
+
+function getCrowdLabel(level) {
+  const labels = {
+    l: 'Low',
+    m: 'Moderate',
+    h: 'High'
+  };
+  return labels[level] || 'Unknown';
+}
+
+function getCrowdClass(level) {
+  const classes = {
+    l: 'crowd-low',
+    m: 'crowd-moderate',
+    h: 'crowd-high'
+  };
+  return classes[level] || '';
 }
 
 function bookmarkStation() {
@@ -195,8 +296,15 @@ watch(selectedLine, refreshArrivals);
 
 onMounted(() => {
   simulator.start();
+  fetchCrowdData(); // Fetch crowd data on mount
   refreshArrivals();
-  updateInterval.value = window.setInterval(refreshArrivals, 1000);
+  // updateInterval.value = window.setInterval(() => {
+  //   refreshArrivals();
+  //   // Refresh crowd data every 10 minutes (600000ms) as per LTA update frequency
+  //   if (Date.now() % 600000 < 1000) {
+  //     fetchCrowdData();
+  //   }
+  // }, 1000);
 });
 
 onBeforeUnmount(() => {
@@ -206,4 +314,8 @@ onBeforeUnmount(() => {
     updateInterval.value = null;
   }
 });
+
+
+
 </script>
+
