@@ -316,6 +316,137 @@
       box-shadow: 0 24px 42px rgba(var(--sg-orange-rgb), 0.32);
     }
 
+    .fare-result-card {
+      background: linear-gradient(135deg, rgba(13, 110, 253, 0.12), rgba(13, 110, 253, 0.03));
+      border: 1px solid rgba(13, 110, 253, 0.2);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 16px 40px rgba(13, 110, 253, 0.1);
+    }
+
+    .fare-result-amount {
+      font-size: 2.75rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .fare-result-commuter {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #0d6efd;
+      font-weight: 600;
+      margin-top: 0.4rem;
+    }
+
+    .fare-route-card {
+      background: #fff;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+    }
+
+    .route-segment {
+      border-radius: 18px;
+      border: 1px dashed rgba(13, 110, 253, 0.25);
+      background: rgba(13, 110, 253, 0.04);
+      padding: 16px 20px;
+      margin-bottom: 12px;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .route-segment:last-of-type {
+      margin-bottom: 0;
+    }
+
+    .route-segment:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(13, 110, 253, 0.14);
+    }
+
+    .route-line-badge {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .route-line-badge.line-nsl {
+      background: rgba(212, 45, 45, 0.12);
+      color: #d42d2d;
+      border-color: rgba(212, 45, 45, 0.3);
+    }
+
+    .route-line-badge.line-ewl,
+    .route-line-badge.line-cgl {
+      background: rgba(0, 150, 69, 0.12);
+      color: #009645;
+      border-color: rgba(0, 150, 69, 0.3);
+    }
+
+    .route-line-badge.line-dtl {
+      background: rgba(0, 82, 164, 0.12);
+      color: #0052a4;
+      border-color: rgba(0, 82, 164, 0.3);
+    }
+
+    .route-line-badge.line-ccl {
+      background: rgba(250, 158, 13, 0.12);
+      color: #fa9e0d;
+      border-color: rgba(250, 158, 13, 0.3);
+    }
+
+    .route-line-badge.line-nel {
+      background: rgba(153, 0, 255, 0.12);
+      color: #9300ff;
+      border-color: rgba(153, 0, 255, 0.3);
+    }
+
+    .route-line-badge.line-tel {
+      background: rgba(141, 91, 37, 0.12);
+      color: #8d5b25;
+      border-color: rgba(141, 91, 37, 0.3);
+    }
+
+    .route-line-badge.line-bpl,
+    .route-line-badge.line-swpl,
+    .route-line-badge.line-sepl,
+    .route-line-badge.line-peplrt,
+    .route-line-badge.line-pwlrt {
+      background: rgba(0, 160, 211, 0.12);
+      color: #007ea8;
+      border-color: rgba(0, 160, 211, 0.3);
+    }
+
+    .chart-wrapper {
+      position: relative;
+      min-height: 220px;
+    }
+
+    .chart-wrapper canvas {
+      width: 100% !important;
+      height: 100% !important;
+    }
+
+    .info-pill {
+      background: rgba(13, 110, 253, 0.05);
+      border-radius: 18px;
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      border: 1px solid rgba(13, 110, 253, 0.2);
+    }
+
+    .info-pill .material-icons {
+      font-size: 1.75rem;
+      color: #0d6efd;
+    }
+
     .mapboxgl-popup-content {
       border-radius: 12px !important;
     }

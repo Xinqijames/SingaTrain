@@ -11,6 +11,8 @@
   "dependencies": {
     "aos": "^2.3.4",
     "bootstrap": "^5.3.3",
+    "@vueuse/core": "^11.3.0",
+    "chart.js": "^4.4.6",
     "gsap": "^3.12.5",
     "leaflet": "^1.9.4",
     "mapbox-gl": "^2.15.0",
