@@ -102,7 +102,7 @@
 </template>
 
 <script setup>
-// import { LTA_API_KEY } from '../../config';
+import { LTA_API_KEY } from '../../config';
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { useAppState } from '../composables/useAppState';
 import { createTrainArrivalSimulator, getLineColor } from '../composables/useTrainAPI';
