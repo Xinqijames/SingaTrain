@@ -102,7 +102,6 @@
 </template>
 
 <script setup>
-import { LTA_API_KEY } from '../../config';
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { useAppState } from '../composables/useAppState';
 import { createTrainArrivalSimulator, getLineColor } from '../composables/useTrainAPI';
@@ -111,7 +110,8 @@ import { TRAIN_STATION_LINES } from '../data/stations';
 const simulator = createTrainArrivalSimulator({ updateIntervalMs: 1000 });
 const updateInterval = ref(null);
 
-// LTA API Configuration - Add your API key here
+// LTA API Configuration - read from Vite env (`.env.local` or system env)
+const LTA_API_KEY = import.meta.env.VITE_LTA_API_KEY || '';
 
 const LTA_API_URL = 'https://datamall2.mytransport.sg/ltaodataservice/PCDRealTime';
 const crowdDataCache = ref({});
@@ -318,4 +318,3 @@ onBeforeUnmount(() => {
 
 
 </script>
-
