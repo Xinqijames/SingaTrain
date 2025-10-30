@@ -62,7 +62,11 @@ export function useAppState() {
   }
 
   function toggleDarkMode() {
-    setDarkMode(!state.darkMode);
+    state.darkMode = !state.darkMode;
+    if (typeof document !== 'undefined') {
+      document.body.classList.toggle('dark-mode', state.darkMode);
+    }
+    persistState(state);
   }
 
   function addFavorite(favorite) {
@@ -75,11 +79,10 @@ export function useAppState() {
     }
   }
 
-  function removeFavorite(station) {
-    const index = state.favorites.findIndex((item) => item.station === station);
-    if (index !== -1) {
-      state.favorites.splice(index, 1);
-    }
+  function removeFavorite(favToRemove) {
+    state.favorites = state.favorites.filter(
+      fav => fav.label !== favToRemove.label || fav.station !== favToRemove.station
+    );
   }
 
   function clearFavorites() {

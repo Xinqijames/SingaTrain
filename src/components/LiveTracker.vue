@@ -3,7 +3,7 @@
     <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
       <div>
         <h2 class="section-title mb-1">Live Train Tracker</h2>
-        <p class="text-muted mb-0">
+        <p class="tab-desc mb-0">
           Simulated real-time arrivals with per-line intervals and probabilistic delays. Switch stations to
           monitor your regular journeys.
         </p>
@@ -43,13 +43,13 @@
             <span class="material-icons text-danger">location_on</span>
             <span>{{ selectedStation }}</span>
           </div>
-          <div class="ticker-line text-muted mt-1">
+          <div class="ticker-line tab-desc mt-1">
             <span class="material-icons" :style="{ color: lineColor }">timeline</span>
             {{ selectedLine }}
           </div>
         </div>
         <div>
-          <div class="small text-muted text-uppercase fw-semibold mb-1">Status</div>
+          <div class="small tab-desc text-uppercase fw-semibold mb-1">Status</div>
           <span :class="['status-pill', statusClass]">
             <span class="material-icons">{{ statusIcon }}</span>
             {{ statusLabel }}
@@ -84,12 +84,12 @@
           <div class="d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center gap-2">
               <span class="material-icons" style="font-size: 18px;">schedule</span>
-              <span class="small text-muted">First Train:</span>
+              <span class="small tab-desc">First Train:</span>
               <strong>{{ line.firstTrainTime }}</strong>
             </div>
             <div class="d-flex align-items-center gap-2">
               <span class="material-icons" style="font-size: 18px;">people</span>
-              <span class="small text-muted">Crowd:</span>
+              <span class="small tab-desc">Crowd:</span>
               <span :class="['crowd-badge', getCrowdClass(line.crowdLevel)]">
                 {{ getCrowdLabel(line.crowdLevel) }}
               </span>

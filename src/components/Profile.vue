@@ -69,14 +69,14 @@
         <div class="left-column">
           <!-- Change Display Name -->
           <div class="card" id="change-name-div">
-            <h3>Change Display Name</h3>
+            <h3 class="text-dark">Change Display Name</h3>
             <input type="text" v-model="profileName" placeholder="Current name" />
             <button @click="saveProfileNameHandler">Save Profile</button>
           </div>
 
           <!-- Add New Favorite Station -->
           <div class="card" id="add-favorite-div">
-            <h3>Add New Favorite Station</h3>
+            <h3 class="text-dark">Add New Favorite Station</h3>
             <label for="favoriteLabel">Label:</label>
             <input type="text" id="favoriteLabel" v-model="favoriteLabel" placeholder="Favorite name" />
 
@@ -116,12 +116,12 @@
                   </div>
                 </div>
               </div>
-                <h3 class="favorites-title">Your Favorite Stations</h3>
+                <h3 class="favorites-title text-dark">Your Favorite Stations</h3>
               <div class="favorites-list">
                 <ul id="favoriteList">
                   <li v-for="(fav, index) in favorites" :key="index">
                     <span><strong>{{ fav.label }}</strong> {{ fav.station }}</span>
-                    <button @click="removeFavoriteHandler(index)">Remove</button>
+                    <button @click="removeFavoriteHandler(fav)">Remove</button>
                   </li>
                 </ul>
               </div>
@@ -175,6 +175,7 @@
 import {
   ref,
   watch,
+  computed,
   onMounted,
   onBeforeUnmount
 } from "vue";
@@ -201,6 +202,8 @@ import {
   deleteUser
 } from "firebase/auth";
 import { ALL_STATIONS } from "../data/stations";
+import { useAppState } from '../composables/useAppState';
+
 
 // --- Reactive State ---
 const user = ref(null);
@@ -215,7 +218,8 @@ const showResetPassword = ref(false);
 
 const profileName = ref("");
 const memberSince = ref("--/--/----");
-const favorites = ref([]);
+const { state, addFavorite, removeFavorite } = useAppState();
+const favorites = computed(() => state.favorites);
 const favoriteLabel = ref("");
 const favoriteStation = ref("");
 const showDeleteModal = ref(false);
@@ -464,8 +468,8 @@ const addFavoriteHandler = async () => {
 
   try {
     if (user.value?.uid) {
-      await addFavoriteFirestore(user.value.uid, newFav);
-      favorites.value.push(newFav);
+      await addFavoriteFirestore(user.value.uid, newFav); 
+      addFavorite(newFav);
       favoriteLabel.value = "";
       favoriteStation.value = "";
       showMessage("success", "Successfully added new station.");
@@ -476,18 +480,18 @@ const addFavoriteHandler = async () => {
   }
 };
 
-const removeFavoriteHandler = async (index) => {
-  const updated = favorites.value.slice();
-  updated.splice(index, 1);
-  favorites.value = updated;
-
+const removeFavoriteHandler = async (favToRemove) => {
   try {
-    if (user.value) {
-      await updateDoc(doc(db, "users", user.value.uid), {
-        favorite_stations: updated,
-      });
-      showMessage("success", "Favorite removed!");
-    }
+    if (!user.value?.uid) return;
+
+    removeFavorite(favToRemove);
+
+    const updated = state.favorites.map(fav => ({ ...fav }));
+    await updateDoc(doc(db, "users", user.value.uid), {
+      favorite_stations: updated,
+    });
+
+    showMessage("success", "Favorite removed!");
   } catch (err) {
     console.error("Remove favorite error:", err);
     showMessage("error", "Failed to remove favorite.");
@@ -518,13 +522,17 @@ async function populateUserProfile(firebaseUser) {
 
   if (snap.exists()) {
     const data = snap.data();
+
     profileName.value = data.name || "Anonymous";
     memberSince.value = data.created_at?.toDate
       ? data.created_at.toDate().toLocaleDateString()
       : "--/--/----";
-    favorites.value = data.favorite_stations || [];
+
+    state.favorites.splice(0, state.favorites.length); 
+    if (Array.isArray(data.favorite_stations)) {
+      data.favorite_stations.forEach(fav => addFavorite(fav));
+    }
   } else {
-    // Initialize new user in Firestore
     const initData = {
       name: "Anonymous",
       email: firebaseUser.email,
@@ -532,11 +540,15 @@ async function populateUserProfile(firebaseUser) {
       favorite_stations: [],
     };
     await setDoc(userRef, initData);
+
     profileName.value = initData.name;
     memberSince.value = initData.created_at.toLocaleDateString();
-    favorites.value = [];
+
+    state.favorites.splice(0, state.favorites.length);
   }
 }
+
+
 
 const toggleFlip = () => {
   // only enable tap flip for tablet & mobile
