@@ -8,6 +8,8 @@ import { useFareCalculator } from '../composables/useFareCalculator';
 
 type StationOption = { id: string; name: string };
 
+defineOptions({ name: 'RoutePlanner' });
+
 declare global {
   interface Window {
     $map?: mapboxgl.Map;
@@ -37,6 +39,8 @@ const railrouterLoaded = ref(false);
 const railRouterShell = ref<HTMLElement | null>(null);
 let railrouterInstance: mapboxgl.Map | null = null;
 let resizeObserver: ResizeObserver | null = null;
+
+const NEUTRALIZE_STYLE_ID = 'singatrain-railrouter-neutralize';
 
 const stationLookup = new Map<
   string,
@@ -149,9 +153,11 @@ function injectScript(src: string) {
 }
 
 async function ensureRailRouterAssets() {
-  if (railrouterLoaded.value) return;
-  await Promise.all([injectStylesheet(RAILROUTER_CSS), injectScript(RAILROUTER_JS)]);
-  railrouterLoaded.value = true;
+  neutralizeRailRouterGlobals();
+  if (!railrouterLoaded.value) {
+    await Promise.all([injectStylesheet(RAILROUTER_CSS), injectScript(RAILROUTER_JS)]);
+    railrouterLoaded.value = true;
+  }
 }
 
 function waitForMap(timeout = 10000) {
@@ -364,6 +370,7 @@ function teardownRailRouterMap() {
     railrouterInstance.remove();
   }
   railrouterInstance = null;
+  restoreRailRouterGlobals();
 }
 
 async function computeRouteSafe(fromId: string, toId: string) {
@@ -490,6 +497,35 @@ watch(routeStationIds, () => {
   // Reset snackbar + markers when the path changes
   arrivedSnackbar.value = false;
 });
+
+function neutralizeRailRouterGlobals() {
+  if (typeof window === 'undefined') return;
+  if (document.getElementById(NEUTRALIZE_STYLE_ID)) return;
+  const style = document.createElement('style');
+  style.id = NEUTRALIZE_STYLE_ID;
+  style.textContent = `
+    html {
+      position: static !important;
+      inset: auto !important;
+      overflow: auto !important;
+      height: auto !important;
+    }
+    body {
+      overflow: auto !important;
+      position: static !important;
+      height: auto !important;
+    }
+  `;
+  document.head.appendChild(style);
+}
+
+function restoreRailRouterGlobals() {
+  if (typeof window === 'undefined') return;
+  const style = document.getElementById(NEUTRALIZE_STYLE_ID);
+  if (style?.parentNode) {
+    style.parentNode.removeChild(style);
+  }
+}
 
 onMounted(async () => {
   window.addEventListener('route-animation-arrived', handleArrival);
