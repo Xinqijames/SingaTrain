@@ -1,7 +1,7 @@
 <template>
   <section class="section-card">
     <h2 class="section-title mb-3">Fare Calculator</h2>
-    <p class="text-muted">
+    <p class="tab-desc">
       Distance-based fares with the latest LTA tables. Estimate concession pricing, understand line changes, and see
       whether a monthly pass could save you more.
     </p>
@@ -57,15 +57,15 @@
             <ul class="list-unstyled mt-4 mb-0 small text-muted">
               <li class="d-flex align-items-center gap-2 mb-2">
                 <span class="material-icons text-primary">train</span>
-                <span>{{ startStation }} → {{ endStation }}</span>
+                <span class="tab-desc">{{ startStation }} → {{ endStation }}</span>
               </li>
               <li class="d-flex align-items-center gap-2 mb-2">
                 <span class="material-icons text-primary">route</span>
-                <span>{{ fareResult.distanceKm }} km · {{ fareResult.totalStops }} {{ fareResult.totalStops === 1 ? 'stop' : 'stops' }}</span>
+                <span class="tab-desc">{{ fareResult.distanceKm }} km · {{ fareResult.totalStops }} {{ fareResult.totalStops === 1 ? 'stop' : 'stops' }}</span>
               </li>
               <li class="d-flex align-items-center gap-2">
                 <span class="material-icons text-primary">schedule</span>
-                <span>{{ fareResult.minutes }} minutes · {{ fareResult.transfers }} {{ fareResult.transfers === 1 ? 'transfer' : 'transfers' }}</span>
+                <span class="tab-desc">{{ fareResult.minutes }} minutes · {{ fareResult.transfers }} {{ fareResult.transfers === 1 ? 'transfer' : 'transfers' }}</span>
               </li>
             </ul>
           </div>
@@ -73,7 +73,7 @@
         <div class="col-lg-8">
           <div class="fare-route-card h-100">
             <div class="d-flex justify-content-between align-items-center mb-3">
-              <h5 class="mb-0">Route overview</h5>
+              <h5 class="text-dark mb-0">Route overview</h5>
               <span class="badge bg-light text-muted border">{{ fareResult.segments.length }} {{ fareResult.segments.length === 1 ? 'segment' : 'segments' }}</span>
             </div>
             <p class="text-muted small mb-3">
@@ -94,7 +94,7 @@
                       {{ segment.stops === 0 ? 'Transfer' : `${segment.stops} ${segment.stops === 1 ? 'stop' : 'stops'}` }}
                     </span>
                   </div>
-                  <div class="fw-semibold">{{ segment.from }} → {{ segment.to }}</div>
+                  <div class="fw-semibold text-dark">{{ segment.from }} → {{ segment.to }}</div>
                 </div>
               </div>
             </div>
@@ -119,7 +119,7 @@
             min="1"
             max="10"
           />
-          <small class="text-muted">Two rides count as one round trip.</small>
+          <small class="tab-desc">Two rides count as one round trip.</small>
         </div>
         <div class="col-md-4">
           <label class="form-label" for="workingDays">Working days / month</label>
@@ -131,14 +131,14 @@
             min="1"
             max="31"
           />
-          <small class="text-muted">Include study days if you commute then.</small>
+          <small class="tab-desc">Include study days if you commute then.</small>
         </div>
         <div class="col-md-4">
           <div class="info-pill">
             <span class="material-icons">equalizer</span>
             <div>
               <div class="fw-semibold">{{ monthlyRides }} rides / month</div>
-              <div class="small text-muted">Used for the monthly pass comparison.</div>
+              <div class="small tab-desc">Used for the monthly pass comparison.</div>
             </div>
           </div>
         </div>
