@@ -42,13 +42,23 @@ const currentTabComponent = computed(() => tabComponents[state.activeTab] || Das
 
 function animateView() {
   if (!gsap) return;
-  // Animate only opacity to prevent layout shifts that break spacing
-  // Don't use transform as it interferes with spacing when switching tabs
-  gsap.from('.section-card', { 
-    opacity: 0, 
-    duration: 0.35, 
-    ease: 'power2.out'
+  // Don't animate Dashboard cards - they should always be visible
+  const dashboardCards = document.querySelectorAll('.dashboard-view .section-card');
+  const otherCards = document.querySelectorAll('.section-card:not(.dashboard-view .section-card)');
+  
+  // Ensure Dashboard cards are always visible first
+  dashboardCards.forEach(card => {
+    gsap.set(card, { opacity: 1, visibility: 'visible', display: 'block' });
   });
+  
+  // Only animate non-dashboard cards
+  if (otherCards.length > 0) {
+    gsap.from(otherCards, { 
+      opacity: 0, 
+      duration: 0.35, 
+      ease: 'power2.out'
+    });
+  }
 }
 
 onMounted(() => {
@@ -65,6 +75,15 @@ onMounted(() => {
       card.removeAttribute('data-aos-easing');
     });
     
+    // Ensure Dashboard cards are always visible
+    const dashboardCards = document.querySelectorAll('.dashboard-view .section-card, .dashboard-view [data-aos]');
+    dashboardCards.forEach(card => {
+      card.style.opacity = '1';
+      card.style.visibility = 'visible';
+      card.style.display = 'block';
+      card.style.transform = 'none';
+    });
+    
     animateView();
     
     // Ensure section-card spacing is correct - run multiple times to catch all animations
@@ -74,6 +93,12 @@ onMounted(() => {
         card.style.setProperty('margin-bottom', '0', 'important');
         card.style.marginTop = '0';
         card.style.marginBottom = '0';
+      });
+      // Ensure Dashboard content stays visible
+      dashboardCards.forEach(card => {
+        card.style.opacity = '1';
+        card.style.visibility = 'visible';
+        card.style.display = 'block';
       });
     };
     
@@ -96,6 +121,15 @@ watch(
         card.removeAttribute('data-aos-easing');
       });
       
+      // Ensure Dashboard cards are always visible
+      const dashboardCards = document.querySelectorAll('.dashboard-view .section-card, .dashboard-view [data-aos]');
+      dashboardCards.forEach(card => {
+        card.style.opacity = '1';
+        card.style.visibility = 'visible';
+        card.style.display = 'block';
+        card.style.transform = 'none';
+      });
+      
       // Don't use refreshHard as it can cause viewport dimension changes
       // Just refresh instead to maintain consistent dimensions
       if (AOS) AOS.refresh();
@@ -108,6 +142,12 @@ watch(
           card.style.setProperty('margin-bottom', '0', 'important');
           card.style.marginTop = '0';
           card.style.marginBottom = '0';
+        });
+        // Ensure Dashboard content stays visible
+        dashboardCards.forEach(card => {
+          card.style.opacity = '1';
+          card.style.visibility = 'visible';
+          card.style.display = 'block';
         });
       };
       

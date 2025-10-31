@@ -56,8 +56,10 @@
 }
 
 html {
-  height: 100% !important;
+  height: auto !important;
+  min-height: 100% !important;
   overflow-x: hidden;
+  overflow-y: auto !important;
 }
 
 body {
@@ -65,7 +67,7 @@ body {
   background: var(--neutral-50);
   color: var(--neutral-800);
   min-height: 100vh !important;
-  height: 100% !important;
+  height: auto !important;
   font-weight: 400;
   line-height: 1.7;
   letter-spacing: -0.01em;
@@ -73,6 +75,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   padding-top: 80px;
   overflow-x: hidden;
+  overflow-y: auto !important;
 }
 
 /* Premium typography hierarchy */
@@ -145,6 +148,10 @@ header {
   margin-top: 4rem !important; /* Increased from 3rem to prevent navbar overlap */
   margin-bottom: 2rem !important;
   padding-top: 2rem !important; /* Increased from 1.5rem for more spacing */
+  overflow: visible !important;
+  min-height: auto !important;
+  height: auto !important;
+  max-height: none !important;
 }
 
 /* Ensure first child component has proper spacing from navbar */
@@ -179,6 +186,26 @@ section.section-card[data-aos],
 .container.main-content > .dashboard-view {
   margin-top: 0 !important;
   padding-top: 0 !important;
+  overflow: visible !important;
+  min-height: auto !important;
+  height: auto !important;
+  display: block !important;
+  visibility: visible !important;
+}
+
+/* Ensure Dashboard content is always visible */
+.dashboard-view .section-card {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  overflow: visible !important;
+}
+
+/* Prevent AOS from hiding Dashboard content */
+.dashboard-view [data-aos] {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
 }
 
 /* Brand */
@@ -603,9 +630,12 @@ body.dark-mode .nav-link {
   box-shadow: var(--card-shadow);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
-  overflow: hidden;
+  overflow: visible !important; /* Changed from hidden to visible so content doesn't get clipped */
   backdrop-filter: blur(10px);
   margin-top: 0 !important; /* Ensure consistent spacing, prevent GSAP from affecting it */
+  display: block !important; /* Ensure cards are always visible */
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 /* Ensure ALL section-card elements have consistent spacing from top - prevent AOS/GSAP from affecting it */
