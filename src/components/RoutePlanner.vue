@@ -347,6 +347,24 @@ async function createRailRouterMap() {
   }
 
   mapInstance.resize();
+
+  // Set initial zoom and center for Singapore when map first loads
+  // Singapore center coordinates: approximately [103.8198, 1.3521]
+  if (mapInstance.isStyleLoaded()) {
+    mapInstance.easeTo({
+      center: [103.8198, 1.3521] as [number, number],
+      zoom: 11.5,
+      duration: 0
+    });
+  } else {
+    mapInstance.once('styledata', () => {
+      mapInstance.easeTo({
+        center: [103.8198, 1.3521] as [number, number],
+        zoom: 11.5,
+        duration: 0
+      });
+    });
+  }
 }
 
 function teardownRailRouterMap() {
@@ -667,16 +685,6 @@ onBeforeUnmount(() => {
             >
               Restart
             </v-btn>
-            <v-btn
-              class="ctrl-btn"
-              :color="isPlaying ? 'grey' : 'orange'"
-              variant="flat"
-              height="40"
-              :prepend-icon="isPlaying ? 'mdi-pause' : 'mdi-play'"
-              @click="isPlaying ? onPause() : startAnimation()"
-            >
-              {{ isPlaying ? 'Pause' : 'Play' }}
-            </v-btn>
           </div>
         </v-sheet>
       </div>
@@ -793,6 +801,50 @@ onBeforeUnmount(() => {
 .railrouter-shell #logo,
 .railrouter-shell #search {
   display: none !important;
+}
+
+/* Reposition the sheet-close button (cross button) to top-right of map */
+.railrouter-shell .sheet-close {
+  top: 16px !important;
+  right: 16px !important;
+  left: auto !important;
+  transform: translateY(0) !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  z-index: 1000 !important;
+}
+
+.railrouter-shell #station.open ~ .sheet-close,
+.railrouter-shell .sheet.open ~ .sheet-close {
+  top: 16px !important;
+  right: 16px !important;
+  transform: translateY(0) !important;
+}
+
+.railrouter-shell #station.open.min ~ .sheet-close {
+  transform: translateY(0) rotate(-90deg) !important;
+}
+
+/* Reposition Mapbox controls to the right */
+.railrouter-shell .mapboxgl-ctrl-bottom-right {
+  bottom: 80px !important;
+  right: 16px !important;
+  left: auto !important;
+}
+
+.railrouter-shell .mapboxgl-ctrl-top-right {
+  top: 70px !important;
+  right: 16px !important;
+  left: auto !important;
+}
+
+/* Position 3D navigation controls (compass, rotation, pitch) to the right */
+.railrouter-shell .mapboxgl-ctrl-group {
+  position: relative;
+}
+
+.railrouter-shell .mapboxgl-ctrl-group button {
+  pointer-events: auto;
 }
 
 .rp-controls {
