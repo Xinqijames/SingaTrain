@@ -116,20 +116,51 @@
     Profile</a>
   to see them here.
 </li>
-            <li
-              v-for="item in favorites"
-              :key="item.station"
-              class="d-flex align-items-center gap-3 py-2 border-bottom"
-            >
-              <span class="material-icons text-danger">star_rate</span>
-              <div>
-                <div class="fw-semibold">{{ item.label || item.station }}</div>
-                <div class="tab-desc small">{{ item.station }}</div>
-              </div>
-              <button class="dashboard-fav-remove ms-auto" @click="removeFavoriteHandler(item)">
-                Remove
-              </button>
-            </li>
+            <li v-for="fav in favorites" :key="fav.station"
+    class="favorite-card d-flex flex-column flex-md-row align-items-start gap-3 p-3 rounded-3 shadow-sm">
+
+  <!-- Line color indicator -->
+  <div class="line-color-indicator" :style="{ backgroundColor: getLineColor(fav.line) }"></div>
+
+  <!-- Station info & first/last train -->
+  <div class="flex-grow-1 d-flex flex-column gap-2">
+    <div class="d-flex justify-content-between align-items-start">
+      <div>
+        <strong class="favorite-label">{{ fav.label }}</strong>
+        <div class="text-muted small">{{ fav.station }}</div>
+      </div>
+      <button class="btn btn-sm btn-outline-danger" @click="removeFavoriteHandler(fav)">
+        <span class="material-icons">close</span>
+      </button>
+    </div>
+
+    <!-- Arrival times -->
+    <div class="arrival-times d-flex flex-wrap gap-2">
+      <span v-for="(time, idx) in fav.arrivals" :key="idx"
+            class="arrival-pill"
+            :style="{ borderColor: getLineColor(fav.line), color: getLineColor(fav.line) }">
+        <span class="material-icons">train</span> {{ formatArrival(time) }}
+      </span>
+    </div>
+
+    <!-- First train & crowd -->
+    <div class="first-crowd d-flex gap-3 small text-muted">
+      <div>
+        <span class="material-icons" style="font-size: 16px;">schedule</span>
+        First: {{ fav.firstTrainTime }}
+      </div>
+      <div>
+        <span class="material-icons" style="font-size: 16px;">people</span>
+        Crowd: 
+        <span :class="['crowd-badge', getCrowdClass(fav.crowdLevel)]">
+          {{ getCrowdLabel(fav.crowdLevel) }}
+        </span>
+      </div>
+    </div>
+  </div>
+</li>
+
+
           </ul>
         </div>
       </div>
@@ -175,8 +206,9 @@
 import { computed, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue';
 import { useAppState } from '../composables/useAppState';
 import { createTrainArrivalSimulator, getLineColor } from '../composables/useTrainAPI';
-import { LIVE_TICKER_ROTATION_MS, LIVE_TICKER_STATIONS } from '../data/stations';
+import { TRAIN_STATION_LINES, LINE_COLOR_MAP, LIVE_TICKER_ROTATION_MS, LIVE_TICKER_STATIONS } from '../data/stations';
 import { db } from '../firebase';
+import { STATION_CODES_BY_LINE } from '../data/stationCoordinates';
 import { doc, updateDoc } from 'firebase/firestore';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
@@ -196,6 +228,24 @@ const user = ref(null);
 const auth = getAuth();
 const mapImage = ref(null);
 const clickPosition = ref({ x: 0, y: 0 });
+const updateInterval = ref(null);
+const stationArrivals = ref([]);
+const lastUpdateTime = ref('Never');
+const CORS_PROXY = 'https://corsproxy.io/?';
+import { LTA_API_KEY } from '../../config';
+
+function getStationLine(fav) {
+  if (fav.line) return fav.line; // already stored
+  const lines = TRAIN_STATION_LINES[fav.station];
+  if (!lines || !lines.length) return null; // fallback
+  return lines[0]; // pick the first line as default
+}
+
+function getStationCode(stationName, lineName) {
+  const station = STATION_CODES_BY_LINE[stationName];
+  if (!station) return undefined;
+  return station[lineName];
+}
 
 const ticker = reactive({
   index: 0,
@@ -210,12 +260,73 @@ const clockInterval = ref(null);
 const { state, setActiveTab, removeFavorite } = useAppState();
 const favorites = computed(() => state.favorites);
 
-function formatArrival(seconds) {
-  if (seconds <= 0) return 'Arriving';
-  if (seconds < 60) return '<1 min';
-  const minutes = Math.ceil(seconds / 60);
-  return `${minutes} min`;
+function formatArrival(minutes) {
+  if (minutes <= 0) return 'Arriving';
+  return `${Math.round(minutes)} min`;
 }
+
+async function refreshFavoritesData() {
+  const updatedFavorites = await Promise.all(favorites.value.map(async (fav) => {
+    const lineName = getStationLine(fav);
+    if (!lineName) return fav; // skip if no line found
+
+    const snapshot = simulator.getArrivals()[fav.station] || {};
+    const lineData = snapshot[lineName] || [];
+
+    // Crowd level
+    const lineCode = LINE_CODES[lineName];
+    let realCrowdData = lineCode ? await getCrowdLevel(lineCode) : null;
+    let crowdLevel = 'NA';
+    if (realCrowdData?.length) {
+      const stationCode = getStationCode(fav.station, lineName);
+      const matched = realCrowdData.find(s => s.stationCode === stationCode);
+      if (matched) crowdLevel = matched.crowdLevel;
+    }
+
+    return {
+      ...fav,
+      line: lineName,
+      arrivals: lineData.slice(0, 3),
+      firstTrainTime: firstTrainTimings[lineName] || 'N/A',
+      lastTrainTime: '', // optional
+      crowdLevel
+    };
+  }));
+
+  // Since favorites is a computed from state, use state setter
+  state.favorites = updatedFavorites;
+}
+
+async function getCrowdLevel(line) {
+  try {
+    const url = CORS_PROXY + encodeURIComponent(`https://datamall2.mytransport.sg/ltaodataservice/PCDRealTime?TrainLine=${line}`);
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: { "AccountKey": LTA_API_KEY, "accept": "application/json" },
+    });
+    if (!response.ok) return null;
+    const data = await response.json();
+    if (!data.value || !Array.isArray(data.value)) return null;
+    return data.value.map(station => ({
+      stationCode: station.Station,
+      crowdLevel: station.CrowdLevel
+    }));
+  } catch (error) {
+    console.error("Error fetching crowd data:", error);
+    return null;
+  }
+}
+
+async function refreshArrivals() {
+  console.log("Simulator station keys:", Object.keys(simulator.getArrivals()));
+  const snapshot = simulator.getArrivals()[ticker.station.station] || {};
+  stationArrivals.value = Object.entries(snapshot).map(([line, times]) => ({
+    name: line,
+    times,
+  }));
+  lastUpdateTime.value = new Date().toLocaleTimeString();
+}
+
 
 function updateTicker(resetIndex = false) {
   if (!resetIndex) {
@@ -223,13 +334,15 @@ function updateTicker(resetIndex = false) {
   }
   ticker.station = LIVE_TICKER_STATIONS[ticker.index];
   ticker.lineColor = getLineColor(ticker.station.line);
-  const stationArrivals = simulator.getStationArrivals(ticker.station.station);
-  ticker.arrivals = (stationArrivals?.[ticker.station.line] || []).slice(0, 3);
+
+  let arrivals = simulator.getStationArrivals(ticker.station.station);
+  ticker.arrivals = (arrivals?.[ticker.station.line] || []).slice(0, 3);
 
   isCycling.value = false;
-  void document.querySelector('.live-ticker-card').offsetWidth; 
+  void document.querySelector('.live-ticker-card').offsetWidth;
   isCycling.value = true;
 }
+
 
 function updateClock() {
   const now = new Date();
@@ -293,6 +406,31 @@ const stopDrag = () => {
   isDragging.value = false;
 };
 
+const firstTrainTimings = {
+  'North-South Line': '5:30 AM',
+  'East-West Line': '5:31 AM',
+  'Circle Line': '5:32 AM',
+  'North East Line': '5:42 AM',
+  'Downtown Line': '5:33 AM',
+  'Thomson-East Coast Line': '5:30 AM'
+};
+
+const LINE_CODES = {
+  'East-West Line': 'EWL',
+  'North-South Line': 'NSL',
+  'Circle Line': 'CCL',
+  'Downtown Line': 'DTL',
+  'North-East Line': 'NEL',
+  'Thomson-East Coast Line': 'TEL',
+  'Bukit Panjang LRT': 'BPL',
+  'Sengkang LRT': 'SLRT',
+  'Punggol LRT': 'PLRT',
+  'Circle Line Extension': 'CEL',
+  'Changi Extension': 'CGL'
+};
+
+
+
 const startTouch = (e) => {
   if (e.touches.length === 2) {
     const dx = e.touches[0].clientX - e.touches[1].clientX;
@@ -353,31 +491,39 @@ const removeFavoriteHandler = async (fav) => {
   }
 };
 
-onMounted(() => {
-  onAuthStateChanged(auth, (currentUser) => {
-    user.value = currentUser;
-    if (!currentUser) {
-      state.favorites = []; 
-    }
-  });
+function getCrowdLabel(level) {
+  const labels = { l: 'Low', m: 'Moderate', h: 'High' };
+  return labels[level] || 'Unknown';
+}
 
+function getCrowdClass(level) {
+  const classes = { l: 'crowd-low', m: 'crowd-moderate', h: 'crowd-high' };
+  return classes[level] || '';
+}
+
+onMounted(() => {
   simulator.start();
   updateTicker(true);
   updateClock();
-  tickerInterval.value = window.setInterval(() => updateTicker(false), LIVE_TICKER_ROTATION_MS);
-  clockInterval.value = window.setInterval(updateClock, 1000);
+  refreshArrivals();
+  refreshFavoritesData(); // <-- refresh your enriched favorites
+
+  tickerInterval.value = setInterval(() => updateTicker(false), LIVE_TICKER_ROTATION_MS);
+  clockInterval.value = setInterval(updateClock, 1000);
+  updateInterval.value = setInterval(() => {
+    refreshArrivals();
+    refreshFavoritesData(); // <-- update favorites regularly
+  }, 30000);
 });
+
+
 
 
 onBeforeUnmount(() => {
   simulator.stop();
-  if (tickerInterval.value) {
-    clearInterval(tickerInterval.value);
-    tickerInterval.value = null;
-  }
-  if (clockInterval.value) {
-    clearInterval(clockInterval.value);
-    clockInterval.value = null;
-  }
+  if (tickerInterval.value) clearInterval(tickerInterval.value);
+  if (clockInterval.value) clearInterval(clockInterval.value);
+  if (updateInterval.value) clearInterval(updateInterval.value);
 });
+
 </script>

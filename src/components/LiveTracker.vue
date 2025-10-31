@@ -1,6 +1,3 @@
-i am getting a 500 internal error:
-what should i do to integrate that into my code?:
-anything wrong?:
 <template>
   <section class="section-card">
     <!-- Header -->
