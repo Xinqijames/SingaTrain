@@ -4,14 +4,10 @@
       <div>
         <h2 class="section-title mb-2">Meet-up Point Finder</h2>
         <p class="text-muted mb-0">
-          Enter origin stations for your group and we’ll suggest the fairest MRT interchange, minimising total travel
+          Enter origin stations for your group and we'll suggest the fairest MRT interchange, minimising total travel
           time for everyone.
         </p>
       </div>
-      <button class="btn btn-outline-danger hover-float" type="button" @click="addParticipant">
-        <span class="material-icons me-1">person_add</span>
-        Add person
-      </button>
     </div>
 
     <div class="meetup-container">
@@ -45,28 +41,71 @@
       </div>
 
       <div class="meetup-actions">
-        <button class="btn btn-primary hover-float" type="button" @click="findMeetup">
-          <span class="material-icons">travel_explore</span>
-          Find optimal meet-up
+        <button class="custom-btn" type="button" @click="findMeetup">
+          <span class="material-icons me-1">travel_explore</span>
+          Meet-up
+          <svg class="star-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve" width="512" height="512">
+            <polygon class="fil0" points="259.216,29.942 330.286,193.919 512,222.877 378,357.736 404.58,439.15 259.216,378.062 113.852,439.15 140.432,357.736 6,222.877 188.146,193.919 "/>
+          </svg>
+          <svg class="star-2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve" width="512" height="512">
+            <polygon class="fil0" points="259.216,29.942 330.286,193.919 512,222.877 378,357.736 404.58,439.15 259.216,378.062 113.852,439.15 140.432,357.736 6,222.877 188.146,193.919 "/>
+          </svg>
+          <svg class="star-3" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve" width="512" height="512">
+            <polygon class="fil0" points="259.216,29.942 330.286,193.919 512,222.877 378,357.736 404.58,439.15 259.216,378.062 113.852,439.15 140.432,357.736 6,222.877 188.146,193.919 "/>
+          </svg>
+          <svg class="star-4" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve" width="512" height="512">
+            <polygon class="fil0" points="259.216,29.942 330.286,193.919 512,222.877 378,357.736 404.58,439.15 259.216,378.062 113.852,439.15 140.432,357.736 6,222.877 188.146,193.919 "/>
+          </svg>
+          <svg class="star-5" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve" width="512" height="512">
+            <polygon class="fil0" points="259.216,29.942 330.286,193.919 512,222.877 378,357.736 404.58,439.15 259.216,378.062 113.852,439.15 140.432,357.736 6,222.877 188.146,193.919 "/>
+          </svg>
+          <svg class="star-6" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve" width="512" height="512">
+            <polygon class="fil0" points="259.216,29.942 330.286,193.919 512,222.877 378,357.736 404.58,439.15 259.216,378.062 113.852,439.15 140.432,357.736 6,222.877 188.146,193.919 "/>
+          </svg>
         </button>
-        <button class="btn btn-outline-danger hover-float" type="button" @click="reset">
-          <span class="material-icons">restart_alt</span>
+        <button class="custom-btn" type="button" @click="addParticipant">
+          <span class="material-icons me-1">person_add</span>
+          Add person
+          <svg class="star-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve" width="512" height="512">
+            <polygon class="fil0" points="259.216,29.942 330.286,193.919 512,222.877 378,357.736 404.58,439.15 259.216,378.062 113.852,439.15 140.432,357.736 6,222.877 188.146,193.919 "/>
+          </svg>
+          <svg class="star-2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve" width="512" height="512">
+            <polygon class="fil0" points="259.216,29.942 330.286,193.919 512,222.877 378,357.736 404.58,439.15 259.216,378.062 113.852,439.15 140.432,357.736 6,222.877 188.146,193.919 "/>
+          </svg>
+          <svg class="star-3" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve" width="512" height="512">
+            <polygon class="fil0" points="259.216,29.942 330.286,193.919 512,222.877 378,357.736 404.58,439.15 259.216,378.062 113.852,439.15 140.432,357.736 6,222.877 188.146,193.919 "/>
+          </svg>
+          <svg class="star-4" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve" width="512" height="512">
+            <polygon class="fil0" points="259.216,29.942 330.286,193.919 512,222.877 378,357.736 404.58,439.15 259.216,378.062 113.852,439.15 140.432,357.736 6,222.877 188.146,193.919 "/>
+          </svg>
+          <svg class="star-5" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve" width="512" height="512">
+            <polygon class="fil0" points="259.216,29.942 330.286,193.919 512,222.877 378,357.736 404.58,439.15 259.216,378.062 113.852,439.15 140.432,357.736 6,222.877 188.146,193.919 "/>
+          </svg>
+          <svg class="star-6" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve" width="512" height="512">
+            <polygon class="fil0" points="259.216,29.942 330.286,193.919 512,222.877 378,357.736 404.58,439.15 259.216,378.062 113.852,439.15 140.432,357.736 6,222.877 188.146,193.919 "/>
+          </svg>
+        </button>
+        <button class="custom-btn" type="button" @click="reset">
+          <span class="material-icons me-1">restart_alt</span>
           Clear
-        </button>
-      </div>
-    </div>
-
-    <div class="mt-4">
-      <div class="text-muted mb-2">Quick add</div>
-      <div class="d-flex flex-wrap gap-2">
-        <button
-          v-for="station in quickStations"
-          :key="station"
-          class="btn btn-sm btn-outline-secondary quick-station-btn"
-          type="button"
-          @click="assignNextEmpty(station)"
-        >
-          {{ station }}
+          <svg class="star-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve" width="512" height="512">
+            <polygon class="fil0" points="259.216,29.942 330.286,193.919 512,222.877 378,357.736 404.58,439.15 259.216,378.062 113.852,439.15 140.432,357.736 6,222.877 188.146,193.919 "/>
+          </svg>
+          <svg class="star-2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve" width="512" height="512">
+            <polygon class="fil0" points="259.216,29.942 330.286,193.919 512,222.877 378,357.736 404.58,439.15 259.216,378.062 113.852,439.15 140.432,357.736 6,222.877 188.146,193.919 "/>
+          </svg>
+          <svg class="star-3" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve" width="512" height="512">
+            <polygon class="fil0" points="259.216,29.942 330.286,193.919 512,222.877 378,357.736 404.58,439.15 259.216,378.062 113.852,439.15 140.432,357.736 6,222.877 188.146,193.919 "/>
+          </svg>
+          <svg class="star-4" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve" width="512" height="512">
+            <polygon class="fil0" points="259.216,29.942 330.286,193.919 512,222.877 378,357.736 404.58,439.15 259.216,378.062 113.852,439.15 140.432,357.736 6,222.877 188.146,193.919 "/>
+          </svg>
+          <svg class="star-5" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve" width="512" height="512">
+            <polygon class="fil0" points="259.216,29.942 330.286,193.919 512,222.877 378,357.736 404.58,439.15 259.216,378.062 113.852,439.15 140.432,357.736 6,222.877 188.146,193.919 "/>
+          </svg>
+          <svg class="star-6" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve" width="512" height="512">
+            <polygon class="fil0" points="259.216,29.942 330.286,193.919 512,222.877 378,357.736 404.58,439.15 259.216,378.062 113.852,439.15 140.432,357.736 6,222.877 188.146,193.919 "/>
+          </svg>
         </button>
       </div>
     </div>
@@ -202,11 +241,9 @@ const MAX_PARTICIPANTS = 10;
 
 let idCounter = 0;
 const participants = ref([
-  { id: ++idCounter, station: '' },
   { id: ++idCounter, station: '' }
 ]);
 
-const quickStations = ['Bishan', 'Dhoby Ghaut', 'Jurong East', 'Paya Lebar', 'City Hall', 'HarbourFront'];
 const loading = ref(false);
 const errorMessage = ref('');
 const result = ref(null);
@@ -238,27 +275,12 @@ function removeParticipant(id) {
 
 function reset() {
   participants.value = [
-    { id: ++idCounter, station: '' },
     { id: ++idCounter, station: '' }
   ];
   result.value = null;
   errorMessage.value = '';
   updateParticipantMarkers();
   updateMeetupMarker();
-}
-
-function assignNextEmpty(station) {
-  const empty = participants.value.find((p) => !p.station);
-  if (empty) {
-    empty.station = station;
-    setMapFeedback(`${station} assigned to Person ${participants.value.indexOf(empty) + 1}.`);
-  } else {
-    const added = addParticipant();
-    if (!added) return;
-    const last = participants.value[participants.value.length - 1];
-    last.station = station;
-    setMapFeedback(`${station} assigned to new Person ${participants.value.length}.`);
-  }
 }
 
 async function findMeetup() {
@@ -275,32 +297,51 @@ async function findMeetup() {
   await new Promise((resolve) => setTimeout(resolve, 450)); // subtle UX pause
 
   let bestStation = null;
-  let bestTotalWeight = Infinity;
+  let bestMaxMinutes = Infinity;
+  let bestAvgMinutes = Infinity;
   let bestDetails = null;
 
   stations.forEach((candidate) => {
-    let totalWeight = 0;
     const detailRows = [];
+    const travelMinutes = [];
 
     for (const origin of selectedStations) {
-      if (origin === candidate) continue;
+      if (origin === candidate) {
+        // If someone is already at the candidate station, their travel time is 0
+        travelMinutes.push(0);
+        detailRows.push({
+          origin,
+          path: { steps: [{ station: origin, line: '' }], totalWeight: 0 },
+          minutes: 0,
+          segments: [],
+          steps: [{ station: origin, line: '' }]
+        });
+        continue;
+      }
       const path = shortestPath(origin, candidate);
       if (!path) {
-        totalWeight = Infinity;
-        break;
+        // If no path found, skip this candidate
+        return;
       }
-      totalWeight += path.totalWeight;
+      const minutes = estimateTimeMinutes(path.totalWeight);
+      travelMinutes.push(minutes);
       detailRows.push({
         origin,
         path,
-        minutes: estimateTimeMinutes(path.totalWeight),
+        minutes,
         segments: summariseSegments(path),
         steps: path.steps
       });
     }
 
-    if (totalWeight < bestTotalWeight) {
-      bestTotalWeight = totalWeight;
+    // Calculate fairness metrics: minimize maximum travel time first, then average
+    const maxMinutes = Math.max(...travelMinutes);
+    const avgMinutes = travelMinutes.reduce((sum, m) => sum + m, 0) / travelMinutes.length;
+
+    // Choose station with lower max travel time, or if equal, lower average
+    if (maxMinutes < bestMaxMinutes || (maxMinutes === bestMaxMinutes && avgMinutes < bestAvgMinutes)) {
+      bestMaxMinutes = maxMinutes;
+      bestAvgMinutes = avgMinutes;
       bestStation = candidate;
       bestDetails = detailRows;
     }
@@ -313,10 +354,12 @@ async function findMeetup() {
   }
 
   const totalMinutes = bestDetails.reduce((sum, item) => sum + item.minutes, 0);
+  const maxTravelTime = Math.max(...bestDetails.map(d => d.minutes));
   result.value = {
     station: bestStation,
     totalMinutes,
     averageMinutes: totalMinutes / bestDetails.length,
+    maxTravelTime, // Maximum travel time for fairness indicator
     details: bestDetails
   };
 
@@ -590,3 +633,194 @@ watch(mapLoaded, (value) => {
   }
 });
 </script>
+
+<style scoped>
+/* From Uiverse.io by MuhammadHasann - exact match */
+.meetup-actions .custom-btn {
+  position: relative;
+  padding: 12px 35px;
+  background: #fec195;
+  font-size: 17px;
+  font-weight: 500;
+  color: #181818;
+  border: 3px solid #fec195;
+  border-radius: 8px;
+  box-shadow: 0 0 0 #fec1958c;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.meetup-actions .custom-btn .star-1 {
+  position: absolute;
+  top: 20%;
+  left: 20%;
+  width: 25px;
+  height: auto;
+  filter: drop-shadow(0 0 0 #FFD700);
+  z-index: -5;
+  transition: all 1s cubic-bezier(0.05, 0.83, 0.43, 0.96);
+}
+
+.meetup-actions .custom-btn .star-2 {
+  position: absolute;
+  top: 45%;
+  left: 45%;
+  width: 15px;
+  height: auto;
+  filter: drop-shadow(0 0 0 #FFD700);
+  z-index: -5;
+  transition: all 1s cubic-bezier(0, 0.4, 0, 1.01);
+}
+
+.meetup-actions .custom-btn .star-3 {
+  position: absolute;
+  top: 40%;
+  left: 40%;
+  width: 5px;
+  height: auto;
+  filter: drop-shadow(0 0 0 #FFD700);
+  z-index: -5;
+  transition: all 1s cubic-bezier(0, 0.4, 0, 1.01);
+}
+
+.meetup-actions .custom-btn .star-4 {
+  position: absolute;
+  top: 20%;
+  left: 40%;
+  width: 8px;
+  height: auto;
+  filter: drop-shadow(0 0 0 #FFD700);
+  z-index: -5;
+  transition: all 0.8s cubic-bezier(0, 0.4, 0, 1.01);
+}
+
+.meetup-actions .custom-btn .star-5 {
+  position: absolute;
+  top: 25%;
+  left: 45%;
+  width: 15px;
+  height: auto;
+  filter: drop-shadow(0 0 0 #FFD700);
+  z-index: -5;
+  transition: all 0.6s cubic-bezier(0, 0.4, 0, 1.01);
+}
+
+.meetup-actions .custom-btn .star-6 {
+  position: absolute;
+  top: 5%;
+  left: 50%;
+  width: 5px;
+  height: auto;
+  filter: drop-shadow(0 0 0 #FFD700);
+  z-index: -5;
+  transition: all 0.8s ease;
+}
+
+.meetup-actions .custom-btn:hover,
+.meetup-actions .custom-btn:active,
+.meetup-actions .custom-btn:focus {
+  background: transparent;
+  color: #fec195;
+  box-shadow: 0 0 25px #fec1958c;
+  outline: none;
+}
+
+.meetup-actions .custom-btn:hover .star-1,
+.meetup-actions .custom-btn:active .star-1,
+.meetup-actions .custom-btn:focus .star-1 {
+  position: absolute;
+  top: -80%;
+  left: -30%;
+  width: 25px;
+  height: auto;
+  filter: drop-shadow(0 0 10px #FFD700);
+  z-index: 2;
+}
+
+.meetup-actions .custom-btn:hover .star-2,
+.meetup-actions .custom-btn:active .star-2,
+.meetup-actions .custom-btn:focus .star-2 {
+  position: absolute;
+  top: -25%;
+  left: 10%;
+  width: 15px;
+  height: auto;
+  filter: drop-shadow(0 0 10px #FFD700);
+  z-index: 2;
+}
+
+.meetup-actions .custom-btn:hover .star-3,
+.meetup-actions .custom-btn:active .star-3,
+.meetup-actions .custom-btn:focus .star-3 {
+  position: absolute;
+  top: 55%;
+  left: 25%;
+  width: 5px;
+  height: auto;
+  filter: drop-shadow(0 0 10px #FFD700);
+  z-index: 2;
+}
+
+.meetup-actions .custom-btn:hover .star-4,
+.meetup-actions .custom-btn:active .star-4,
+.meetup-actions .custom-btn:focus .star-4 {
+  position: absolute;
+  top: 30%;
+  left: 80%;
+  width: 8px;
+  height: auto;
+  filter: drop-shadow(0 0 10px #FFD700);
+  z-index: 2;
+}
+
+.meetup-actions .custom-btn:hover .star-5,
+.meetup-actions .custom-btn:active .star-5,
+.meetup-actions .custom-btn:focus .star-5 {
+  position: absolute;
+  top: 25%;
+  left: 115%;
+  width: 15px;
+  height: auto;
+  filter: drop-shadow(0 0 10px #FFD700);
+  z-index: 2;
+}
+
+.meetup-actions .custom-btn:hover .star-6,
+.meetup-actions .custom-btn:active .star-6,
+.meetup-actions .custom-btn:focus .star-6 {
+  position: absolute;
+  top: 5%;
+  left: 60%;
+  width: 5px;
+  height: auto;
+  filter: drop-shadow(0 0 10px #FFD700);
+  z-index: 2;
+}
+
+.meetup-actions .custom-btn .fil0 {
+  fill: #FFD700; /* Yellow color to make stars more visible */
+}
+
+/* Ensure buttons stay side by side in a row */
+.meetup-actions {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  gap: 12px !important;
+  margin-top: 24px !important;
+  align-items: center !important;
+}
+
+/* Override media query that might stack buttons */
+@media (max-width: 768px) {
+  .meetup-actions {
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+  }
+}
+
+</style>

@@ -55,17 +55,24 @@
   padding: 0;
 }
 
+html {
+  height: 100% !important;
+  overflow-x: hidden;
+}
+
 body {
   font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   background: var(--neutral-50);
   color: var(--neutral-800);
-  min-height: 100vh;
+  min-height: 100vh !important;
+  height: 100% !important;
   font-weight: 400;
   line-height: 1.7;
   letter-spacing: -0.01em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   padding-top: 80px;
+  overflow-x: hidden;
 }
 
 /* Premium typography hierarchy */
@@ -82,10 +89,21 @@ h6 {
 }
 
 .section-title {
-  font-size: var(--text-3xl);
-  font-weight: 600;
-  color: var(--neutral-900);
-  margin-bottom: 0.5rem;
+  font-size: 28px !important; /* Match RoutePlanner's h1 size exactly */
+  font-weight: 600 !important; /* Match RoutePlanner's font-weight */
+  color: var(--neutral-900) !important; /* Match RoutePlanner's color */
+  margin: 0 !important; /* Match RoutePlanner's h1 margin: 0 exactly */
+  line-height: 1.2 !important; /* Match RoutePlanner's line-height */
+}
+
+/* Match RoutePlanner's subtitle styling exactly */
+.section-card .text-muted,
+.section-card .tab-desc,
+.section-card > div.d-flex:first-child > div:first-child > .text-muted,
+.section-card > div.d-flex:first-child > div:first-child > p {
+  margin: 4px 0 0 0 !important; /* Match RoutePlanner's subtitle margin exactly */
+  font-size: 16px !important; /* Match RoutePlanner's subtitle size */
+  color: rgba(var(--v-theme-on-surface, 31, 41, 55), 0.7) !important; /* Match RoutePlanner's subtitle color */
 }
 
 header {
@@ -115,6 +133,52 @@ header {
     justify-content: space-between;
     flex-wrap: nowrap;
     gap: 1rem;
+}
+
+/* Main content container - override flex layout for content area */
+.container.main-content {
+  display: block !important;
+  align-items: unset !important;
+  justify-content: unset !important;
+  flex-wrap: unset !important;
+  gap: unset !important;
+  margin-top: 4rem !important; /* Increased from 3rem to prevent navbar overlap */
+  margin-bottom: 2rem !important;
+  padding-top: 2rem !important; /* Increased from 1.5rem for more spacing */
+}
+
+/* Ensure first child component has proper spacing from navbar */
+.container.main-content > *:first-child {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* Ensure ALL section-card components have consistent spacing - prevent AOS/GSAP/any library from affecting */
+.container.main-content .section-card,
+.container.main-content > .section-card,
+.container.main-content section.section-card,
+section.section-card {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  /* Prevent any animations or libraries from adding extra margins */
+}
+
+/* Disable AOS for section-card */
+section.section-card[data-aos],
+.section-card[data-aos] {
+  pointer-events: auto !important;
+}
+
+/* Ensure RoutePlanner (v-container) has proper spacing */
+.container.main-content > .v-container:first-child,
+.container.main-content > .v-container .v-card:first-child {
+  margin-top: 0 !important;
+}
+
+/* Ensure Dashboard view has proper spacing */
+.container.main-content > .dashboard-view {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
 }
 
 /* Brand */
@@ -531,12 +595,92 @@ body.dark-mode .nav-link {
   background: #ffffff;
   border: 1px solid var(--neutral-200);
   border-radius: var(--border-radius);
-  padding: 48px;
+  padding: 24px !important; /* Match RoutePlanner spacing - ensure spacing from border is 24px */
+  padding-left: 24px !important; /* Explicitly ensure left padding */
+  padding-right: 24px !important; /* Explicitly ensure right padding */
+  padding-top: 24px !important; /* Explicitly ensure top padding matches RoutePlanner */
+  padding-bottom: 24px !important; /* Explicitly ensure bottom padding */
   box-shadow: var(--card-shadow);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
   backdrop-filter: blur(10px);
+  margin-top: 0 !important; /* Ensure consistent spacing, prevent GSAP from affecting it */
+}
+
+/* Ensure ALL section-card elements have consistent spacing from top - prevent AOS/GSAP from affecting it */
+.container.main-content > .section-card:first-child,
+.container.main-content > .section-card,
+.container.main-content > section.section-card,
+section.section-card {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  /* Force consistent spacing regardless of animations or libraries */
+}
+
+/* Match RoutePlanner visual spacing - ensure first content element respects padding */
+.section-card > *:first-child {
+  margin-top: 0 !important;
+  padding-top: 0 !important; /* No extra padding - rely on card padding for top spacing */
+  /* Titles and header divs should naturally start at 24px from top (card padding) */
+}
+
+/* Ensure section titles have the same visual spacing from card border as RoutePlanner */
+.section-card h2.section-title:first-child,
+.section-card h2.section-title,
+.section-card h2.section-title.mb-1,
+.section-card h2.section-title.mb-2,
+.section-card h2.section-title.mb-3 {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important; /* Override mb-1, mb-2, mb-3 classes to match RoutePlanner's h1 margin: 0 */
+}
+
+/* Match RoutePlanner's rp-header styling exactly for all section-card headers */
+.section-card > div.d-flex:first-child {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 16px !important; /* Match RoutePlanner's rp-header gap: 16px */
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 8px !important; /* Match RoutePlanner's rp-header padding-bottom */
+  border-bottom: 1px solid var(--neutral-200) !important; /* Match RoutePlanner's border-bottom */
+  margin-bottom: 16px !important; /* Match RoutePlanner's gap: 16px between header and content */
+}
+
+/* Match RoutePlanner's rp-title styling for nested title container */
+.section-card > div.d-flex:first-child > div:first-child {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* Match RoutePlanner's h1 styling exactly */
+.section-card > div.d-flex:first-child > div:first-child > .section-title,
+.section-card > div.d-flex:first-child > div:first-child > h2.section-title {
+  margin: 0 !important; /* Match RoutePlanner's h1 margin: 0 exactly */
+  font-size: 28px !important;
+  line-height: 1.2 !important;
+  font-weight: 600 !important;
+  color: rgb(var(--v-theme-on-surface, 31, 41, 55)) !important; /* Match RoutePlanner's color */
+}
+
+
+/* Handle FareCalculator which has title directly in section-card - wrap in header-like structure */
+.section-card > h2.section-title:first-child {
+  margin: 0 !important; /* Match RoutePlanner's h1 margin: 0 exactly */
+  font-size: 28px !important;
+  line-height: 1.2 !important;
+  font-weight: 600 !important;
+  color: rgb(var(--v-theme-on-surface, 31, 41, 55)) !important;
+}
+
+.section-card > h2.section-title:first-child + p.tab-desc {
+  margin: 4px 0 0 0 !important; /* Match RoutePlanner's subtitle margin */
+  font-size: 16px !important;
+  color: rgba(var(--v-theme-on-surface, 31, 41, 55), 0.7) !important;
+  margin-bottom: 16px !important; /* Match RoutePlanner's gap: 16px */
+  padding-bottom: 8px !important; /* Match RoutePlanner's padding-bottom */
+  border-bottom: 1px solid var(--neutral-200) !important; /* Match RoutePlanner's border-bottom */
 }
 
 .section-card:hover {
@@ -1571,216 +1715,6 @@ button {
   transform: scale(0.75);
 }
 
-.capybara {
-  width: 100%;
-  height: 7.5em;
-  position: relative;
-  z-index: 1;
-}
-
-.loader {
-  width: 100%;
-  height: 2.5em;
-  position: relative;
-  z-index: 1;
-  overflow: hidden;
-}
-
-.capy {
-  width: 85%;
-  height: 100%;
-  background: linear-gradient(var(--color), 90%, var(--color2));
-  border-radius: 45%;
-  position: relative;
-  z-index: 1;
-  animation: movebody 1s linear infinite;
-}
-
-.capyhead {
-  width: 7.5em;
-  height: 7em;
-  bottom: 0em;
-  right: 0em;
-  position: absolute;
-  background-color: var(--color);
-  z-index: 3;
-  border-radius: 3.5em;
-  box-shadow: -1em 0em var(--color2);
-  animation: movebody 1s linear infinite;
-}
-
-.capyear {
-  width: 2em;
-  height: 2em;
-  background: linear-gradient(-45deg, var(--color), 90%, var(--color2));
-  top: 0em;
-  left: 0em;
-  border-radius: 100%;
-  position: absolute;
-  overflow: hidden;
-  z-index: 3;
-}
-
-.capyear:nth-child(2) {
-  left: 5em;
-  background: linear-gradient(25deg, var(--color), 90%, var(--color2));
-}
-
-.capyear2 {
-  width: 100%;
-  height: 1em;
-  background-color: var(--color2);
-  bottom: 0em;
-  left: 0.5em;
-  border-radius: 100%;
-  position: absolute;
-  transform: rotate(-45deg);
-}
-
-.capymouth {
-  width: 3.5em;
-  height: 2em;
-  background-color: var(--color2);
-  position: absolute;
-  bottom: 0em;
-  left: 2.5em;
-  border-radius: 50%;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  padding: 0.5em;
-}
-
-.capylips {
-  width: 0.25em;
-  height: 0.75em;
-  border-radius: 100%;
-  transform: rotate(-45deg);
-  background-color: var(--color);
-}
-
-.capylips:nth-child(2) {
-  transform: rotate(45deg);
-}
-
-.capyeye {
-  width: 2em;
-  height: 0.5em;
-  background-color: var(--color2);
-  position: absolute;
-  bottom: 3.5em;
-  left: 1.5em;
-  border-radius: 5em;
-  transform: rotate(45deg);
-}
-
-.capyeye:nth-child(4) {
-  transform: rotate(-45deg);
-  left: 5.5em;
-  width: 1.75em;
-}
-
-.capyleg {
-  width: 6em;
-  height: 5em;
-  bottom: 0em;
-  left: 0em;
-  position: absolute;
-  background: linear-gradient(var(--color), 95%, var(--color2));
-  z-index: 2;
-  border-radius: 2em;
-  animation: movebody 1s linear infinite;
-}
-
-.capyleg2 {
-  width: 1.75em;
-  height: 3em;
-  bottom: 0em;
-  left: 3.25em;
-  position: absolute;
-  background: linear-gradient(var(--color), 80%, var(--color2));
-  z-index: 2;
-  border-radius: 0.75em;
-  box-shadow: inset 0em -0.5em var(--color2);
-  animation: moveleg 1s linear infinite;
-}
-
-.capyleg2:nth-child(3) {
-  width: 1.25em;
-  left: 0.5em;
-  height: 2em;
-  animation: moveleg2 1s linear infinite 0.075s;
-}
-
-@keyframes moveleg {
-  0% {
-    transform: rotate(-45deg) translateX(-5%);
-  }
-
-  50% {
-    transform: rotate(45deg) translateX(5%);
-  }
-
-  100% {
-    transform: rotate(-45deg) translateX(-5%);
-  }
-}
-
-@keyframes moveleg2 {
-  0% {
-    transform: rotate(45deg);
-  }
-
-  50% {
-    transform: rotate(-45deg);
-  }
-
-  100% {
-    transform: rotate(45deg);
-  }
-}
-
-@keyframes movebody {
-  0% {
-    transform: translateX(0%);
-  }
-
-  50% {
-    transform: translateX(2%);
-  }
-
-  100% {
-    transform: translateX(0%);
-  }
-}
-
-.loaderline {
-  width: 50em;
-  height: 0.5em;
-  border-top: 0.5em dashed var(--color2);
-  animation: moveline 10s linear infinite;
-}
-
-@keyframes moveline {
-  0% {
-    transform: translateX(0%);
-    opacity: 0%;
-  }
-
-  5% {
-    opacity: 100%;
-  }
-
-  95% {
-    opacity: 100%;
-  }
-
-  100% {
-    opacity: 0%;
-    transform: translateX(-70%);
-  }
-}
-
 /* Map overlay for capybara loading */
 .map-loading-overlay {
   position: absolute;
@@ -1965,7 +1899,8 @@ body::before {
   position: fixed;
   inset: 0;
   background: linear-gradient(120deg, rgba(var(--sg-orange-rgb), 0.15), rgba(0, 150, 69, 0.12), rgba(250, 158, 13, 0.1));
-  background-size: 180% 180%;
+  background-size: 200% 200%;
+  background-position: 0% 0%;
   animation: bg-shift 18s ease infinite;
   z-index: -2;
 }
@@ -1987,15 +1922,15 @@ body::after {
 
 @keyframes bg-shift {
   0% {
-    transform: translate3d(0, 0, 0);
+    background-position: 0% 0%;
   }
 
   50% {
-    transform: translate3d(-4%, -3%, 0);
+    background-position: 100% 100%;
   }
 
   100% {
-    transform: translate3d(0, 0, 0);
+    background-position: 0% 0%;
   }
 }
 
@@ -2018,6 +1953,18 @@ body.dark-mode .section-card {
   box-shadow: 0 14px 32px rgba(0, 0, 0, 0.45);
 }
 
+/* Map preview clickable style */
+.map-preview {
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.map-preview:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* Fullscreen map overlay */
 .mrt-map-fullscreen {
   position: fixed;
   inset: 0;
@@ -2028,7 +1975,101 @@ body.dark-mode .section-card {
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  transition: background 0.3s ease;
+  backdrop-filter: blur(8px);
+}
+
+/* Vue Transition for map fullscreen */
+.map-fullscreen-enter-active {
+  animation: mapFullscreenEnter 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.map-fullscreen-leave-active {
+  animation: mapFullscreenLeave 0.4s ease-in-out;
+}
+
+@keyframes mapFullscreenEnter {
+  0% {
+    opacity: 0;
+    background: rgba(10, 10, 10, 0);
+  }
+  50% {
+    opacity: 1;
+    background: rgba(10, 10, 10, 0.7);
+  }
+  100% {
+    opacity: 1;
+    background: rgba(10, 10, 10, 0.95);
+  }
+}
+
+@keyframes mapFullscreenLeave {
+  0% {
+    opacity: 1;
+    background: rgba(10, 10, 10, 0.95);
+  }
+  100% {
+    opacity: 0;
+    background: rgba(10, 10, 10, 0);
+  }
+}
+
+/* First open special animation */
+.mrt-map-fullscreen.first-open {
+  background: rgba(10, 10, 10, 0.98);
+}
+
+.mrt-map-fullscreen.first-open.animating .zoomable-map {
+  animation: firstOpenZoom 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes firstOpenZoom {
+  0% {
+    transform: scale(0.3) translate(0, 0);
+    opacity: 0;
+    filter: blur(20px);
+  }
+  40% {
+    opacity: 1;
+    filter: blur(5px);
+  }
+  70% {
+    transform: scale(1.05) translate(0, 0);
+    filter: blur(0px);
+  }
+  100% {
+    transform: scale(1) translate(0, 0);
+    opacity: 1;
+    filter: blur(0px);
+  }
+}
+
+/* Station highlight overlay */
+.station-highlight-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9998;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.highlight-pulse {
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, rgba(212, 46, 18, 0.15) 0%, transparent 70%);
+  animation: highlightPulse 2s ease-in-out infinite;
+}
+
+@keyframes highlightPulse {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(0.95);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.05);
+  }
 }
 
 /* Zoom + drag container */
@@ -2050,6 +2091,51 @@ body.dark-mode .section-card {
   transition: transform 0.3s ease;
   user-select: none;
   will-change: transform;
+  border-radius: 8px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+/* Enhanced close button animation */
+.close-map-btn {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10000;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  backdrop-filter: blur(10px);
+}
+
+.close-map-btn:hover {
+  background: rgba(212, 46, 18, 0.9);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: scale(1.1) rotate(90deg);
+  box-shadow: 0 8px 24px rgba(212, 46, 18, 0.4);
+}
+
+.mrt-map-fullscreen.first-open .close-map-btn {
+  animation: closeButtonEntrance 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s both;
+}
+
+@keyframes closeButtonEntrance {
+  0% {
+    opacity: 0;
+    transform: scale(0) rotate(-180deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
 }
 
 

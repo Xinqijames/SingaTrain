@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onBeforeUnmount, watch, nextTick } from 'vue';
+import { ref, computed, onMounted, onBeforeUnmount, onActivated, onDeactivated, watch, nextTick } from 'vue';
 import mapboxgl from 'mapbox-gl';
 import { useDisplay, useTheme } from 'vuetify';
 import { useRouteAnimation } from '../composables/useRouteAnimation';
@@ -526,12 +526,13 @@ function neutralizeRailRouterGlobals() {
       position: static !important;
       inset: auto !important;
       overflow: auto !important;
-      height: auto !important;
+      height: 100% !important;
     }
     body {
       overflow: auto !important;
       position: static !important;
-      height: auto !important;
+      min-height: 100vh !important;
+      height: 100% !important;
     }
   `;
   document.head.appendChild(style);
@@ -550,12 +551,23 @@ onMounted(async () => {
   await createRailRouterMap();
 });
 
+// When RoutePlanner becomes active (switched to), apply neutralization styles
+onActivated(() => {
+  neutralizeRailRouterGlobals();
+});
+
+// When RoutePlanner becomes inactive (switched away), restore styles
+onDeactivated(() => {
+  restoreRailRouterGlobals();
+});
+
 onBeforeUnmount(() => {
   window.removeEventListener('route-animation-arrived', handleArrival);
   if (arrivalTimer) {
     window.clearTimeout(arrivalTimer);
   }
   teardownRailRouterMap();
+  restoreRailRouterGlobals(); // Ensure cleanup on full unmount
 });
 </script>
 
@@ -970,9 +982,7 @@ onBeforeUnmount(() => {
   inset: auto !important;
 }
 
-:global(body) {
-  overflow: auto !important;
-}
+/* Removed body overflow: auto to prevent double scrollbars - browser native scrollbar is sufficient */
 
 @media (max-width: 960px) {
   .railrouter-shell {

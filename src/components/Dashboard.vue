@@ -23,37 +23,45 @@
   <img
     src="/MRT-Map.png"
     alt="SingaTrain map illustration"
-    class="img-fluid rounded-4 shadow"
+    class="img-fluid rounded-4 shadow map-preview"
     role="button"
     @click="openMapOverlay"
   />
 
   <!-- Fullscreen MRT map overlay -->
-  <div v-if="showMap" class="mrt-map-fullscreen" @click.self="closeMapOverlay">
-    <button class="close-map-btn" @click="closeMapOverlay">
-      <span class="material-icons">close</span>
-    </button>
+  <Transition name="map-fullscreen">
+    <div v-if="showMap" class="mrt-map-fullscreen" :class="{ 'first-open': isFirstOpen, 'animating': mapAnimating }" @click.self="closeMapOverlay">
+      <button class="close-map-btn" @click="closeMapOverlay">
+        <span class="material-icons">close</span>
+      </button>
 
-    <div
-      class="zoom-container"
-      @wheel.prevent="onWheelZoom"
-      @mousedown="startDrag"
-      @mouseup="stopDrag"
-      @mouseleave="stopDrag"
-      @mousemove="onDrag"
-      @touchstart="startTouch"
-      @touchmove.prevent="onPinch"
-      @touchend="endTouch"
-    >
-      <img
-        ref="mapImage"
-        src="/MRT-Map.png"
-        alt="Interactive MRT Map"
-        class="zoomable-map"
-        :style="mapTransform"
-      />
+      <div
+        class="zoom-container"
+        @wheel.prevent="onWheelZoom"
+        @mousedown="startDrag"
+        @mouseup="stopDrag"
+        @mouseleave="stopDrag"
+        @mousemove="onDrag"
+        @touchstart="startTouch"
+        @touchmove.prevent="onPinch"
+        @touchend="endTouch"
+      >
+        <img
+          ref="mapImage"
+          src="/MRT-Map.png"
+          alt="Interactive MRT Map"
+          class="zoomable-map"
+          :class="{ 'first-open-animate': isFirstOpen }"
+          :style="mapTransform"
+        />
+      </div>
+      
+      <!-- Station highlight overlay -->
+      <div v-if="isFirstOpen" class="station-highlight-overlay">
+        <div class="highlight-pulse"></div>
+      </div>
     </div>
-  </div>
+  </Transition>
 </div>
 
     </div>
@@ -176,6 +184,8 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 const simulator = createTrainArrivalSimulator({ updateIntervalMs: 1000 });
 const isCycling = ref(false);
 const showMap = ref(false);
+const isFirstOpen = ref(true);
+const mapAnimating = ref(false);
 const scale = ref(1);
 const posX = ref(0);
 const posY = ref(0);
@@ -184,6 +194,8 @@ const start = ref({ x: 0, y: 0 });
 const lastTouchDistance = ref(null);
 const user = ref(null);
 const auth = getAuth();
+const mapImage = ref(null);
+const clickPosition = ref({ x: 0, y: 0 });
 
 const ticker = reactive({
   index: 0,
@@ -224,15 +236,40 @@ function updateClock() {
   liveClock.value = now.toLocaleTimeString(undefined, { hour12: false });
 }
 
-const openMapOverlay = () => {
+const openMapOverlay = (e) => {
+  // Get click position for animation origin
+  if (e && isFirstOpen.value) {
+    const rect = e.target.getBoundingClientRect();
+    clickPosition.value = {
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    };
+  }
+  
   showMap.value = true;
+  mapAnimating.value = true;
   scale.value = 1;
   posX.value = 0;
   posY.value = 0;
+  
+  // Reset animation state after animation completes
+  if (isFirstOpen.value) {
+    setTimeout(() => {
+      mapAnimating.value = false;
+      isFirstOpen.value = false;
+    }, 1000);
+  } else {
+    mapAnimating.value = false;
+  }
 };
 
 const closeMapOverlay = () => {
   showMap.value = false;
+  mapAnimating.value = false;
+  // Reset zoom and position
+  scale.value = 1;
+  posX.value = 0;
+  posY.value = 0;
 };
 
 const onWheelZoom = (e) => {

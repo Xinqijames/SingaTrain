@@ -1,7 +1,7 @@
 <template>
   <div>
     <Navbar />
-    <main class="container my-4">
+    <main class="container main-content">
       <transition name="fade-slide" mode="out-in">
         <keep-alive include="RoutePlanner">
           <component :is="currentTabComponent" :key="state.activeTab" />
@@ -42,22 +42,78 @@ const currentTabComponent = computed(() => tabComponents[state.activeTab] || Das
 
 function animateView() {
   if (!gsap) return;
-  gsap.from('.section-card', { opacity: 0, y: 30, duration: 0.45, ease: 'power2.out' });
+  // Animate only opacity to prevent layout shifts that break spacing
+  // Don't use transform as it interferes with spacing when switching tabs
+  gsap.from('.section-card', { 
+    opacity: 0, 
+    duration: 0.35, 
+    ease: 'power2.out'
+  });
 }
 
 onMounted(() => {
   if (AOS) {
     AOS.init({ once: true, duration: 550, easing: 'ease-out' });
   }
-  nextTick(() => animateView());
+  nextTick(() => {
+    // Disable AOS on section-card elements completely
+    const sectionCards = document.querySelectorAll('.section-card');
+    sectionCards.forEach(card => {
+      card.removeAttribute('data-aos');
+      card.removeAttribute('data-aos-delay');
+      card.removeAttribute('data-aos-duration');
+      card.removeAttribute('data-aos-easing');
+    });
+    
+    animateView();
+    
+    // Ensure section-card spacing is correct - run multiple times to catch all animations
+    const fixSpacing = () => {
+      sectionCards.forEach(card => {
+        card.style.setProperty('margin-top', '0', 'important');
+        card.style.setProperty('margin-bottom', '0', 'important');
+        card.style.marginTop = '0';
+        card.style.marginBottom = '0';
+      });
+    };
+    
+    fixSpacing();
+    setTimeout(fixSpacing, 100);
+    setTimeout(fixSpacing, 600); // After AOS animations complete
+  });
 });
 
 watch(
   () => state.activeTab,
   () => {
     nextTick(() => {
-      if (AOS) AOS.refreshHard();
+      // Remove AOS attributes from section-card elements
+      const sectionCards = document.querySelectorAll('.section-card');
+      sectionCards.forEach(card => {
+        card.removeAttribute('data-aos');
+        card.removeAttribute('data-aos-delay');
+        card.removeAttribute('data-aos-duration');
+        card.removeAttribute('data-aos-easing');
+      });
+      
+      // Don't use refreshHard as it can cause viewport dimension changes
+      // Just refresh instead to maintain consistent dimensions
+      if (AOS) AOS.refresh();
       animateView();
+      
+      // Ensure section-card spacing is consistent after tab switch
+      const fixSpacing = () => {
+        sectionCards.forEach(card => {
+          card.style.setProperty('margin-top', '0', 'important');
+          card.style.setProperty('margin-bottom', '0', 'important');
+          card.style.marginTop = '0';
+          card.style.marginBottom = '0';
+        });
+      };
+      
+      fixSpacing();
+      setTimeout(fixSpacing, 100);
+      setTimeout(fixSpacing, 600);
     });
   }
 );
@@ -66,11 +122,11 @@ watch(
 <style>
 .fade-slide-enter-active,
 .fade-slide-leave-active {
-  transition: opacity 0.35s ease, transform 0.35s ease;
+  transition: opacity 0.35s ease;
 }
 .fade-slide-enter-from,
 .fade-slide-leave-to {
   opacity: 0;
-  transform: translateY(12px);
+  /* Removed transform to prevent layout shifts that break spacing */
 }
 </style>
