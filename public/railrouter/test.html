@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rail Map Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+        .test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .test-info {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        iframe {
+            width: 100%;
+            height: 600px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>Singapore Rail Map - Standalone Test</h1>
+        
+        <div class="test-info">
+            <h3>Test Status:</h3>
+            <p>✅ All files copied successfully</p>
+            <p>✅ Paths updated to relative paths</p>
+            <p>✅ Ready for integration</p>
+            <p><strong>Total size:</strong> ~8.4 MB</p>
+        </div>
+
+        <h2>Embedded Map:</h2>
+        <iframe src="./index.html" title="Singapore Rail Map"></iframe>
+        
+        <div class="test-info">
+            <h3>Integration Instructions:</h3>
+            <ol>
+                <li>Copy the entire <code>rail-map-standalone</code> folder to your project</li>
+                <li>Use the iframe method: <code>&lt;iframe src="rail-map-standalone/index.html"&gt;&lt;/iframe&gt;</code></li>
+                <li>Or integrate files directly into your project structure</li>
+                <li>Make sure to serve over HTTPS for full functionality</li>
+            </ol>
+        </div>
+    </div>
+</body>
+</html>

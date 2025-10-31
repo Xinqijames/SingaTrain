@@ -3,7 +3,9 @@
     <Navbar />
     <main class="container my-4">
       <transition name="fade-slide" mode="out-in">
-        <component :is="currentTabComponent" :key="state.activeTab" />
+        <keep-alive include="RoutePlanner">
+          <component :is="currentTabComponent" :key="state.activeTab" />
+        </keep-alive>
       </transition>
     </main>
   </div>

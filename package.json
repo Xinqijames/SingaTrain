@@ -13,13 +13,17 @@
     "aos": "^2.3.4",
     "bootstrap": "^5.3.3",
     "chart.js": "^4.4.6",
+    "firebase": "^12.4.0",
     "gsap": "^3.12.5",
     "leaflet": "^1.9.4",
     "mapbox-gl": "^2.15.0",
-    "vue": "^3.4.21"
+    "vue": "^3.4.21",
+    "@mdi/font": "^7.4.47",
+    "vuetify": "^3.7.3"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.4",
-    "vite": "^7.1.12"
+    "vite": "^7.1.12",
+    "vite-plugin-vuetify": "^2.0.4"
   }
 }
