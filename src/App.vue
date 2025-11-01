@@ -1,5 +1,13 @@
 <template>
   <div>
+    <!-- Background Video -->
+    <div class="video-background">
+      <video autoplay muted loop playsinline class="bg-video">
+        <source src="/MrtFootage.mp4" type="video/mp4">
+      </video>
+      <div class="video-overlay"></div>
+    </div>
+    
     <Navbar />
     <main class="container main-content">
       <transition name="fade-slide" mode="out-in">

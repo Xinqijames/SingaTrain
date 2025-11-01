@@ -1,5 +1,13 @@
 <template>
   <section class="dashboard-view">
+    <!-- Background Video -->
+    <div class="video-background">
+      <video autoplay muted loop playsinline class="bg-video">
+        <source src="/MrtFootage.mp4" type="video/mp4">
+      </video>
+      <div class="video-overlay"></div>
+    </div>
+    
     <div class="hero row align-items-center gy-5">
       <div class="col-lg-12 hero-intro" data-aos="fade-up">
         <h1 class="mb-3">Singapore’s MRT companion</h1>
