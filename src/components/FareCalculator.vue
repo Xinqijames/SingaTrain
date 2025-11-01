@@ -1,222 +1,346 @@
 <template>
   <section class="section-card">
-    <h2 class="section-title mb-3">Fare Calculator</h2>
-    <p class="tab-desc">
-      Distance-based fares with the latest LTA tables. Estimate concession pricing, understand line changes, and see
-      whether a monthly pass could save you more.
-    </p>
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+      <div>
+        <h2 class="section-title mb-1">Fare Calculator</h2>
+        <p class="tab-desc">
+          Distance-based fares with the latest LTA tables. Estimate concession pricing, understand line changes, and see
+          whether a monthly pass could save you more.
+        </p>
+      </div>
+    </div>
 
-    <form class="row g-3 align-items-end" @submit.prevent="calculate">
-      <div class="col-md-4">
-        <label class="form-label" for="fareStart">From</label>
-        <select id="fareStart" v-model="startStation" class="form-select">
-          <option v-for="station in stations" :key="station" :value="station">{{ station }}</option>
-        </select>
-      </div>
-      <div class="col-md-4">
-        <label class="form-label" for="fareEnd">To</label>
-        <select id="fareEnd" v-model="endStation" class="form-select">
-          <option v-for="station in stations" :key="station" :value="station">{{ station }}</option>
-        </select>
-      </div>
-      <div class="col-md-4">
-        <label class="form-label" for="commuterType">Commuter Type</label>
-        <select id="commuterType" v-model="commuterType" class="form-select">
-          <option v-for="type in commuterTypes" :key="type.value" :value="type.value">
-            {{ type.label }}
-          </option>
-        </select>
-      </div>
-
-      <div class="col-12 d-flex flex-wrap align-items-center gap-2">
-        <button class="btn btn-primary" type="submit">
-          <span class="material-icons me-1">attach_money</span>
-          {{ fareResult ? 'Recalculate' : 'Calculate fare' }}
-        </button>
-        <button class="btn btn-outline-secondary" type="button" @click="swapStations">
-          <span class="material-icons me-1">swap_horiz</span>
-          Swap stations
-        </button>
-        <button class="btn btn-outline-danger" type="button" @click="reset">
-          <span class="material-icons me-1">restart_alt</span>
-          Reset
-        </button>
-        <span v-if="needsRecalculate" class="text-warning small d-flex align-items-center gap-1">
-          <span class="material-icons fs-6 align-middle">info</span>
-          Inputs changed — calculate again to refresh.
-        </span>
+    <form class="fare-form" @submit.prevent="calculate">
+      <div class="row g-3 align-items-end">
+        <div class="col-md-4">
+          <VSelect
+            v-model="startStation"
+            :items="stations"
+            label="From station"
+            prepend-inner-icon="mdi-map-marker"
+            variant="solo-filled"
+            density="comfortable"
+            color="primary"
+            hide-details="auto"
+            class="fare-field"
+          />
+        </div>
+        <div class="col-md-4">
+          <VSelect
+            v-model="endStation"
+            :items="stations"
+            label="To station"
+            prepend-inner-icon="mdi-flag"
+            variant="solo-filled"
+            density="comfortable"
+            color="primary"
+            hide-details="auto"
+            class="fare-field"
+          />
+        </div>
+        <div class="col-md-4">
+          <VSelect
+            v-model="commuterType"
+            :items="commuterTypes"
+            item-title="label"
+            item-value="value"
+            label="Commuter type"
+            prepend-inner-icon="mdi-account-group-outline"
+            variant="solo-filled"
+            density="comfortable"
+            color="primary"
+            hide-details="auto"
+            class="fare-field"
+          />
+        </div>
+        <div class="col-12">
+          <div class="fare-actions">
+            <VBtn
+              type="submit"
+              color="primary"
+              prepend-icon="mdi-cash-multiple"
+              class="fare-action-btn"
+              elevation="2"
+            >
+              {{ fareResult ? 'Recalculate' : 'Calculate fare' }}
+            </VBtn>
+            <VBtn
+              type="button"
+              variant="tonal"
+              color="primary"
+              prepend-icon="mdi-swap-horizontal"
+              class="fare-action-btn"
+              @click="swapStations"
+            >
+              Swap stations
+            </VBtn>
+            <VBtn
+              type="button"
+              variant="text"
+              color="error"
+              prepend-icon="mdi-restart"
+              class="fare-action-btn"
+              @click="reset"
+            >
+              Reset
+            </VBtn>
+            <VChip
+              v-if="needsRecalculate"
+              color="warning"
+              variant="flat"
+              size="small"
+              prepend-icon="mdi-information-outline"
+              class="ms-auto"
+            >
+              Inputs changed — calculate again to refresh.
+            </VChip>
+          </div>
+        </div>
       </div>
     </form>
 
-    <div v-if="fareResult" class="mt-4 feature-result-animate">
-      <div class="row g-3">
-        <div class="col-lg-4">
-          <div class="fare-result-card h-100">
-            <div class="fare-result-amount">{{ formatCurrency(fareResult.fare) }}</div>
-            <div class="fare-result-commuter">{{ selectedCommuterLabel }}</div>
-            <ul class="list-unstyled mt-4 mb-0 small text-muted">
-              <li class="d-flex align-items-center gap-2 mb-2">
-                <span class="material-icons text-primary">train</span>
-                <span class="tab-desc">{{ startStation }} → {{ endStation }}</span>
-              </li>
-              <li class="d-flex align-items-center gap-2 mb-2">
-                <span class="material-icons text-primary">route</span>
-                <span class="tab-desc">{{ fareResult.distanceKm }} km · {{ fareResult.totalStops }} {{ fareResult.totalStops === 1 ? 'stop' : 'stops' }}</span>
-              </li>
-              <li class="d-flex align-items-center gap-2">
-                <span class="material-icons text-primary">schedule</span>
-                <span class="tab-desc">{{ fareResult.minutes }} minutes · {{ fareResult.transfers }} {{ fareResult.transfers === 1 ? 'transfer' : 'transfers' }}</span>
-              </li>
-            </ul>
+    <VSlideYTransition mode="out-in">
+      <div v-if="fareResult" class="mt-4 feature-result-animate">
+        <div class="row g-3">
+          <div class="col-lg-4">
+            <VCard class="fare-result-card h-100" elevation="4">
+              <div class="fare-result-amount">{{ formatCurrency(fareResult.fare) }}</div>
+              <div class="fare-result-commuter">{{ selectedCommuterLabel }}</div>
+              <div class="fare-result-route text-muted">{{ startStation }} → {{ endStation }}</div>
+              <div class="fare-stat-chip-group">
+                <VChip variant="tonal" color="primary" prepend-icon="mdi-map-marker-distance">
+                  {{ Number(fareResult.distanceKm).toFixed(1) }} km
+                </VChip>
+                <VChip variant="tonal" color="primary" prepend-icon="mdi-timer-sand">
+                  {{ Math.round(fareResult.minutes) }} mins
+                </VChip>
+                <VChip variant="tonal" color="primary" prepend-icon="mdi-transit-connection">
+                  {{ fareResult.totalStops }} {{ fareResult.totalStops === 1 ? 'stop' : 'stops' }}
+                </VChip>
+                <VChip variant="outlined" color="primary" prepend-icon="mdi-transfer">
+                  {{ fareResult.transfers }} {{ fareResult.transfers === 1 ? 'transfer' : 'transfers' }}
+                </VChip>
+              </div>
+            </VCard>
           </div>
-        </div>
-        <div class="col-lg-8">
-          <div class="fare-route-card h-100">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-              <h5 class="text-dark mb-0">Route overview</h5>
-              <span class="badge bg-light text-muted border">{{ fareResult.segments.length }} {{ fareResult.segments.length === 1 ? 'segment' : 'segments' }}</span>
-            </div>
-            <p class="text-muted small mb-3">
-              We recommend the quickest MRT path. Look out for “Transfer” badges to change lines with minimal walking.
-            </p>
-            <div
-              v-for="segment in fareResult.segments"
-              :key="`${segment.line}-${segment.from}-${segment.to}`"
-              class="route-segment"
-            >
-              <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+          <div class="col-lg-8">
+            <VCard class="fare-route-card h-100" elevation="4">
+              <div class="fare-route-header">
                 <div>
-                  <div class="d-flex align-items-center gap-2 mb-1">
-                    <span class="route-line-badge" :class="lineClass(segment.line)">
-                      {{ lineDisplay(segment.line) }}
-                    </span>
-                    <span class="badge rounded-pill bg-secondary-subtle text-secondary">
-                      {{ segment.stops === 0 ? 'Transfer' : `${segment.stops} ${segment.stops === 1 ? 'stop' : 'stops'}` }}
-                    </span>
+                  <h5 class="text-dark mb-1">Route overview</h5>
+                  <p class="text-muted mb-0 small">
+                    We recommend the quickest MRT path. Look out for timeline dots to spot transfers at a glance.
+                  </p>
+                </div>
+                <VChip variant="tonal" color="primary" size="small">
+                  {{ fareResult.segments.length }} {{ fareResult.segments.length === 1 ? 'segment' : 'segments' }}
+                </VChip>
+              </div>
+
+              <div class="fare-route-timeline">
+                <div
+                  v-for="segment in fareResult.segments"
+                  :key="`${segment.line}-${segment.from}-${segment.to}`"
+                  class="timeline-node"
+                  :style="{ '--segment-color': segmentColor(segment.line) }"
+                >
+                  <div class="timeline-dot">
+                    <VIcon icon="mdi-train-variant" size="20" />
                   </div>
-                  <div class="fw-semibold text-dark">{{ segment.from }} → {{ segment.to }}</div>
+                  <div class="timeline-body">
+                    <div class="d-flex align-items-center gap-2 mb-2 flex-wrap">
+                      <span class="route-line-badge" :class="lineClass(segment.line)">
+                        {{ lineDisplay(segment.line) }}
+                      </span>
+                      <VChip variant="tonal" color="primary" size="small">
+                        {{ segment.stops === 0 ? 'Transfer' : `${segment.stops} ${segment.stops === 1 ? 'stop' : 'stops'}` }}
+                      </VChip>
+                    </div>
+                    <div class="fw-semibold text-dark">{{ segment.from }} → {{ segment.to }}</div>
+                  </div>
                 </div>
               </div>
-            </div>
+            </VCard>
           </div>
         </div>
       </div>
-    </div>
+    </VSlideYTransition>
 
-    <div v-if="fareResult" class="mt-4">
-      <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
-        <h5 class="mb-0">Monthly Pass Companion</h5>
-        <span class="badge bg-info-subtle text-info-emphasis">Auto-updates with your inputs</span>
-      </div>
-      <div class="row g-3 align-items-end">
-        <div class="col-md-4">
-          <label class="form-label" for="dailyTrips">Daily round trips</label>
-          <input
-            id="dailyTrips"
-            v-model.number="dailyTrips"
-            type="number"
-            class="form-control"
-            min="1"
-            max="10"
-          />
-          <small class="tab-desc">Two rides count as one round trip.</small>
+    <VSlideYTransition mode="out-in">
+      <div v-if="fareResult" class="mt-4">
+        <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+          <h5 class="mb-0">Monthly Pass Companion</h5>
+          <VChip color="info" variant="tonal" size="small" prepend-icon="mdi-update">
+            Auto-updates with your inputs
+          </VChip>
         </div>
-        <div class="col-md-4">
-          <label class="form-label" for="workingDays">Working days / month</label>
-          <input
-            id="workingDays"
-            v-model.number="workingDays"
-            type="number"
-            class="form-control"
-            min="1"
-            max="31"
-          />
-          <small class="tab-desc">Include study days if you commute then.</small>
-        </div>
-        <div class="col-md-4">
-          <div class="info-pill">
-            <span class="material-icons">equalizer</span>
-            <div>
-              <div class="fw-semibold">{{ monthlyRides }} rides / month</div>
-              <div class="small tab-desc">Used for the monthly pass comparison.</div>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <div v-if="passAnalysis" class="row g-3 mt-1">
-        <div class="col-lg-4">
-          <div class="card border-0 shadow-sm h-100">
-            <div class="card-body">
-              <h6 class="text-uppercase text-muted mb-2">Recommendation</h6>
-              <p v-if="bestPass" class="fw-semibold mb-2">
-                <template v-if="bestPass.worth">
-                  The {{ passLabel(bestPass.mode) }} pass could save {{ formatCurrency(bestPass.savings) }} this month.
-                </template>
-                <template v-else>
-                  Stick to pay-per-ride — the {{ passLabel(bestPass.mode) }} pass costs
-                  {{ formatCurrency(Math.abs(bestPass.savings)) }} more.
-                </template>
-              </p>
-              <p class="mb-1">
-                <strong>Single trip fare:</strong> {{ formatCurrency(passAnalysis.singleFare) }}
-              </p>
-              <p class="mb-0">
-                <strong>Estimated monthly spend:</strong> {{ formatCurrency(passAnalysis.monthlyTotal) }}
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-8">
-          <div class="card border-0 shadow-sm h-100">
-            <div class="card-body">
-              <h6 class="text-uppercase text-muted mb-2">Savings vs monthly passes</h6>
-              <div class="chart-wrapper">
-                <canvas ref="passChartRef"></canvas>
+        <div class="row g-3">
+          <div class="col-md-4">
+            <VSheet class="fare-input-sheet h-100" elevation="2">
+              <div class="fare-input-header">
+                <VIcon icon="mdi-repeat-variant" size="22" />
+                <div>
+                  <div class="fw-semibold">Trips per day</div>
+                  <div class="small text-muted">Enter how many MRT rides you usually take daily.</div>
+                </div>
               </div>
+              <div class="fare-slider">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span class="small text-muted">1</span>
+                  <VChip size="small" variant="flat" color="primary">{{ dailyTrips }}</VChip>
+                  <span class="small text-muted">10</span>
+                </div>
+                <VSlider
+                  v-model="dailyTrips"
+                  :min="1"
+                  :max="10"
+                  :step="1"
+                  color="primary"
+                  thumb-label="always"
+                  show-ticks="always"
+                  tick-size="3"
+                />
+              </div>
+            </VSheet>
+          </div>
+          <div class="col-md-4">
+            <VSheet class="fare-input-sheet h-100" elevation="2">
+              <div class="fare-input-header">
+                <VIcon icon="mdi-calendar-blank-outline" size="22" />
+                <div>
+                  <div class="fw-semibold">Days travelled each month</div>
+                  <div class="small text-muted">Adjust to match your regular commute schedule.</div>
+                </div>
+              </div>
+              <div class="fare-slider">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span class="small text-muted">1</span>
+                  <VChip size="small" variant="flat" color="primary">{{ workingDays }}</VChip>
+                  <span class="small text-muted">31</span>
+                </div>
+                <VSlider
+                  v-model="workingDays"
+                  :min="1"
+                  :max="31"
+                  :step="1"
+                  color="primary"
+                  thumb-label="always"
+                  show-ticks="always"
+                  tick-size="3"
+                />
+              </div>
+            </VSheet>
+          </div>
+          <div class="col-md-4">
+            <VSheet class="fare-input-sheet h-100" elevation="2">
+              <div class="fare-input-header">
+                <VIcon icon="mdi-chart-line" size="22" />
+                <div>
+                  <div class="fw-semibold">Projected rides</div>
+                  <div class="small text-muted">Used for the monthly pass comparison.</div>
+                </div>
+              </div>
+              <div class="fare-metric-display">
+                <div class="fare-metric-value">{{ monthlyRides }}</div>
+                <div class="small text-muted">rides / month</div>
+              </div>
+            </VSheet>
+          </div>
+        </div>
+
+        <div v-if="passAnalysis" class="row g-3 mt-1">
+          <div class="col-lg-4">
+            <VCard class="h-100" elevation="3">
+              <div class="card-body">
+                <h6 class="text-uppercase text-muted mb-3">Recommendation</h6>
+                <p v-if="bestPass" class="fw-semibold mb-2">
+                  <template v-if="bestPass.worth">
+                    The {{ passLabel(bestPass.mode) }} pass could save {{ formatCurrency(bestPass.savings) }} this month.
+                  </template>
+                  <template v-else>
+                    Stick to pay-per-ride — the {{ passLabel(bestPass.mode) }} pass costs
+                    {{ formatCurrency(Math.abs(bestPass.savings)) }} more.
+                  </template>
+                </p>
+                <p class="mb-1">
+                  <strong>Single trip fare:</strong> {{ formatCurrency(passAnalysis.singleFare) }}
+                </p>
+                <p class="mb-3">
+                  <strong>Estimated monthly spend:</strong> {{ formatCurrency(passAnalysis.monthlyTotal) }}
+                </p>
+                <VProgressLinear :model-value="bestPassProgress" :color="bestPassTone" height="10" rounded="pill" />
+              </div>
+            </VCard>
+          </div>
+          <div class="col-lg-8">
+            <VCard class="h-100" elevation="3">
+              <div class="card-body">
+                <h6 class="text-uppercase text-muted mb-2">Savings vs monthly passes</h6>
+                <div class="chart-wrapper">
+                  <canvas ref="passChartRef"></canvas>
+                </div>
+              </div>
+            </VCard>
+          </div>
+          <div class="col-12">
+            <div class="table-responsive shadow-sm border rounded-3">
+              <table class="table align-middle mb-0 table-modern">
+                <thead class="table-light">
+                  <tr class="text-center">
+                    <th scope="col">Pass type</th>
+                    <th scope="col">Pass price</th>
+                    <th scope="col">Net savings</th>
+                    <th scope="col">Recommendation</th>
+                  </tr>
+                </thead>
+                <tbody class="text-center">
+                  <tr v-for="row in passAnalysis.breakdown" :key="row.mode">
+                    <td>{{ passLabel(row.mode) }}</td>
+                    <td>{{ formatCurrency(row.passPrice) }}</td>
+                    <td :class="row.worth ? 'text-success fw-semibold' : 'text-danger fw-semibold'">
+                      {{ formatSavings(row.savings) }}
+                    </td>
+                    <td>
+                      <VChip
+                        v-if="row.worth"
+                        color="success"
+                        variant="tonal"
+                        size="small"
+                        prepend-icon="mdi-check-circle-outline"
+                      >
+                        Worth it
+                      </VChip>
+                      <VChip
+                        v-else
+                        color="error"
+                        variant="tonal"
+                        size="small"
+                        prepend-icon="mdi-close-circle-outline"
+                      >
+                        Skip it
+                      </VChip>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
-        <div class="col-12">
-          <div class="table-responsive shadow-sm border rounded-3">
-            <table class="table align-middle mb-0">
-              <thead class="table-light">
-                <tr class="text-center">
-                  <th scope="col">Pass type</th>
-                  <th scope="col">Pass price</th>
-                  <th scope="col">Net savings</th>
-                  <th scope="col">Recommendation</th>
-                </tr>
-              </thead>
-              <tbody class="text-center">
-                <tr v-for="row in passAnalysis.breakdown" :key="row.mode">
-                  <td>{{ passLabel(row.mode) }}</td>
-                  <td>{{ formatCurrency(row.passPrice) }}</td>
-                  <td :class="row.worth ? 'text-success fw-semibold' : 'text-danger fw-semibold'">
-                    {{ formatSavings(row.savings) }}
-                  </td>
-                  <td>
-                    <span v-if="row.worth" class="badge bg-success-subtle text-success-emphasis px-3">Worth it</span>
-                    <span v-else class="badge bg-danger-subtle text-danger-emphasis px-3">Skip it</span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
       </div>
-    </div>
+    </VSlideYTransition>
 
     <div v-if="errorMessage" class="alert alert-danger mt-4">{{ errorMessage }}</div>
   </section>
 </template>
 
 <script setup>
-import { computed, onBeforeUnmount, ref, watch } from 'vue';
+import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue';
 import { watchDebounced } from '@vueuse/core';
 import Chart from 'chart.js/auto';
 import { useRoutePlanner } from '../composables/useRoutePlanner';
 import { useFareCalculator } from '../composables/useFareCalculator';
+import { getLineColor } from '../composables/useTrainAPI';
 
 const {
   allStations: stations,
@@ -295,13 +419,22 @@ const bestPass = computed(() => {
   }, null);
 });
 
+const bestPassTone = computed(() => (bestPass.value?.worth ? 'success' : 'error'));
+
+const bestPassProgress = computed(() => {
+  if (!passAnalysis.value) return 0;
+  const base = Math.max(passAnalysis.value.monthlyTotal, 1);
+  const savings = Math.abs(bestPass.value?.savings ?? 0);
+  return Math.min(100, Math.round((savings / base) * 100));
+});
+
 function formatCurrency(value) {
   return currencyFormatter.format(value);
 }
 
 function formatSavings(value) {
   const formatted = currencyFormatter.format(Math.abs(value));
-  return `${value >= 0 ? '+' : '−'}${formatted}`;
+  return `${value >= 0 ? '+' : '-'}${formatted}`;
 }
 
 function lineDisplay(code) {
@@ -314,6 +447,11 @@ function lineClass(code) {
 
 function passLabel(mode) {
   return passLabels[mode] ?? mode;
+}
+
+function segmentColor(lineCode) {
+  const color = getLineColor(lineDisplay(lineCode));
+  return color || '#6b7280';
 }
 
 function calculate() {
@@ -371,7 +509,9 @@ function runPassAnalysis() {
     workingDays: workingDays.value
   });
 
-  renderPassChart(passAnalysis.value);
+  nextTick(() => {
+    renderPassChart(passAnalysis.value);
+  });
 }
 
 function renderPassChart(analysis) {
