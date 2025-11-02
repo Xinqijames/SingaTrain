@@ -1,5 +1,13 @@
 <template>
   <section class="dashboard-view">
+    <!-- Background Video -->
+    <div class="video-background">
+      <video autoplay muted loop playsinline class="bg-video">
+        <source src="/MrtFootage.mp4" type="video/mp4">
+      </video>
+      <div class="video-overlay"></div>
+    </div>
+    
     <div class="hero row align-items-center gy-5">
       <div class="col-lg-12 hero-intro" data-aos="fade-up">
         <h1 class="mb-3">Singapore’s MRT companion</h1>
@@ -100,10 +108,16 @@
     <div class="row g-4 mt-4">
       <div class="col-lg-6" data-aos="fade-up" data-aos-delay="250">
         <div class="section-card h-100">
-          <h2 class="section-title mb-3">Personalised commute</h2>
+          <h2 class="section-title mb-3 fw-semibold">Personalised commute</h2>
           <p class="tab-desc">
-            Your favourite stations are pinned across dashboards and live tracking for
-            quick access wherever you roam.
+            Your favourite stations are here in your dashboard
+            quick access. Add more from 
+  <a href="#" class="interactive-link fw-semibold" @click.prevent="setActiveTab('live')">
+    Live Tracker</a>
+  or 
+  <a href="#" class="interactive-link fw-semibold" @click.prevent="setActiveTab('profile')">
+    Profile</a>
+  to see them here.
           </p>
           <ul class="list-unstyled mt-3">
             <li v-if="!favorites.length" class="tab-desc">
@@ -117,13 +131,13 @@
   to see them here.
 </li>
             <li v-for="fav in favorites" :key="fav.station"
-    class="favorite-card d-flex flex-column flex-md-row align-items-start gap-3 p-3 rounded-3 shadow-sm">
+    class="favorite-card d-flex flex-column flex-md-row align-items-center gap-3 p-3 rounded-3 shadow-sm">
 
   <!-- Line color indicator -->
   <div class="line-color-indicator" :style="{ backgroundColor: getLineColor(fav.line) }"></div>
 
   <!-- Station info & first/last train -->
-  <div class="flex-grow-1 d-flex flex-column gap-2">
+  <div class="flex-grow-1 d-flex flex-column gap-  w-100">
     <div class="d-flex justify-content-between align-items-start">
       <div>
         <strong class="favorite-label">{{ fav.label }}</strong>
@@ -147,7 +161,7 @@
     <div class="first-crowd d-flex gap-3 small text-muted">
       <div>
         <span class="material-icons" style="font-size: 16px;">schedule</span>
-        First: {{ fav.firstTrainTime }}
+        First Train: {{ fav.firstTrainTime }}
       </div>
       <div>
         <span class="material-icons" style="font-size: 16px;">people</span>
@@ -167,6 +181,9 @@
 <div class="col-lg-6" data-aos="fade-up" data-aos-delay="350">
   <div class="section-card h-100">
     <h2 class="section-title mb-3">Explore Our Features</h2>
+    <p class="tab-desc">
+            Discover tools and insights to plan smarter, check fares, and find the best meeting points on our website.
+          </p>
     <ul class="list-unstyled mb-0">
       <li class="feature-item py-2 border-bottom" @click="setActiveTab('route')">
         <div class="d-flex align-items-center gap-3" role="button">
@@ -500,6 +517,19 @@ function getCrowdClass(level) {
   const classes = { l: 'crowd-low', m: 'crowd-moderate', h: 'crowd-high' };
   return classes[level] || '';
 }
+
+onAuthStateChanged(auth, (firebaseUser) => {
+  user.value = firebaseUser;
+
+  if (!firebaseUser) {
+    // 👇 User logged out → clear favorites
+    state.favorites = [];
+    console.log('User logged out — cleared favorites');
+  } else {
+    console.log('User logged in:', firebaseUser.email);
+  }
+});
+
 
 onMounted(() => {
   simulator.start();

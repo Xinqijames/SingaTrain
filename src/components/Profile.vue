@@ -13,7 +13,7 @@
 
     <!-- AUTH SECTION -->
     <div id="auth-section" v-if="!user">
-      <h2>Join or Sign In</h2>
+      <h2 class="mt-5 pt-5">Join or Sign In</h2>
 
       <label for="auth-email">Email:</label>
       <input type="email" id="auth-email" v-model="authEmail" placeholder="Enter your email" />
@@ -61,7 +61,7 @@
 
     <!-- USER DASHBOARD -->
     <div id="dashboard-section" v-if="user">
-      <h2>Welcome to SingaTrain!</h2>
+      <h2 class="mt-5 pt-5">Welcome to SingaTrain!</h2>
       <p style="color:#111827">You are logged in as: <strong>{{ user.email }}</strong></p>
 
       <div class="profile-layout">

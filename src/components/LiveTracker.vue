@@ -1,10 +1,23 @@
 <template>
   <section class="section-card">
+    <!-- Message Overlay -->
+<transition name="fade">
+  <div v-if="message.text"
+       :class="[
+         'alert',
+         message.type === 'success' ? 'alert-success' : 'alert-danger',
+         'position-fixed', 'top-0', 'end-0', 'm-3', 'z-index-1050'
+       ]">
+    {{ message.text }}
+  </div>
+</transition>
+
+
     <!-- Header -->
     <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
       <div>
         <h2 class="section-title mb-1">Live Train Tracker</h2>
-        <p class="text-muted mb-0">
+        <p class="mb-0">
           Real-time train service alerts and simulated arrivals. Switch stations to monitor your regular journeys.
         </p>
       </div>
@@ -62,13 +75,13 @@
             <span class="material-icons text-danger">location_on</span>
             <span>{{ selectedStation }}</span>
           </div>
-          <div class="ticker-line text-muted mt-1">
+          <div class="ticker-line mt-1">
             <span class="material-icons" :style="{ color: lineColor }">timeline</span>
             {{ selectedLine }}
           </div>
         </div>
         <div>
-          <div class="small text-muted text-uppercase fw-semibold mb-1">Status</div>
+          <div class="small text-uppercase fw-semibold mb-1">Status</div>
           <span :class="['status-pill', statusClass]">
             <span class="material-icons">{{ statusIcon }}</span>
             {{ statusLabel }}
@@ -84,7 +97,7 @@
             <span class="material-icons">train</span>
             {{ formatArrival(time) }}
           </span>
-          <span v-if="!trackedArrivals.length" class="text-muted small">Awaiting updates…</span>
+          <span v-if="!trackedArrivals.length" class="small">Awaiting updates…</span>
         </div>
       </div>
     </div>
@@ -108,12 +121,12 @@
           <div class="d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center gap-2">
               <span class="material-icons" style="font-size: 18px;">schedule</span>
-              <span class="small text-muted">First Train:</span>
+              <span class="small">First Train:</span>
               <strong>{{ line.firstTrainTime }}</strong>
             </div>
-            <div class="d-flex align-items-center gap-2">
+            <div class="d-flex align-items-center justify-content-center gap-2">
               <span class="material-icons" style="font-size: 18px;">people</span>
-              <span class="small text-muted">Crowd:</span>
+              <span class="small">Crowd:</span>
               <span :class="['crowd-badge', getCrowdClass(line.crowdLevel)]">
                 {{ getCrowdLabel(line.crowdLevel) }}
               </span>
@@ -125,7 +138,7 @@
 
     <!-- API Status -->
     <div class="text-center">
-      <small class="text-muted">
+      <small>
         Last updated: {{ lastUpdateTime }}
       </small>
     </div>
@@ -135,13 +148,18 @@
 <script setup>
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { useAppState } from '../composables/useAppState';
+import { addFavoriteFirestore } from '../composables/useFirestore'
 import { createTrainArrivalSimulator, getLineColor } from '../composables/useTrainAPI';
 import { TRAIN_STATION_LINES } from '../data/stations';
 import { STATION_CODES_BY_LINE } from '../data/stationCoordinates';
 import { LTA_API_KEY } from '../../config';
+import { getAuth } from 'firebase/auth';
+
+
 
 const CORS_PROXY = 'https://corsproxy.io/?';
 const LTA_SERVICE_ALERTS_URL = 'https://datamall2.mytransport.sg/ltaodataservice/TrainServiceAlerts';
+const auth = getAuth();
 
 // Simulator & Interval
 const simulator = createTrainArrivalSimulator({ updateIntervalMs: 1000 });
@@ -182,6 +200,11 @@ const stations = Object.keys(TRAIN_STATION_LINES);
 const selectedStation = ref(stations[0]);
 const selectedLine = ref(TRAIN_STATION_LINES[selectedStation.value][0]);
 const stationArrivals = ref([]);
+
+const { state } = useAppState()
+const favoriteLabel = ref('')
+const favoriteStation = ref('')
+const message = ref({ type: '', text: '' })
 
 const { addFavorite } = useAppState();
 
@@ -228,7 +251,7 @@ function formatArrival(seconds) {
 
 function getCrowdLabel(level) {
   const labels = { l: 'Low', m: 'Moderate', h: 'High' };
-  return labels[level] || 'Unknown';
+  return labels[level] || 'Unknown (Data Unavailable)';
 }
 
 function getCrowdClass(level) {
@@ -380,9 +403,34 @@ async function refreshArrivals() {
 
 
 // Bookmark station
-function bookmarkStation() {
-  addFavorite({ station: selectedStation.value, label: `${selectedStation.value} – ${selectedLine.value}` });
+function showMessage(type, text) {
+  message.value = { type, text }
+  setTimeout(() => (message.value = { type: '', text: '' }), 3000)
 }
+
+async function bookmarkStation() {
+  const newFav = {
+    station: selectedStation.value,
+    label: `${selectedStation.value} – ${selectedLine.value}`
+  }
+
+  // Add to local app state
+  addFavorite(newFav)
+
+  try {
+    const user = auth.currentUser
+    if (user?.uid) {
+      await addFavoriteFirestore(user.uid, newFav)
+      showMessage('success', 'Successfully added new station.')
+    } else {
+      showMessage('error', 'Please log in to sync favorites.')
+    }
+  } catch (err) {
+    console.error('Add favorite error:', err)
+    showMessage('error', 'Failed to add favorite.')
+  }
+}
+
 
 // Watchers
 watch(selectedStation, () => {

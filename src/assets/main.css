@@ -112,9 +112,12 @@ h6 {
   margin: 4px 0 0 0 !important;
   /* Match RoutePlanner's subtitle margin exactly */
   font-size: 16px !important;
-  /* Match RoutePlanner's subtitle size */
-  color: rgba(var(--v-theme-on-surface, 31, 41, 55), 0.7) !important;
   /* Match RoutePlanner's subtitle color */
+}
+
+a {
+  background-image: none !important;
+  text-shadow: 0 0 1px #fff !important;
 }
 
 header {
@@ -153,7 +156,7 @@ header {
   justify-content: unset !important;
   flex-wrap: unset !important;
   gap: unset !important;
-  margin-top: 4rem !important;
+  margin-top: 5rem !important;
   /* Increased from 3rem to prevent navbar overlap */
   padding-top: 2rem !important;
   /* Increased from 1.5rem for more spacing */
@@ -166,7 +169,6 @@ header {
 /* Ensure first child component has proper spacing from navbar */
 .container.main-content>*:first-child {
   margin-top: 0 !important;
-  padding-top: 0 !important;
 }
 
 /* Ensure ALL section-card components have consistent spacing - prevent AOS/GSAP/any library from affecting */
@@ -260,7 +262,7 @@ body.dark-mode .video-overlay {
   align-items: center;
   gap: 0.5rem;
   font-weight: 600;
-  color: #171717; 
+  color: #171717;
   cursor: pointer;
   flex-shrink: 0;
   background-image: none;
@@ -524,6 +526,7 @@ body.dark-mode .video-overlay {
   .collapse-menu.open {
     max-height: 1000px;
     /* arbitrary large number */
+    padding: 0 2rem;
   }
 
   /* Mobile nav links styling */
@@ -755,10 +758,14 @@ section.section-card {
   /* Match RoutePlanner's color */
 }
 
+body.dark-mode .section-card>div.d-flex:first-child>div:first-child>.section-title,
+body.dark-mode .section-card>div.d-flex:first-child>div:first-child>h2.section-title {
+  color: rgb(var(--v-theme-on-surface-variant, 229, 231, 235)) !important;
+}
 
 /* Handle FareCalculator which has title directly in section-card - wrap in header-like structure */
 .section-card>h2.section-title:first-child {
-  margin: 0 !important;
+  margin: 0.5rem !important;
   /* Match RoutePlanner's h1 margin: 0 exactly */
   font-size: 28px !important;
   line-height: 1.2 !important;
@@ -770,7 +777,6 @@ section.section-card {
   margin: 4px 0 0 0 !important;
   /* Match RoutePlanner's subtitle margin */
   font-size: 16px !important;
-  color: rgba(var(--v-theme-on-surface, 31, 41, 55), 0.7) !important;
   margin-bottom: 16px !important;
   /* Match RoutePlanner's gap: 16px */
   padding-bottom: 8px !important;
@@ -783,18 +789,21 @@ section.section-card {
   box-shadow: var(--card-shadow-hover);
   transform: translateY(-4px);
   border-color: var(--neutral-300);
+  border-radius: var(--border-radius) !important;
 }
 
 .section-card::before {
   content: '';
   position: absolute;
   top: 0;
-  left: 0;
+  left: 1rem;
   right: 0;
-  height: 2px;
+  height: 0.2rem;
   background: linear-gradient(90deg, var(--sg-red) 0%, var(--accent-blue) 100%);
   opacity: 0;
   transition: opacity 0.3s ease;
+  width: 95%;
+  border-radius: 100%;
 }
 
 .section-card:hover::before {
@@ -824,9 +833,18 @@ h2.section-title {
   box-shadow: 0 12px 26px rgba(var(--sg-orange-rgb), 0.25);
 }
 
+body.dark-mode .navbar-brand {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+body.dark-mode .navbar-brand:hover {
+  color: #ffa726;
+}
+
 .btn-outline-danger {
   color: var(--sg-red);
   border-color: rgba(var(--sg-orange-rgb), 0.55);
+  background-color: rgba(255, 255, 255, 0.9);
   transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
 }
 
@@ -1478,6 +1496,7 @@ body.dark-mode .fare-input-sheet {
 }
 
 .meetup-results {
+  color: var(--neutral-900);
   background: #ffffff;
   border: 1px solid var(--neutral-200);
   border-radius: var(--border-radius);
@@ -2546,7 +2565,7 @@ body.dark-mode .live-tools {
   gap: 1.5rem;
   padding: 24px 28px;
   border-radius: 24px;
-  background: linear-gradient(135deg, rgba(var(--sg-orange-rgb), 0.12), rgba(255, 255, 255, 0.95));
+  background: rgba(255, 255, 255, 0.95);
   border: 1px solid rgba(var(--sg-orange-rgb), 0.25);
   box-shadow: 0 18px 40px rgba(var(--sg-orange-rgb), 0.18);
   overflow: hidden;
@@ -2571,7 +2590,7 @@ body.dark-mode .live-tools {
   font-size: 0.75rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--sg-red);
+  color: var(--sg-red-dark);
   margin-bottom: 0.35rem;
 }
 
@@ -2589,6 +2608,7 @@ body.dark-mode .live-ticker-card .ticker-station {
 .live-ticker-card .ticker-line {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.35rem;
   font-weight: 600;
   font-size: var(--text-sm);
@@ -2652,9 +2672,6 @@ body.dark-mode .ticker-pill {
   border: 1px solid rgba(var(--sg-orange-rgb), 0.15);
   overflow: hidden;
   align-items: flex-start;
-  background: linear-gradient(135deg,
-      rgba(255, 255, 255, 0.95) 0%,
-      rgba(255, 255, 255, 0.88) 100%);
   backdrop-filter: blur(16px);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
@@ -2746,6 +2763,8 @@ body.dark-mode .ticker-pill {
   flex-wrap: wrap;
   gap: 0.625rem;
   align-items: center;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 .arrival-pill {
@@ -2793,6 +2812,7 @@ body.dark-mode .ticker-pill {
   color: var(--neutral-600);
   line-height: 1.6;
   align-items: center;
+  justify-content: space-between;
 }
 
 .first-crowd>div {
@@ -2915,9 +2935,8 @@ body.dark-mode .first-crowd {
   color: var(--neutral-400);
 }
 
-body.dark-mode .btn-outline-danger {
-  background: rgba(220, 53, 69, 0.12);
-  border-color: rgba(220, 53, 69, 0.4);
+.flex-column {
+  flex-direction: column !important;
 }
 
 body.dark-mode .btn-outline-danger:hover {
@@ -2976,6 +2995,14 @@ body.dark-mode .btn-outline-danger:hover {
   .favorite-card .btn-sm {
     padding: 0.375rem 0.75rem;
   }
+
+  /* Same fix for smaller screens */
+  .live-ticker-card>div:first-child {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
 }
 
 .theme-toggle {
@@ -3009,6 +3036,7 @@ body.dark-mode .theme-toggle {
   font-size: var(--text-lg);
   font-weight: 600;
   letter-spacing: 0.08em;
+
 }
 
 .live-clock span {
@@ -3030,6 +3058,7 @@ body.dark-mode .theme-toggle {
 }
 
 .feature-title {
+  font-size: 1.2rem;
   transition: color 0.6s ease, transform 0.6s ease;
   cursor: pointer;
 }
@@ -3041,6 +3070,7 @@ body.dark-mode .theme-toggle {
 
 .interactive-link {
   color: var(--sg-red);
+  background-image: none;
   cursor: pointer;
   text-decoration: none;
   transition: color 0.2s ease;
@@ -3323,14 +3353,17 @@ body.dark-mode .hero-intro h1 {
   flex-wrap: wrap;
   gap: 1rem;
   justify-content: center;
+  padding: 0px;
 }
 
 .hero-cta .btn {
-  padding: 14px 28px;
   border-radius: 14px;
   font-weight: 600;
   letter-spacing: 0.04em;
   flex: 1 1 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .hero-illustration {
@@ -3556,6 +3589,86 @@ body.dark-mode .timing-card {
   font-weight: 500;
 }
 
+/* Dark mode - Dashboard specific text colors */
+body.dark-mode .dashboard-view .section-title {
+  color: rgba(255, 255, 255, 0.95) !important;
+}
+
+body.dark-mode .dashboard-view .tab-desc,
+body.dark-mode .dashboard-view p {
+  color: rgba(255, 255, 255, 0.85) !important;
+}
+
+body.dark-mode .dashboard-view .feature-title {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+body.dark-mode .dashboard-view .feature-item .tab-desc {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+body.dark-mode .dashboard-view .list-unstyled .tab-desc {
+  color: rgba(255, 255, 255, 0.75) !important;
+}
+
+/* Keep live-ticker-card text dark since background is white */
+body.dark-mode .live-ticker-card .ticker-label,
+body.dark-mode .live-ticker-card .ticker-station,
+body.dark-mode .live-ticker-card .ticker-line,
+body.dark-mode .live-ticker-card .live-clock,
+body.dark-mode .live-ticker-card .tab-desc {
+  color: var(--neutral-900) !important;
+}
+
+/* Dark mode - Interactive links */
+body.dark-mode .interactive-link {
+  color: #ffa726;
+  background-image: none;
+}
+
+body.dark-mode .interactive-link:hover {
+  color: #ff9800;
+}
+
+/* Dark mode - Material icons in section cards */
+body.dark-mode .dashboard-view .material-icons.text-primary {
+  color: #64b5f6 !important;
+}
+
+body.dark-mode .dashboard-view .material-icons.text-success {
+  color: #81c784 !important;
+}
+
+body.dark-mode .dashboard-view .material-icons.text-warning {
+  color: #ffb74d !important;
+}
+
+/* Dark mode - Feature items */
+body.dark-mode .feature-item {
+  border-bottom-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+body.dark-mode .feature-item:hover .feature-title {
+  color: #ffa726;
+}
+
+/* Dark mode - Section cards */
+body.dark-mode .section-card {
+  background: linear-gradient(135deg,
+      rgba(24, 27, 33, 0.98) 0%,
+      rgba(15, 17, 21, 0.95) 100%);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Dark mode - Empty state text */
+body.dark-mode .dashboard-view .list-unstyled>li:first-child {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+body.dark-mode .dashboard-view .material-icons.align-middle {
+  color: rgba(255, 255, 255, 0.6);
+}
+
 /* ===== CARD HEADER ===== */
 .card-header {
   background: transparent !important;
@@ -3643,7 +3756,8 @@ body.dark-mode .timing-card {
 
   .live-clock {
     width: 100%;
-    text-align: left;
+    text-align: center;
+
   }
 
   .hero {
@@ -3658,11 +3772,22 @@ body.dark-mode .timing-card {
   .live-ticker-card {
     padding: 20px;
     gap: 1rem;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
 
   .live-ticker-card .ticker-times {
-    justify-content: flex-start;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     min-width: 100%;
+  }
+
+  .ticker-label,
+  .ticker-line {
+    text-align: center;
+    align-items: center;
   }
 
   .timings-panel .panel-header {
@@ -3716,18 +3841,25 @@ body.dark-mode .timing-card {
 
   .live-ticker-card {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    justify-content: center;
   }
 
   .live-ticker-card .ticker-times {
     width: 100%;
-    justify-content: flex-start;
+    justify-content: center;
   }
 
   .timings-grid {
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 1rem;
     padding: 0 16px 16px;
+  }
+
+  .ticker-label,
+  .ticker-line {
+    text-align: center;
+    align-items: center;
   }
 
   .meetup-container {
@@ -4136,7 +4268,7 @@ register-link {
 }
 
 .hover-hint::after {
-  content: "Hover to see profile details";
+  content: "Hover to see Profile Details";
 }
 
 .flip-card-inner.is-flipped .hover-hint {
@@ -4185,7 +4317,7 @@ register-link {
   }
 
   .hover-hint::after {
-    content: "Tap to see profile details";
+    content: "Tap to see Profile Details";
   }
 
   .account-info {
@@ -4260,7 +4392,7 @@ register-link {
   }
 
   .hover-hint::after {
-    content: "Tap to see profile details";
+    content: "Tap to see Profile Details";
   }
 
   .account-info {

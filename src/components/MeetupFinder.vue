@@ -3,7 +3,7 @@
     <div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-4">
       <div>
         <h2 class="section-title mb-2">Meet-up Point Finder</h2>
-        <p class="text-muted mb-0">
+        <p class="mb-0">
           Enter origin stations for your group and we'll suggest the fairest MRT interchange, minimising total travel
           time for everyone.
         </p>
@@ -116,7 +116,7 @@
           <span class="material-icons text-danger">map</span>
           <h5 class="mb-0">Interactive MRT Network</h5>
         </div>
-        <div class="text-muted small">Click a station to assign or remove it for the next available person.</div>
+        <div class="small">Click a station to assign or remove it for the next available person.</div>
       </div>
       <div class="map-wrapper">
         <div ref="mapContainer" class="meetup-map rounded-4"></div>
@@ -186,13 +186,13 @@
           <div class="loaderline"></div>
         </div>
       </div>
-      <p class="mt-3 text-muted">Crunching routes…</p>
+      <p class="mt-3">Crunching routes…</p>
     </div>
 
     <div v-if="errorMessage" class="alert alert-danger mt-4">{{ errorMessage }}</div>
 
     <div v-if="result" class="meetup-results mt-4 feature-result-animate">
-      <h4 class="mb-3">
+      <h4 class="mb-3 text-dark">
         <span class="material-icons align-middle me-2 text-danger">place</span>
         Suggested meet-up: {{ result.station }}
       </h4>
@@ -209,7 +209,7 @@
         </div>
         <div class="col-md-8">
           <div class="border rounded-3 p-3">
-            <h6 class="text-uppercase text-muted fw-semibold mb-2">Individual journeys</h6>
+            <h6 class="text-uppercase fw-semibold mb-2 text-dark">Individual journeys</h6>
             <div
               v-for="detail in result.details"
               :key="detail.origin"
@@ -217,7 +217,7 @@
             >
               <div>
                 <div class="fw-semibold">{{ detail.origin }}</div>
-                <div class="text-muted small">{{ detail.steps.length }} stops / {{ detail.segments.length }} segment(s) </div>
+                <div class="small">{{ detail.steps.length }} stops / {{ detail.segments.length }} segment(s) </div>
               </div>
               <span class="badge bg-warning text-dark fs-6">{{ detail.minutes }} min</span>
             </div>
@@ -445,7 +445,7 @@ function updateMeetupMarker() {
   if (!feature) return;
   const el = document.createElement('div');
   el.className = 'meetup-marker';
-  el.innerHTML = '<span class="material-icons">place</span>';
+  el.innerHTML = '<span class="material-icons text-muted">place</span>';
   meetupMarker = new mapboxgl.Marker(el).setLngLat(feature.geometry.coordinates).addTo(mapInstance.value);
   mapInstance.value.flyTo({
     center: feature.geometry.coordinates,

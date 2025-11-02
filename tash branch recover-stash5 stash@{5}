@@ -1,0 +1,60 @@
+ legacy-index.html                                  | 6786 [31m--------------------[m
+ node_modules/.vite/deps/_metadata.json             |  202 [32m+[m[31m-[m
+ .../deps/{chunk-53OF2UAM.js => chunk-2WUVAKGO.js}  |   62 [32m+[m[31m-[m
+ ...chunk-53OF2UAM.js.map => chunk-2WUVAKGO.js.map} |    0
+ .../deps/{chunk-IYE744LP.js => chunk-6BLEHLLK.js}  |   16 [32m+[m[31m-[m
+ ...chunk-IYE744LP.js.map => chunk-6BLEHLLK.js.map} |    0
+ .../deps/{chunk-3A7WWWGI.js => chunk-C6DZ2U73.js}  |   26 [32m+[m[31m-[m
+ ...chunk-3A7WWWGI.js.map => chunk-C6DZ2U73.js.map} |    0
+ .../deps/{chunk-HE6NFAB6.js => chunk-DENVBAIS.js}  |    6 [32m+[m[31m-[m
+ ...chunk-HE6NFAB6.js.map => chunk-DENVBAIS.js.map} |    0
+ .../deps/{chunk-5SIRJ3GM.js => chunk-E5DX64TJ.js}  |   22 [32m+[m[31m-[m
+ ...chunk-5SIRJ3GM.js.map => chunk-E5DX64TJ.js.map} |    0
+ .../deps/{chunk-OVA6MW5N.js => chunk-II4KQWO2.js}  |   40 [32m+[m[31m-[m
+ ...chunk-OVA6MW5N.js.map => chunk-II4KQWO2.js.map} |    0
+ .../deps/{chunk-GGXSFH3T.js => chunk-IPPWCFVK.js}  |   22 [32m+[m[31m-[m
+ ...chunk-GGXSFH3T.js.map => chunk-IPPWCFVK.js.map} |    0
+ .../deps/{chunk-DDD2HVV5.js => chunk-JUQQH4RV.js}  |   60 [32m+[m[31m-[m
+ ...chunk-DDD2HVV5.js.map => chunk-JUQQH4RV.js.map} |    0
+ .../deps/{chunk-AO4VACOA.js => chunk-K35IN5M7.js}  |   44 [32m+[m[31m-[m
+ ...chunk-AO4VACOA.js.map => chunk-K35IN5M7.js.map} |    0
+ .../deps/{chunk-IKAVDPTL.js => chunk-NVHYH2SH.js}  |   78 [32m+[m[31m-[m
+ ...chunk-IKAVDPTL.js.map => chunk-NVHYH2SH.js.map} |    0
+ .../deps/{chunk-WV2DT6VB.js => chunk-OCSKC6X4.js}  |    4 [32m+[m[31m-[m
+ ...chunk-WV2DT6VB.js.map => chunk-OCSKC6X4.js.map} |    0
+ .../deps/{chunk-BQIXTOSA.js => chunk-Q4AFIBZF.js}  |    4 [32m+[m[31m-[m
+ ...chunk-BQIXTOSA.js.map => chunk-Q4AFIBZF.js.map} |    0
+ .../deps/{chunk-ULERIX3U.js => chunk-RI5BRH4R.js}  |    6 [32m+[m[31m-[m
+ ...chunk-ULERIX3U.js.map => chunk-RI5BRH4R.js.map} |    0
+ .../deps/{chunk-4TCU2LZB.js => chunk-SWIJCWYD.js}  |  132 [32m+[m[31m-[m
+ ...chunk-4TCU2LZB.js.map => chunk-SWIJCWYD.js.map} |    0
+ .../deps/{chunk-OFVVEJPY.js => chunk-UTW2VWN3.js}  |   24 [32m+[m[31m-[m
+ ...chunk-OFVVEJPY.js.map => chunk-UTW2VWN3.js.map} |    0
+ .../deps/{chunk-A4NBFBC2.js => chunk-W7O5FZZM.js}  |   24 [32m+[m[31m-[m
+ ...chunk-A4NBFBC2.js.map => chunk-W7O5FZZM.js.map} |    0
+ .../deps/{chunk-LPMLL56V.js => chunk-YUENNRJA.js}  |   10 [32m+[m[31m-[m
+ ...chunk-LPMLL56V.js.map => chunk-YUENNRJA.js.map} |    0
+ .../deps/{chunk-XYCUTTGK.js => chunk-Z4NNUIPS.js}  |   30 [32m+[m[31m-[m
+ ...chunk-XYCUTTGK.js.map => chunk-Z4NNUIPS.js.map} |    0
+ node_modules/.vite/deps/vuetify.js                 |   10 [32m+[m[31m-[m
+ node_modules/.vite/deps/vuetify_components.js      |  408 [32m+[m[31m-[m
+ .../.vite/deps/vuetify_components_VAlert.js        |   30 [32m+[m[31m-[m
+ node_modules/.vite/deps/vuetify_components_VBtn.js |   28 [32m+[m[31m-[m
+ .../.vite/deps/vuetify_components_VCard.js         |   30 [32m+[m[31m-[m
+ .../.vite/deps/vuetify_components_VChip.js         |   26 [32m+[m[31m-[m
+ .../.vite/deps/vuetify_components_VGrid.js         |    4 [32m+[m[31m-[m
+ .../.vite/deps/vuetify_components_VIcon.js         |    4 [32m+[m[31m-[m
+ .../deps/vuetify_components_VProgressLinear.js     |    8 [32m+[m[31m-[m
+ .../.vite/deps/vuetify_components_VSelect.js       |   40 [32m+[m[31m-[m
+ .../.vite/deps/vuetify_components_VSheet.js        |   10 [32m+[m[31m-[m
+ .../.vite/deps/vuetify_components_VSlider.js       |   16 [32m+[m[31m-[m
+ .../.vite/deps/vuetify_components_VSnackbar.js     |   24 [32m+[m[31m-[m
+ node_modules/.vite/deps/vuetify_directives.js      |   14 [32m+[m[31m-[m
+ src/App.vue                                        |    3 [32m+[m
+ src/assets/main.css                                |   83 [32m+[m[31m-[m
+ src/components/Dashboard.vue                       |   34 [32m+[m[31m-[m
+ src/components/LiveTracker.vue                     |   47 [32m+[m[31m-[m
+ src/components/Profile.vue                         |    2 [32m+[m[31m-[m
+ src/components/TrainReveal.vue                     |  182 [32m+[m
+ src/composables/useFirestore.js                    |   19 [32m+[m
+ 59 files changed, 1070 insertions(+), 7550 deletions(-)

@@ -1,4 +1,5 @@
 <template>
+  <TrainReveal />
   <div>
     <!-- Background Video -->
     <div class="video-background">
@@ -32,6 +33,7 @@ import FareCalculator from './components/FareCalculator.vue';
 import MeetupFinder from './components/MeetupFinder.vue';
 import Profile from './components/Profile.vue';
 import FirstLastTrain from './components/FirstLastTrain.vue';
+import TrainReveal from './components/TrainReveal.vue';
 import { useAppState } from './composables/useAppState';
 
 const { state } = useAppState();

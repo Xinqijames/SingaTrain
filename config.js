@@ -1,0 +1,1 @@
+export const LTA_API_KEY = "cC6wlxIHROGAyH+80wpqbg==";
