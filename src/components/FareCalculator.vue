@@ -625,3 +625,106 @@ onBeforeUnmount(() => {
   destroyChart();
 });
 </script>
+
+<style scoped>
+/* Fix long text inside chips */
+.v-chip {
+  max-width: none !important;
+  min-width: fit-content !important;
+  white-space: nowrap;
+  padding: 0 10px !important;
+  font-size: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Ensure chips inside fare-route-header stay aligned */
+.fare-route-header .v-chip {
+  flex-shrink: 0;
+}
+
+
+.fare-route-header {
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.fare-result-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1.5rem;
+  min-height: auto !important; /* remove Vuetify’s built-in min height */
+  background: linear-gradient(180deg, #fff9f6 0%, #fff 100%);
+}
+
+.fare-result-amount {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 0.25rem;
+  line-height: 1;
+}
+
+.fare-result-commuter {
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  color: #666;
+  margin-bottom: 0.35rem;
+  text-transform: uppercase;
+}
+
+.fare-result-route {
+  font-size: 1rem;
+  color: #444;
+  margin-bottom: 1.25rem;
+}
+
+/* tighten the bottom chip group */
+.fare-stat-chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: auto; /* keeps chips pinned to the bottom */
+}
+
+/* ensure consistent chip sizing and alignment */
+.v-chip {
+  font-size: 0.85rem;
+  padding: 0 10px !important;
+  min-width: fit-content !important;
+  white-space: nowrap;
+  align-items: center;
+  justify-content: center;
+  height: 32px !important;
+}
+
+/* add subtle fade-in animation when fare appears */
+.feature-result-animate {
+  animation: fadeUp 0.4s ease both;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fare-result-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 1.5rem 1.75rem;
+  gap: 0.6rem;
+  min-height: unset !important; 
+}
+
+.fare-stat-chip-group {
+  margin-top: 0.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+</style>
