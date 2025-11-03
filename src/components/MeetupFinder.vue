@@ -11,8 +11,8 @@
     </div>
 
     <div class="meetup-container">
-      <!-- Person cards - hide when results are shown -->
-      <template v-if="!result">
+      <!-- Person cards - only show when no result AND not hiding -->
+      <template v-if="result === null && !isHiding">
         <div
           v-for="(participant, index) in participants"
           :key="participant.id"
@@ -62,15 +62,16 @@
       </template>
 
       <!-- Results card - styled like person-card, spans full width -->
+      <!-- Show when result exists OR when hiding animation is in progress -->
       <Transition name="meetup-result" mode="out-in">
-        <div v-if="result" :key="result.station" class="meetup-results-card person-card">
+        <div v-if="result !== null || isHiding" :key="(result || hidingResult)?.station || 'hiding'" class="meetup-results-card person-card">
         <div class="mb-3 d-flex align-items-center gap-3">
           <h4 class="mb-0 text-dark d-flex align-items-center flex-wrap gap-2 flex-grow-1">
             <span class="material-icons me-2 text-danger">place</span>
-            <span><strong>Suggested meet-up: {{ result.station }}</strong></span>
+            <span><strong>Suggested meet-up: {{ (result || hidingResult)?.station || '' }}</strong></span>
             <div class="d-flex align-items-center gap-2 ms-2">
               <span
-                v-for="code in getStationCodes(result.station)"
+                v-for="code in getStationCodes((result || hidingResult)?.station)"
                 :key="code.code"
                 class="station-code-badge"
                 :style="{ 
@@ -93,10 +94,10 @@
           <div class="col-md-4">
             <div class="border rounded-3 p-3 bg-light h-100">
               <p class="mb-2">
-                <strong>Total travel time:</strong> {{ result.totalMinutes }} minutes
+                <strong>Total travel time:</strong> {{ (result || hidingResult)?.totalMinutes || 0 }} minutes
               </p>
               <p class="mb-0">
-                <strong>Average per person:</strong> {{ result.averageMinutes.toFixed(1) }} minutes
+                <strong>Average per person:</strong> {{ (result || hidingResult)?.averageMinutes?.toFixed(1) || '0.0' }} minutes
               </p>
             </div>
           </div>
@@ -104,7 +105,7 @@
             <div class="border rounded-3 p-3">
               <h6 class="text-uppercase fw-semibold mb-2 text-dark">Individual journeys</h6>
               <div
-                v-for="detail in result.details"
+                v-for="detail in (result || hidingResult)?.details || []"
                 :key="detail.origin"
                 class="d-flex justify-content-between align-items-center border-bottom py-2"
               >
@@ -314,6 +315,8 @@ const participants = ref([
 const loading = ref(false);
 const errorMessage = ref('');
 const result = ref(null);
+const isHiding = ref(false); // Track if brush animation is in progress
+const hidingResult = ref(null); // Store result data during hiding animation
 const mapContainer = ref(null);
 const mapInstance = ref(null);
 const mapLoaded = ref(false);
@@ -375,10 +378,24 @@ function getStationCodes(stationName) {
 }
 
 function clearResults() {
-  // Clear only the results, keep the participant stations
+  // Store result data before clearing for animation
+  if (result.value) {
+    hidingResult.value = { ...result.value };
+  }
+  
+  // Start hiding animation FIRST to prevent person cards from showing
+  isHiding.value = true;
+  
+  // Clear result - person cards won't show because isHiding is true
   result.value = null;
   errorMessage.value = '';
-  updateMeetupMarker();
+  
+  // Wait for brush animation to complete (0.8s) before showing person cards
+  setTimeout(() => {
+    isHiding.value = false;
+    hidingResult.value = null;
+    updateMeetupMarker();
+  }, 800); // Match animation duration
 }
 
 function filterStations(participant) {
@@ -998,6 +1015,14 @@ watch(mapLoaded, (value) => {
   display: grid !important;
   grid-template-columns: repeat(2, 1fr) !important;
   gap: 24px !important;
+  /* Prevent layout shifts during transitions */
+  position: relative;
+}
+
+/* Ensure transition wrapper maintains grid position */
+.meetup-container > .meetup-result-enter-active,
+.meetup-container > .meetup-result-leave-active {
+  grid-column: 1 / -1 !important;
 }
 
 .meetup-container .person-card {
@@ -1035,6 +1060,10 @@ watch(mapLoaded, (value) => {
   position: relative;
   overflow: hidden;
   z-index: 10;
+  /* Prevent layout shifts during animation */
+  will-change: clip-path, opacity;
+  /* Maintain position during transitions */
+  transform: translateZ(0);
 }
 
 /* Brush effect and fade animations */
@@ -1043,16 +1072,24 @@ watch(mapLoaded, (value) => {
 }
 
 .meetup-result-leave-active {
-  transition: none !important;
-  animation: none !important;
+  animation: brushHide 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
-/* Ensure all transition states stay on top */
+/* Ensure all transition states stay in place */
 .meetup-result-enter-active,
 .meetup-result-enter-from,
-.meetup-result-enter-to {
+.meetup-result-enter-to,
+.meetup-result-leave-active,
+.meetup-result-leave-from,
+.meetup-result-leave-to {
+  /* Keep element in its grid position */
+  grid-column: 1 / -1 !important;
+  width: 100%;
   position: relative;
-  z-index: 10;
+  overflow: hidden;
+  /* Prevent layout shifts */
+  transform: translateZ(0);
+  will-change: clip-path, opacity;
 }
 
 .meetup-result-enter-from {
@@ -1074,6 +1111,20 @@ watch(mapLoaded, (value) => {
   100% {
     opacity: 1;
     clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  }
+}
+
+@keyframes brushHide {
+  0% {
+    opacity: 1;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  }
+  50% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 0;
+    clip-path: polygon(100% 0, 100% 0, 100% 100%, 100% 100%);
   }
 }
 
