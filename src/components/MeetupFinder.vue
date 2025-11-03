@@ -34,17 +34,36 @@
               <span class="material-icons">delete</span>
             </button>
           </div>
-          <div class="station-selector">
-            <select v-model="participant.station" class="form-select">
-              <option value="">-- Select station --</option>
-              <option v-for="station in stations" :key="station" :value="station">{{ station }}</option>
-            </select>
+          <div class="station-selector position-relative">
+            <input
+              :value="participant.searchInput || participant.station || ''"
+              type="text"
+              class="form-select"
+              :placeholder="!participant.station && !participant.searchInput ? '-- Select station --' : ''"
+              @input="(e) => { participant.searchInput = e.target.value; filterStations(participant); }"
+              @focus="handleFocus(participant)"
+              @blur="handleBlur(participant)"
+            />
+            <div
+              v-if="participant.showDropdown && participant.searchInput && participant.filteredStations.length > 0"
+              class="station-dropdown"
+            >
+              <div
+                v-for="station in participant.filteredStations"
+                :key="station"
+                class="station-option"
+                @mousedown.prevent="selectStation(participant, station)"
+              >
+                {{ station }}
+              </div>
+            </div>
           </div>
         </div>
       </template>
 
       <!-- Results card - styled like person-card, spans full width -->
-      <div v-if="result" class="meetup-results-card person-card feature-result-animate">
+      <Transition name="meetup-result" mode="out-in">
+        <div v-if="result" :key="result.station" class="meetup-results-card person-card">
         <div class="mb-3 d-flex align-items-center gap-3">
           <h4 class="mb-0 text-dark d-flex align-items-center flex-wrap gap-2 flex-grow-1">
             <span class="material-icons me-2 text-danger">place</span>
@@ -99,6 +118,7 @@
           </div>
         </div>
       </div>
+      </Transition>
     </div>
 
     <div class="meetup-actions">
@@ -260,6 +280,25 @@ import { useRoutePlanner } from '../composables/useRoutePlanner';
 import { STATION_CODES_BY_LINE } from '../data/stationCoordinates';
 import { TRAIN_STATION_LINES, LINE_COLOR_MAP } from '../data/stations';
 
+// Helper function to get station colors (excluding LRT)
+function getStationColors(stationName) {
+  const stationCodes = STATION_CODES_BY_LINE[stationName];
+  if (!stationCodes) return null;
+  
+  const lines = Object.keys(stationCodes).filter(line => line !== 'LRT Line');
+  
+  if (lines.length === 0) return null;
+  if (lines.length === 1) {
+    return { primary: LINE_COLOR_MAP[lines[0]], secondary: null };
+  }
+  
+  // For stations with 2+ lines, use first two (excluding LRT)
+  return {
+    primary: LINE_COLOR_MAP[lines[0]],
+    secondary: LINE_COLOR_MAP[lines[1]]
+  };
+}
+
 const { allStations: stations, shortestPath, estimateTimeMinutes, summariseSegments } = useRoutePlanner();
 
 const MAPBOX_TOKEN = 'pk.eyJ1IjoiY2hlZWF1biIsImEiOiJja2NydG83cWMwaGJsMnBqdjR5aHc3MzdlIn0.YGTZpi7JQMquEOv9E8K_bg';
@@ -268,8 +307,8 @@ const MAX_PARTICIPANTS = 10;
 
 let idCounter = 0;
 const participants = ref([
-  { id: ++idCounter, station: '' },
-  { id: ++idCounter, station: '' }
+  { id: ++idCounter, station: '', searchInput: '', showDropdown: false, filteredStations: [] },
+  { id: ++idCounter, station: '', searchInput: '', showDropdown: false, filteredStations: [] }
 ]);
 
 const loading = ref(false);
@@ -292,7 +331,7 @@ function addParticipant() {
     setMapFeedback(`Maximum of ${MAX_PARTICIPANTS} people reached.`);
     return false;
   }
-  participants.value.push({ id: ++idCounter, station: '' });
+  participants.value.push({ id: ++idCounter, station: '', searchInput: '', showDropdown: false, filteredStations: [] });
   return true;
 }
 
@@ -342,16 +381,58 @@ function clearResults() {
   updateMeetupMarker();
 }
 
+function filterStations(participant) {
+  const searchTerm = participant.searchInput.toLowerCase().trim();
+  if (!searchTerm) {
+    // No search term, hide dropdown
+    participant.filteredStations = [];
+    participant.showDropdown = false;
+    return;
+  }
+  
+  // Filter stations based on search term
+  participant.filteredStations = stations.filter(station =>
+    station.toLowerCase().includes(searchTerm)
+  ).slice(0, 20); // Limit to 20 results
+  
+  // Only show dropdown if there are results and user is typing
+  participant.showDropdown = participant.filteredStations.length > 0;
+}
+
+function handleFocus(participant) {
+  // Clear search input on focus if there's already a selected station
+  // This allows user to start fresh when clicking on input
+  if (participant.station && !participant.searchInput) {
+    participant.searchInput = '';
+  }
+}
+
+function selectStation(participant, station) {
+  participant.station = station;
+  participant.searchInput = '';
+  participant.showDropdown = false;
+  participant.filteredStations = [];
+}
+
+function handleBlur(participant) {
+  // Delay to allow mousedown to fire first
+  setTimeout(() => {
+    participant.showDropdown = false;
+    participant.searchInput = '';
+  }, 200);
+}
+
 function reset() {
   // Clear everything including participants
   participants.value = [
-    { id: ++idCounter, station: '' },
-    { id: ++idCounter, station: '' }
+    { id: ++idCounter, station: '', searchInput: '', showDropdown: false, filteredStations: [] },
+    { id: ++idCounter, station: '', searchInput: '', showDropdown: false, filteredStations: [] }
   ];
   result.value = null;
   errorMessage.value = '';
   updateParticipantMarkers();
   updateMeetupMarker();
+  resetMapView(); // Reset map to initial view
 }
 
 async function findMeetup() {
@@ -511,7 +592,17 @@ function zoomToMeetupStation(stationName) {
   if (!feature) return;
   mapInstance.value.flyTo({
     center: feature.geometry.coordinates,
-    zoom: 13,
+    zoom: 16, // Increased zoom for clearer view
+    essential: true,
+    speed: 0.8
+  });
+}
+
+function resetMapView() {
+  if (!mapInstance.value || !mapLoaded.value) return;
+  mapInstance.value.flyTo({
+    center: [103.8475, 1.3011], // Initial center
+    zoom: 11, // Initial zoom
     essential: true,
     speed: 0.8
   });
@@ -541,6 +632,24 @@ async function initMap() {
         throw new Error(`Unable to load map data (HTTP ${response.status})`);
       }
       const data = await response.json();
+      
+      // Process stations to add color properties for multi-line stations
+      data.features
+        .filter((feature) => feature.geometry?.type === 'Point' && feature.properties?.stop_type === 'station')
+        .forEach((feature) => {
+          const stationName = feature.properties.name;
+          const colors = getStationColors(stationName);
+          
+          if (colors) {
+            feature.properties.primary_color = colors.primary;
+            if (colors.secondary) {
+              feature.properties.secondary_color = colors.secondary;
+            }
+          }
+          
+          stationLookup.set(stationName.toLowerCase(), feature);
+        });
+      
       mapInstance.value.addSource('singatrain-rail', {
         type: 'geojson',
         data
@@ -584,24 +693,37 @@ async function initMap() {
         paint: {
           'circle-radius': 6,
           'circle-color': [
-            'match',
-            ['get', 'station_colors'],
-            'red',
-            '#d42e12',
-            'green',
-            '#009645',
-            'orange',
-            '#fa9e0d',
-            'brown',
-            '#9D5B25',
-            'purple',
-            '#9900aa',
-            'blue',
-            '#005ec4',
-            '#748477'
+            'coalesce',
+            ['get', 'primary_color'],
+            [
+              'match',
+              ['get', 'station_colors'],
+              'red',
+              '#d42e12',
+              'green',
+              '#009645',
+              'orange',
+              '#fa9e0d',
+              'brown',
+              '#9D5B25',
+              'purple',
+              '#9900aa',
+              'blue',
+              '#005ec4',
+              '#748477'
+            ]
           ],
-          'circle-stroke-color': '#fff',
-          'circle-stroke-width': 2
+          'circle-stroke-color': [
+            'coalesce',
+            ['get', 'secondary_color'],
+            '#fff'
+          ],
+          'circle-stroke-width': [
+            'case',
+            ['has', 'secondary_color'],
+            3,
+            2
+          ]
         }
       });
       mapInstance.value.addLayer({
@@ -623,11 +745,6 @@ async function initMap() {
         }
       });
 
-      data.features
-        .filter((feature) => feature.geometry?.type === 'Point' && feature.properties?.stop_type === 'station')
-        .forEach((feature) => {
-          stationLookup.set(feature.properties.name.toLowerCase(), feature);
-        });
 
       mapInstance.value.on('mouseenter', 'singatrain-stations', () => {
         mapInstance.value && (mapInstance.value.getCanvas().style.cursor = 'pointer');
@@ -711,6 +828,15 @@ watch(mapLoaded, (value) => {
   box-shadow: 0 0 0 #fec1958c;
   transition: all 0.3s ease-in-out;
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.meetup-actions .custom-btn .material-icons {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
 }
 
 .meetup-actions .custom-btn .star-1 {
@@ -906,7 +1032,51 @@ watch(mapLoaded, (value) => {
 .meetup-results-card {
   grid-column: 1 / -1 !important; /* Span all columns */
   width: 100%;
+  position: relative;
+  overflow: hidden;
+  z-index: 10;
 }
+
+/* Brush effect and fade animations */
+.meetup-result-enter-active {
+  animation: brushReveal 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.meetup-result-leave-active {
+  transition: none !important;
+  animation: none !important;
+}
+
+/* Ensure all transition states stay on top */
+.meetup-result-enter-active,
+.meetup-result-enter-from,
+.meetup-result-enter-to {
+  position: relative;
+  z-index: 10;
+}
+
+.meetup-result-enter-from {
+  opacity: 0;
+}
+
+.meetup-result-leave-to {
+  opacity: 0;
+}
+
+@keyframes brushReveal {
+  0% {
+    opacity: 0;
+    clip-path: polygon(0 0, 0 0, 0 100%, 0% 100%);
+  }
+  50% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 1;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  }
+}
+
 
 .close-results-btn {
   background: transparent;
@@ -1063,6 +1233,55 @@ watch(mapLoaded, (value) => {
   white-space: nowrap;
   width: 100%;
   box-sizing: border-box;
+}
+
+/* Searchable station dropdown */
+.station-selector {
+  position: relative;
+}
+
+.station-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #ced4da;
+  border-radius: 0.375rem;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  margin-top: 2px;
+}
+
+.station-option {
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.station-option:last-child {
+  border-bottom: none;
+}
+
+.station-option:hover {
+  background-color: #f8f9fa;
+}
+
+.station-option:active {
+  background-color: #e9ecef;
+}
+
+.station-selector input.form-select {
+  cursor: text;
+}
+
+.station-selector input.form-select:focus {
+  border-color: #86b7fe;
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
 }
 
 </style>
