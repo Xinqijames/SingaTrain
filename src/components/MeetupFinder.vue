@@ -64,7 +64,7 @@
               </span>
             </div>
           </h4>
-          <button class="pushable pushable-cancel" type="button" @click="reset">
+          <button class="pushable pushable-cancel" type="button" @click="clearResults">
             <span class="shadow"></span>
             <span class="edge"></span>
             <span class="front">Cancel</span>
@@ -335,7 +335,15 @@ function getStationCodes(stationName) {
   return codes;
 }
 
+function clearResults() {
+  // Clear only the results, keep the participant stations
+  result.value = null;
+  errorMessage.value = '';
+  updateMeetupMarker();
+}
+
 function reset() {
+  // Clear everything including participants
   participants.value = [
     { id: ++idCounter, station: '' },
     { id: ++idCounter, station: '' }
