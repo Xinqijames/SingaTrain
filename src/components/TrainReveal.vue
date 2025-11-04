@@ -1,6 +1,8 @@
 <template>
   <Transition name="train-reveal">
     <div v-if="isRevealing" class="train-reveal-overlay">
+      <!-- Splash Logo -->
+      <img src="/singatrainlogo.png" alt="SingaTrain" class="splash-logo" />
       <!-- Black overlay with SVG mask -->
       <svg class="reveal-mask" width="100%" height="100%">
         <defs>
@@ -58,6 +60,33 @@ onMounted(() => {
   inset: 0;
 }
 
+/* Splash logo */
+.splash-logo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+  width: min(520px, 64vw);
+  height: auto;
+  opacity: 0;
+  filter: drop-shadow(0 6px 18px rgba(0,0,0,0.35));
+  pointer-events: none;
+  animation:
+    logoIn 0.6s ease-out 2.1s forwards,
+    logoOut 1.5s ease-in 2.9s forwards;
+  z-index: 1;
+}
+
+@keyframes logoIn {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.92); }
+  100% { opacity: 1; transform: translate(-50%, -50%) scale(1.0); }
+}
+
+@keyframes logoOut {
+  0% { opacity: 1; transform: translate(-50%, -50%) scale(1.0); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(1.04); }
+}
+
 /* Headlight glow effects - responsive sizing */
 .headlight {
   position: absolute;
@@ -82,9 +111,9 @@ onMounted(() => {
   will-change: transform, opacity;
   /* Faster animation timing */
   animation: 
-    headlightFlash 0.3s ease-out 1s forwards,
-    headlightGlow 1.5s ease-in-out 1.3s infinite,
-    headlightExpand 1.5s ease-out 2.5s forwards;
+     headlightFlash 0.25s ease-out 0.5s forwards,
+     headlightGlow 0.7s ease-in-out 0.7s forwards,
+     headlightExpand 0.8s ease-out 1.2s forwards;
 }
 
 .headlight-left {
