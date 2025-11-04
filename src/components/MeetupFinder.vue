@@ -66,7 +66,7 @@
       <Transition name="meetup-result" mode="out-in">
         <div v-if="result !== null || isHiding" :key="(result || hidingResult)?.station || 'hiding'" class="meetup-results-card person-card">
         <div class="mb-3 d-flex align-items-center gap-3">
-          <h4 class="mb-0 text-dark d-flex align-items-center flex-wrap gap-2 flex-grow-1">
+          <h4 class="mb-0 d-flex align-items-center flex-wrap gap-2 flex-grow-1" style="color: var(--color-text);">
             <span class="material-icons me-2 text-danger">place</span>
             <span><strong>Suggested meet-up: {{ (result || hidingResult)?.station || '' }}</strong></span>
             <div class="d-flex align-items-center gap-2 ms-2">
@@ -92,28 +92,29 @@
         </div>
         <div class="row g-3">
           <div class="col-md-4">
-            <div class="border rounded-3 p-3 bg-light h-100">
-              <p class="mb-2">
+            <div class="border rounded-3 p-3 h-100" style="background: var(--color-surface); border-color: var(--color-border) !important;">
+              <p class="mb-2" style="color: var(--color-text);">
                 <strong>Total travel time:</strong> {{ (result || hidingResult)?.totalMinutes || 0 }} minutes
               </p>
-              <p class="mb-0">
+              <p class="mb-0" style="color: var(--color-text);">
                 <strong>Average per person:</strong> {{ (result || hidingResult)?.averageMinutes?.toFixed(1) || '0.0' }} minutes
               </p>
             </div>
           </div>
           <div class="col-md-8">
-            <div class="border rounded-3 p-3">
-              <h6 class="text-uppercase fw-semibold mb-2 text-dark">Individual journeys</h6>
+            <div class="border rounded-3 p-3" style="border-color: var(--color-border) !important;">
+              <h6 class="text-uppercase fw-semibold mb-2" style="color: var(--color-text);">Individual journeys</h6>
               <div
                 v-for="detail in (result || hidingResult)?.details || []"
                 :key="detail.origin"
                 class="d-flex justify-content-between align-items-center border-bottom py-2"
+                style="border-bottom-color: var(--color-border) !important;"
               >
                 <div>
-                  <div class="fw-semibold">{{ detail.origin }}</div>
-                  <div class="small">{{ detail.steps.length }} stops / {{ detail.segments.length }} segment(s) </div>
+                  <div class="fw-semibold" style="color: var(--color-text);">{{ detail.origin }}</div>
+                  <div class="small" style="color: var(--color-muted);">{{ detail.steps.length }} stops / {{ detail.segments.length }} segment(s) </div>
                 </div>
-                <span class="badge bg-warning text-dark fs-6">{{ detail.minutes }} min</span>
+                <span class="badge bg-warning text-dark fs-6 meetup-time-badge">{{ detail.minutes }} min</span>
               </div>
             </div>
           </div>
@@ -1296,21 +1297,23 @@ watch(mapLoaded, (value) => {
   top: 100%;
   left: 0;
   right: 0;
-  background: white;
-  border: 1px solid #ced4da;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: 0.375rem;
   max-height: 200px;
   overflow-y: auto;
   z-index: 1000;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   margin-top: 2px;
+  color: var(--color-text);
 }
 
 .station-option {
   padding: 0.5rem 0.75rem;
   cursor: pointer;
   transition: background-color 0.15s ease;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text);
 }
 
 .station-option:last-child {
@@ -1318,11 +1321,23 @@ watch(mapLoaded, (value) => {
 }
 
 .station-option:hover {
-  background-color: #f8f9fa;
+  background-color: var(--color-border);
+  opacity: 0.5;
 }
 
 .station-option:active {
-  background-color: #e9ecef;
+  background-color: var(--color-border);
+  opacity: 0.7;
+}
+
+body.dark-mode .station-option:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  opacity: 1;
+}
+
+body.dark-mode .station-option:active {
+  background-color: rgba(255, 255, 255, 0.12);
+  opacity: 1;
 }
 
 .station-selector input.form-select {
@@ -1330,9 +1345,144 @@ watch(mapLoaded, (value) => {
 }
 
 .station-selector input.form-select:focus {
-  border-color: #86b7fe;
+  border-color: var(--color-primary);
   outline: 0;
-  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+  box-shadow: 0 0 0 0.25rem rgba(249, 115, 22, 0.25);
+}
+
+/* Dark mode adjustments for MeetupFinder */
+body.dark-mode .meetup-container {
+  background: var(--color-bg) !important;
+  border-color: var(--color-border) !important;
+}
+
+body.dark-mode .meetup-container::before {
+  background: linear-gradient(135deg, rgba(249, 115, 22, 0.08) 0%, rgba(14, 165, 233, 0.08) 100%);
+}
+
+body.dark-mode .person-card {
+  background: var(--color-surface);
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+
+body.dark-mode .person-card.active {
+  background: linear-gradient(135deg, var(--color-surface) 0%, rgba(249, 115, 22, 0.12) 100%);
+  border-color: var(--color-primary);
+}
+
+body.dark-mode .person-info h6 {
+  color: var(--color-text) !important;
+}
+
+body.dark-mode .person-info small {
+  color: var(--color-muted) !important;
+}
+
+/* Ensure all text in person cards is visible */
+body.dark-mode .person-card h6 {
+  color: var(--color-text) !important;
+}
+
+body.dark-mode .person-card small {
+  color: var(--color-muted) !important;
+}
+
+body.dark-mode .person-card .person-info h6 {
+  color: var(--color-text) !important;
+}
+
+body.dark-mode .person-card .person-info small {
+  color: var(--color-muted) !important;
+}
+
+body.dark-mode .meetup-results-card {
+  background: var(--color-surface);
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+
+body.dark-mode .meetup-results-card .border {
+  border-color: var(--color-border) !important;
+}
+
+body.dark-mode .map-loading-overlay {
+  background: rgba(15, 17, 21, 0.95);
+}
+
+body.dark-mode .map-loading-content {
+  color: var(--color-text);
+}
+
+body.dark-mode .map-loading-content h6 {
+  color: var(--color-text);
+}
+
+body.dark-mode .map-loading-content p {
+  color: var(--color-muted);
+}
+
+body.dark-mode .map-overlay-message {
+  background: rgba(21, 24, 33, 0.95);
+  color: var(--color-text);
+  border-color: var(--color-border);
+}
+
+body.dark-mode .map-wrapper {
+  background: var(--color-surface);
+  border-color: var(--color-border);
+}
+
+body.dark-mode .map-panel h5 {
+  color: var(--color-text);
+}
+
+body.dark-mode .map-panel .small {
+  color: var(--color-muted);
+}
+
+/* Time badge styling - works in both light and dark mode */
+.meetup-time-badge {
+  background-color: #f59e0b !important;
+  color: #1f2937 !important;
+  border: none !important;
+}
+
+body.dark-mode .meetup-time-badge {
+  background-color: #f59e0b !important;
+  color: #ffffff !important;
+}
+
+/* Ensure person cards use proper text colors */
+.person-card {
+  color: var(--color-text);
+}
+
+.person-card .fw-semibold {
+  color: var(--color-text);
+}
+
+body.dark-mode .person-card .fw-semibold {
+  color: var(--color-text);
+}
+
+/* Alert message styling */
+body.dark-mode .alert {
+  background-color: rgba(21, 24, 33, 0.95);
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+
+body.dark-mode .alert-danger {
+  background-color: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.3);
+  color: #f87171;
+}
+
+body.dark-mode .alert-warning {
+  background-color: rgba(251, 146, 60, 0.15);
+  border-color: rgba(251, 146, 60, 0.3);
+  color: #fb923c;
 }
 
 </style>
