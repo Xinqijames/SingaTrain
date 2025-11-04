@@ -23,7 +23,6 @@
             <div class="person-avatar">{{ index + 1 }}</div>
             <div class="person-info">
               <h6>Person {{ index + 1 }}</h6>
-              <small>{{ participant.station || 'Choose a starting station' }}</small>
             </div>
             <button
               v-if="participants.length > 2"
@@ -35,27 +34,48 @@
             </button>
           </div>
           <div class="station-selector position-relative">
-            <input
-              :value="participant.searchInput || participant.station || ''"
-              type="text"
-              class="form-select"
-              :placeholder="!participant.station && !participant.searchInput ? '-- Select station --' : ''"
-              @input="(e) => { participant.searchInput = e.target.value; filterStations(participant); }"
-              @focus="handleFocus(participant)"
-              @blur="handleBlur(participant)"
-            />
-            <div
-              v-if="participant.showDropdown && participant.searchInput && participant.filteredStations.length > 0"
-              class="station-dropdown"
-            >
-              <div
-                v-for="station in participant.filteredStations"
-                :key="station"
-                class="station-option"
-                @mousedown.prevent="selectStation(participant, station)"
+            <div class="input-container">
+            <div class="input-with-badges">
+            <div class="input-wrapper">
+              <input
+                ref="inputRef"
+                :value="participant.searchInput || participant.station || ''"
+                type="text"
+                class="input"
+                :class="{ 'has-badges': participant.station && !participant.searchInput }"
+                :placeholder="!participant.station && !participant.searchInput ? '-- Select station --' : ''"
+                autocomplete="off"
+                @input="(e) => handleInput(participant, e)"
+                @keydown="(e) => handleKeydown(participant, e)"
+                @focus="handleFocus(participant)"
+                @blur="handleBlur(participant)"
+              />
+              <span 
+                v-if="participant.autocompleteSuggestion && participant.searchInput && participant.searchInput.length > 0 && participant.autocompleteSuggestion.toLowerCase().startsWith(participant.searchInput.toLowerCase())"
+                class="input-autocomplete"
               >
-                {{ station }}
+                {{ participant.searchInput }}{{ participant.autocompleteSuggestion.substring(participant.searchInput.length) }}
+              </span>
+            </div>
+              <div v-if="participant.station && !participant.searchInput" class="input-badges">
+                <span
+                  v-for="code in getStationCodes(participant.station)"
+                  :key="code.code"
+                  class="input-line-badge"
+                  :style="{ 
+                    backgroundColor: code.bgColor,
+                    color: code.color,
+                    borderColor: code.borderColor
+                  }"
+                >
+                  <strong>{{ code.code }}</strong>
+                </span>
               </div>
+              <span 
+                class="icon material-icons"
+                :class="{ 'icon-active': participant.searchInput || participant.station }"
+              >place</span>
+            </div>
             </div>
           </div>
         </div>
@@ -311,13 +331,12 @@ const { allStations: stations, shortestPath, estimateTimeMinutes, summariseSegme
 
 const MAPBOX_TOKEN = 'pk.eyJ1IjoiY2hlZWF1biIsImEiOiJja2NydG83cWMwaGJsMnBqdjR5aHc3MzdlIn0.YGTZpi7JQMquEOv9E8K_bg';
 const GEOJSON_URL = '/sg-rail.geojson';
-const EXITS_GEOJSON_URL = '/railrouter/sg-rail-walks.geo.89ccbffa.json';
 const MAX_PARTICIPANTS = 10;
 
 let idCounter = 0;
 const participants = ref([
-  { id: ++idCounter, station: '', searchInput: '', showDropdown: false, filteredStations: [] },
-  { id: ++idCounter, station: '', searchInput: '', showDropdown: false, filteredStations: [] }
+  { id: ++idCounter, station: '', searchInput: '', showDropdown: false, filteredStations: [], autocompleteSuggestion: '' },
+  { id: ++idCounter, station: '', searchInput: '', showDropdown: false, filteredStations: [], autocompleteSuggestion: '' }
 ]);
 
 const loading = ref(false);
@@ -334,7 +353,7 @@ let feedbackTimeout = null;
 const stationLookup = new Map();
 const participantMarkers = new Map();
 let meetupMarker = null;
-const allExitsData = ref([]); // Store all exits for filtering
+// Exit markers removed - no exit data storage needed
 
 const mapLoading = computed(() => !mapLoaded.value && !mapLoadError.value);
 
@@ -343,7 +362,7 @@ function addParticipant() {
     setMapFeedback(`Maximum of ${MAX_PARTICIPANTS} people reached.`);
     return false;
   }
-  participants.value.push({ id: ++idCounter, station: '', searchInput: '', showDropdown: false, filteredStations: [] });
+  participants.value.push({ id: ++idCounter, station: '', searchInput: '', showDropdown: false, filteredStations: [], autocompleteSuggestion: '' });
   return true;
 }
 
@@ -364,8 +383,26 @@ function hexToRgba(hex, alpha) {
 }
 
 function getStationCodes(stationName) {
-  const stationCodes = STATION_CODES_BY_LINE[stationName];
-  if (!stationCodes) return [];
+  if (!stationName) return [];
+  
+  // Try exact match first
+  let stationCodes = STATION_CODES_BY_LINE[stationName];
+  
+  // If not found, try case-insensitive match
+  if (!stationCodes) {
+    const normalizedName = stationName.trim();
+    const matchingKey = Object.keys(STATION_CODES_BY_LINE).find(
+      key => key.toLowerCase() === normalizedName.toLowerCase()
+    );
+    if (matchingKey) {
+      stationCodes = STATION_CODES_BY_LINE[matchingKey];
+    }
+  }
+  
+  if (!stationCodes) {
+    console.warn(`Station "${stationName}" not found in STATION_CODES_BY_LINE`);
+    return [];
+  }
   
   const codes = [];
   
@@ -386,6 +423,13 @@ function getStationCodes(stationName) {
   return codes;
 }
 
+function getStationDisplayText(stationName) {
+  if (!stationName) return '';
+  const codes = getStationCodes(stationName);
+  const codeList = codes.map(c => c.code).join(', ');
+  return codeList ? `${stationName} (${codeList})` : stationName;
+}
+
 function clearResults() {
   // Store result data before clearing for animation
   if (result.value) {
@@ -399,6 +443,9 @@ function clearResults() {
   result.value = null;
   errorMessage.value = '';
   
+  // Reset map colors to original
+  resetMapColors();
+  
   // Wait for brush animation to complete (0.8s) before showing person cards
   setTimeout(() => {
     isHiding.value = false;
@@ -408,11 +455,12 @@ function clearResults() {
 }
 
 function filterStations(participant) {
-  const searchTerm = participant.searchInput.toLowerCase().trim();
+  const searchTerm = participant.searchInput ? participant.searchInput.toLowerCase().trim() : '';
   if (!searchTerm) {
     // No search term, hide dropdown
     participant.filteredStations = [];
     participant.showDropdown = false;
+    participant.autocompleteSuggestion = '';
     return;
   }
   
@@ -421,8 +469,42 @@ function filterStations(participant) {
     station.toLowerCase().includes(searchTerm)
   ).slice(0, 20); // Limit to 20 results
   
-  // Only show dropdown if there are results and user is typing
-  participant.showDropdown = participant.filteredStations.length > 0;
+  // Set first match as autocomplete suggestion
+  participant.autocompleteSuggestion = participant.filteredStations.length > 0 
+    ? participant.filteredStations[0] 
+    : '';
+  
+  // Dropdown removed - only using autocomplete
+  participant.showDropdown = false;
+}
+
+function handleInput(participant, event) {
+  const inputValue = event.target.value;
+  
+  // Update search input with what user typed
+  participant.searchInput = inputValue;
+  
+  // Clear station when typing
+  if (participant.searchInput) {
+    participant.station = '';
+  }
+  
+  filterStations(participant);
+}
+
+function handleKeydown(participant, event) {
+  // If Tab or Enter is pressed, accept the autocomplete
+  if (event.key === 'Tab' || event.key === 'Enter') {
+    if (participant.autocompleteSuggestion) {
+      event.preventDefault();
+      participant.searchInput = participant.autocompleteSuggestion;
+      selectStation(participant, participant.autocompleteSuggestion);
+    }
+  }
+  // If Escape, clear autocomplete
+  else if (event.key === 'Escape') {
+    participant.autocompleteSuggestion = '';
+  }
 }
 
 function handleFocus(participant) {
@@ -430,6 +512,11 @@ function handleFocus(participant) {
   // This allows user to start fresh when clicking on input
   if (participant.station && !participant.searchInput) {
     participant.searchInput = '';
+    participant.filteredStations = [];
+    participant.autocompleteSuggestion = '';
+  } else if (participant.searchInput) {
+    // If there's already text, update autocomplete
+    filterStations(participant);
   }
 }
 
@@ -438,21 +525,23 @@ function selectStation(participant, station) {
   participant.searchInput = '';
   participant.showDropdown = false;
   participant.filteredStations = [];
+  participant.autocompleteSuggestion = '';
 }
 
 function handleBlur(participant) {
-  // Delay to allow mousedown to fire first
+  // Clear search input and autocomplete on blur
   setTimeout(() => {
-    participant.showDropdown = false;
     participant.searchInput = '';
+    participant.autocompleteSuggestion = '';
+    participant.filteredStations = [];
   }, 200);
 }
 
 function reset() {
   // Clear everything including participants
   participants.value = [
-    { id: ++idCounter, station: '', searchInput: '', showDropdown: false, filteredStations: [] },
-    { id: ++idCounter, station: '', searchInput: '', showDropdown: false, filteredStations: [] }
+    { id: ++idCounter, station: '', searchInput: '', showDropdown: false, filteredStations: [], autocompleteSuggestion: '' },
+    { id: ++idCounter, station: '', searchInput: '', showDropdown: false, filteredStations: [], autocompleteSuggestion: '' }
   ];
   result.value = null;
   errorMessage.value = '';
@@ -542,13 +631,15 @@ async function findMeetup() {
   };
 
   loading.value = false;
-  updateMeetupMarker();
-  setMapFeedback(`Suggested meeting point: ${bestStation}`);
   
-  // Zoom to meetup station when results appear
+  // Zoom to meetup station when results appear and highlight it
   nextTick(() => {
+    highlightMeetupStation(bestStation);
     zoomToMeetupStation(bestStation);
+    updateMeetupMarker();
   });
+  
+  setMapFeedback(`Suggested meeting point: ${bestStation}`);
 }
 
 function setMapFeedback(message) {
@@ -609,7 +700,155 @@ function updateMeetupMarker() {
   }
   const stationName = result.value?.station;
   if (!stationName) return;
+  
+  // Highlight meetup station and grey out the rest
+  highlightMeetupStation(stationName);
   zoomToMeetupStation(stationName);
+}
+
+function highlightMeetupStation(meetupStationName) {
+  if (!mapInstance.value || !mapLoaded.value || !meetupStationName) return;
+  
+  // Normalize station name (trim and normalize whitespace)
+  const meetupStationNameLower = meetupStationName.trim().toLowerCase().replace(/\s+/g, ' ');
+  
+  console.log('Highlighting meetup station:', meetupStationName, 'normalized:', meetupStationNameLower);
+  
+  // Update stations layer - grey out all except meetup station
+  if (mapInstance.value.getLayer('singatrain-stations')) {
+    mapInstance.value.setPaintProperty('singatrain-stations', 'circle-color', [
+      'case',
+      ['==', ['get', 'name_lower'], meetupStationNameLower],
+      [
+        'coalesce',
+        ['get', 'primary_color'],
+        [
+          'match',
+          ['get', 'station_colors'],
+          'red', '#d42e12',
+          'green', '#009645',
+          'orange', '#fa9e0d',
+          'brown', '#9D5B25',
+          'purple', '#9900aa',
+          'blue', '#005ec4',
+          '#748477'
+        ]
+      ],
+      '#9ca3af' // Grey color for all other stations
+    ]);
+    
+    // Make meetup station larger and more prominent
+    mapInstance.value.setPaintProperty('singatrain-stations', 'circle-radius', [
+      'case',
+      ['==', ['get', 'name_lower'], meetupStationNameLower],
+      10, // Larger for meetup station
+      6   // Normal size for others
+    ]);
+    
+    // Make meetup station stroke more prominent
+    mapInstance.value.setPaintProperty('singatrain-stations', 'circle-stroke-width', [
+      'case',
+      ['==', ['get', 'name_lower'], meetupStationNameLower],
+      4,
+      2
+    ]);
+    
+    // Make meetup station stroke color more prominent
+    mapInstance.value.setPaintProperty('singatrain-stations', 'circle-stroke-color', [
+      'case',
+      ['==', ['get', 'name_lower'], meetupStationNameLower],
+      [
+        'coalesce',
+        ['get', 'secondary_color'],
+        '#fff'
+      ],
+      '#9ca3af' // Grey stroke for other stations
+    ]);
+  }
+  
+  // Update labels - grey out all except meetup station
+  if (mapInstance.value.getLayer('singatrain-labels')) {
+    mapInstance.value.setPaintProperty('singatrain-labels', 'text-color', [
+      'case',
+      ['==', ['get', 'name_lower'], meetupStationNameLower],
+      '#2f3640', // Dark color for meetup station label
+      '#9ca3af'  // Grey for other labels
+    ]);
+    
+    // Make meetup station label more prominent
+    mapInstance.value.setLayoutProperty('singatrain-labels', 'text-size', [
+      'case',
+      ['==', ['get', 'name_lower'], meetupStationNameLower],
+      14,
+      12
+    ]);
+  }
+  
+  // Grey out all lines
+  if (mapInstance.value.getLayer('singatrain-lines')) {
+    mapInstance.value.setPaintProperty('singatrain-lines', 'line-color', '#9ca3af');
+    mapInstance.value.setPaintProperty('singatrain-lines', 'line-opacity', 0.4);
+  }
+}
+
+function resetMapColors() {
+  if (!mapInstance.value || !mapLoaded.value) return;
+  
+  // Reset stations to original colors
+  if (mapInstance.value.getLayer('singatrain-stations')) {
+    mapInstance.value.setPaintProperty('singatrain-stations', 'circle-color', [
+      'coalesce',
+      ['get', 'primary_color'],
+      [
+        'match',
+        ['get', 'station_colors'],
+        'red', '#d42e12',
+        'green', '#009645',
+        'orange', '#fa9e0d',
+        'brown', '#9D5B25',
+        'purple', '#9900aa',
+        'blue', '#005ec4',
+        '#748477'
+      ]
+    ]);
+    
+    mapInstance.value.setPaintProperty('singatrain-stations', 'circle-radius', 6);
+    
+    mapInstance.value.setPaintProperty('singatrain-stations', 'circle-stroke-width', [
+      'case',
+      ['has', 'secondary_color'],
+      3,
+      2
+    ]);
+    
+    mapInstance.value.setPaintProperty('singatrain-stations', 'circle-stroke-color', [
+      'coalesce',
+      ['get', 'secondary_color'],
+      '#fff'
+    ]);
+  }
+  
+  // Reset labels to original colors
+  if (mapInstance.value.getLayer('singatrain-labels')) {
+    mapInstance.value.setPaintProperty('singatrain-labels', 'text-color', '#2f3640');
+    mapInstance.value.setLayoutProperty('singatrain-labels', 'text-size', 12);
+  }
+  
+  // Reset lines to original colors
+  if (mapInstance.value.getLayer('singatrain-lines')) {
+    mapInstance.value.setPaintProperty('singatrain-lines', 'line-color', [
+      'match',
+      ['get', 'line_color'],
+      'orangered', '#d42e12',
+      'mediumseagreen', '#009645',
+      'orange', '#fa9e0d',
+      'saddlebrown', '#9D5B25',
+      'darkmagenta', '#9900aa',
+      'darkslateblue', '#005ec4',
+      '#748477'
+    ]);
+    mapInstance.value.setPaintProperty('singatrain-lines', 'line-opacity', 0.8);
+  }
 }
 
 function zoomToMeetupStation(stationName) {
@@ -631,21 +870,7 @@ function zoomToMeetupStation(stationName) {
     speed: 1.2 // Slightly faster for smoother animation
   });
   
-  // Show all exits when zoomed in - they'll appear in the visible area
-  // Mapbox will automatically show only visible exits based on zoom level
-  setTimeout(() => {
-    if (mapInstance.value.getLayer('singatrain-exits') && allExitsData.value.length > 0) {
-      const source = mapInstance.value.getSource('singatrain-exits');
-      if (source) {
-        // Ensure all exits are loaded (they'll be filtered by zoom/visibility automatically)
-        source.setData({
-          type: 'FeatureCollection',
-          features: allExitsData.value
-        });
-        console.log(`Showing ${allExitsData.value.length} exits at zoom level ${mapInstance.value.getZoom()}`);
-      }
-    }
-  }, 1500); // Wait for animation to complete
+  // Exit markers removed - no exit markers will be shown on the map
 }
 
 function resetMapView() {
@@ -658,6 +883,8 @@ function resetMapView() {
     essential: true,
     speed: 0.8
   });
+  // Reset map colors when resetting view
+  resetMapColors();
 }
 
 async function initMap() {
@@ -678,6 +905,31 @@ async function initMap() {
   });
 
   mapInstance.value.addControl(new mapboxgl.NavigationControl({ showCompass: false }));
+
+  // Remove cooperative gestures tooltip
+  const removeTooltip = () => {
+    const tooltip = mapContainer.value?.querySelector('.mapboxgl-ctrl-cooperative-gesture-hint');
+    if (tooltip) {
+      tooltip.remove();
+    }
+  };
+  
+  // Remove tooltip immediately and on load
+  removeTooltip();
+  setTimeout(removeTooltip, 100);
+  setTimeout(removeTooltip, 500);
+  
+  // Continuously watch for and remove tooltip if it reappears
+  const observer = new MutationObserver(() => {
+    removeTooltip();
+  });
+  
+  if (mapContainer.value) {
+    observer.observe(mapContainer.value, {
+      childList: true,
+      subtree: true
+    });
+  }
 
   mapInstance.value.on('load', async () => {
     try {
@@ -701,7 +953,11 @@ async function initMap() {
             }
           }
           
-          stationLookup.set(stationName.toLowerCase(), feature);
+          // Add lowercase name for filtering (normalize whitespace)
+          const normalizedName = stationName.trim().toLowerCase().replace(/\s+/g, ' ');
+          feature.properties.name_lower = normalizedName;
+          
+          stationLookup.set(normalizedName, feature);
         });
       
       mapInstance.value.addSource('singatrain-rail', {
@@ -799,124 +1055,7 @@ async function initMap() {
         }
       });
 
-      // Load exits data
-      try {
-        const exitsResponse = await fetch(EXITS_GEOJSON_URL);
-        if (exitsResponse.ok) {
-          const exitsData = await exitsResponse.json();
-          console.log('Exits data loaded:', exitsData.features.length, 'features');
-          
-          // Filter exit points (features with exit_name properties)
-          // These represent exits/connection points between stations
-          const exitPoints = exitsData.features.filter(feature => 
-            feature.geometry?.type === 'Point' && 
-            feature.properties &&
-            (feature.properties.exit_name_1 || feature.properties.exit_name_2)
-          );
-
-          console.log('Filtered exit points:', exitPoints.length);
-          
-          // Store all exits for later filtering
-          allExitsData.value = exitPoints;
-          
-          // Log first few exit points for debugging
-          if (exitPoints.length > 0) {
-            console.log('Sample exit points:', exitPoints.slice(0, 3).map(ep => ({
-              coords: ep.geometry.coordinates,
-              exit1: ep.properties.exit_name_1,
-              exit2: ep.properties.exit_name_2,
-              station1: ep.properties.station_codes_1,
-              station2: ep.properties.station_codes_2
-            })));
-          }
-
-          if (exitPoints.length > 0) {
-            // Ensure source doesn't exist before adding
-            if (mapInstance.value.getSource('singatrain-exits')) {
-              mapInstance.value.removeLayer('singatrain-exit-labels');
-              mapInstance.value.removeLayer('singatrain-exits');
-              mapInstance.value.removeSource('singatrain-exits');
-            }
-
-            mapInstance.value.addSource('singatrain-exits', {
-              type: 'geojson',
-              data: {
-                type: 'FeatureCollection',
-                features: exitPoints
-              }
-            });
-
-            mapInstance.value.addLayer({
-              id: 'singatrain-exits',
-              source: 'singatrain-exits',
-              type: 'circle',
-              minzoom: 13, // Show exits starting from zoom 13 (lower threshold)
-              maxzoom: 24,
-              paint: {
-                'circle-radius': [
-                  'interpolate',
-                  ['linear'],
-                  ['zoom'],
-                  13, 6,
-                  15, 10,
-                  17, 14,
-                  19, 18
-                ],
-                'circle-color': '#f97316',
-                'circle-stroke-color': '#ffffff',
-                'circle-stroke-width': 3,
-                'circle-opacity': 1
-              }
-            }, 'singatrain-labels'); // Add before labels so labels appear on top
-
-            // Add exit labels
-            mapInstance.value.addLayer({
-              id: 'singatrain-exit-labels',
-              source: 'singatrain-exits',
-              type: 'symbol',
-              minzoom: 14, // Show labels starting from zoom 14
-              maxzoom: 24,
-              layout: {
-                'text-field': [
-                  'case',
-                  ['has', 'exit_name_2'],
-                  ['concat', ['get', 'exit_name_1'], '/', ['get', 'exit_name_2']],
-                  ['get', 'exit_name_1']
-                ],
-                'text-size': [
-                  'interpolate',
-                  ['linear'],
-                  ['zoom'],
-                  14, 11,
-                  16, 13,
-                  18, 15,
-                  20, 17
-                ],
-                'text-anchor': 'top',
-                'text-offset': [0, 1.5],
-                'text-font': ['Open Sans Regular', 'Arial Unicode MS Bold'],
-                'text-allow-overlap': true,
-                'text-ignore-placement': false
-              },
-              paint: {
-                'text-color': '#ffffff',
-                'text-halo-color': '#f97316',
-                'text-halo-width': 3,
-                'text-halo-blur': 1
-              }
-            });
-            
-            console.log('Exits layer added successfully');
-          } else {
-            console.warn('No exit points found in data');
-          }
-        } else {
-          console.error('Failed to fetch exits data:', exitsResponse.status, exitsResponse.statusText);
-        }
-      } catch (error) {
-        console.error('Failed to load exits data:', error);
-        // Continue without exits - not critical
-      }
+      // Exit markers removed - no exit markers will be shown on the map
 
 
       mapInstance.value.on('mouseenter', 'singatrain-stations', () => {
@@ -931,31 +1070,57 @@ async function initMap() {
         handleMapStationSelection(stationName);
       });
 
-      // Add hover interactions for exits
-      if (mapInstance.value.getLayer('singatrain-exits')) {
-        mapInstance.value.on('mouseenter', 'singatrain-exits', () => {
-          mapInstance.value && (mapInstance.value.getCanvas().style.cursor = 'pointer');
-          mapInstance.value.setPaintProperty('singatrain-exits', 'circle-radius', [
-            'interpolate',
-            ['linear'],
-            ['zoom'],
-            15, 6,
-            17, 8,
-            19, 10
-          ]);
+      // Double-click handler for 3D mode toggle
+      let lastClickTime = 0;
+      let lastClickLngLat = null;
+      const DOUBLE_CLICK_DELAY = 400; // milliseconds
+      const DOUBLE_CLICK_DISTANCE_THRESHOLD = 0.0001; // degrees (roughly 10 meters)
+
+      mapInstance.value.on('click', (event) => {
+        // Don't process double-click if clicking on a station (let station selection handle it)
+        const clickedFeatures = mapInstance.value.queryRenderedFeatures(event.point, {
+          layers: ['singatrain-stations']
         });
-        mapInstance.value.on('mouseleave', 'singatrain-exits', () => {
-          mapInstance.value && (mapInstance.value.getCanvas().style.cursor = '');
-          mapInstance.value.setPaintProperty('singatrain-exits', 'circle-radius', [
-            'interpolate',
-            ['linear'],
-            ['zoom'],
-            15, 4,
-            17, 6,
-            19, 8
-          ]);
-        });
-      }
+        if (clickedFeatures.length > 0) {
+          // Reset double-click tracking when clicking on station
+          lastClickTime = 0;
+          lastClickLngLat = null;
+          return;
+        }
+        
+        const currentTime = Date.now();
+        const currentLngLat = event.lngLat;
+        
+        // Check if this is a double click (within time and distance threshold)
+        const isDoubleClick = 
+          (currentTime - lastClickTime) < DOUBLE_CLICK_DELAY &&
+          lastClickLngLat &&
+          Math.abs(currentLngLat.lng - lastClickLngLat.lng) < DOUBLE_CLICK_DISTANCE_THRESHOLD &&
+          Math.abs(currentLngLat.lat - lastClickLngLat.lat) < DOUBLE_CLICK_DISTANCE_THRESHOLD;
+        
+        if (isDoubleClick) {
+          const currentPitch = mapInstance.value.getPitch();
+          
+          // If in 3D mode (pitch > 0), exit to flat view
+          if (currentPitch > 0) {
+            resetMapView();
+          } 
+          // If in flat view and meetup is suggested, go to 3D view
+          else if (result.value?.station) {
+            zoomToMeetupStation(result.value.station);
+          }
+          
+          // Reset double-click tracking
+          lastClickTime = 0;
+          lastClickLngLat = null;
+        } else {
+          // Store this click for potential double-click detection
+          lastClickTime = currentTime;
+          lastClickLngLat = currentLngLat;
+        }
+      });
+
+      // Exit hover interactions removed - no exit markers on map
 
       mapLoaded.value = true;
       mapLoadError.value = '';
@@ -1468,6 +1633,20 @@ watch(mapLoaded, (value) => {
   box-sizing: border-box;
 }
 
+.pushable-cancel:hover .front {
+  transform: translateY(-10px) !important;
+  transition: transform 250ms cubic-bezier(0.3, 0.7, 0.4, 1.5) !important;
+}
+
+.pushable-cancel:hover .shadow {
+  transform: translateY(6px) !important;
+  transition: transform 250ms cubic-bezier(0.3, 0.7, 0.4, 1.5) !important;
+}
+
+.pushable-cancel:hover {
+  filter: brightness(115%) !important;
+}
+
 /* Searchable station dropdown */
 .station-selector {
   position: relative;
@@ -1521,14 +1700,178 @@ body.dark-mode .station-option:active {
   opacity: 1;
 }
 
-.station-selector input.form-select {
-  cursor: text;
+/* Input container design - From Uiverse.io by boryanakrasteva (modified) */
+.station-selector .input-container {
+  width: 100%;
+  position: relative;
 }
 
-.station-selector input.form-select:focus {
-  border-color: var(--color-primary);
-  outline: 0;
-  box-shadow: 0 0 0 0.25rem rgba(249, 115, 22, 0.25);
+.station-selector .input-with-badges {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.station-selector .input-wrapper {
+  position: relative;
+  flex: 1;
+  width: 100%;
+}
+
+.station-selector .input-autocomplete {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--color-muted);
+  opacity: 0.5;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: calc(100% - 55px);
+}
+
+.station-selector .icon {
+  position: absolute;
+  right: 10px;
+  top: calc(50% - 6px);
+  transform: translateY(-50%);
+  color: var(--color-text);
+  pointer-events: none;
+  transition: color 0.2s ease;
+  font-size: 20px;
+  z-index: 2;
+  line-height: 1;
+}
+
+.station-selector .icon.icon-active {
+  color: #f97316;
+}
+
+body.dark-mode .station-selector .icon.icon-active {
+  color: #f97316;
+}
+
+.station-selector .input {
+  flex: 1;
+  height: 40px;
+  padding: 10px;
+  padding-right: 45px; /* Space for icon */
+  transition: 0.2s linear;
+  border: 1.5px solid black;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  background: var(--color-surface);
+  color: var(--color-text);
+  border-radius: 4px;
+  cursor: text;
+  line-height: 20px;
+  display: flex;
+  align-items: center;
+  /* Remove browser autocomplete dropdown arrow */
+  -webkit-appearance: none;
+  -moz-appearance: textfield;
+}
+
+.station-selector .input::-webkit-calendar-picker-indicator {
+  display: none;
+  -webkit-appearance: none;
+}
+
+.station-selector .input::-ms-clear {
+  display: none;
+}
+
+.station-selector .input.has-badges {
+  padding-right: 100px; /* Extra space for badges + icon (increased for text badges) */
+}
+
+.station-selector .input-badges {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  position: absolute;
+  right: 45px;
+  top: calc(50% - 6px);
+  transform: translateY(-50%);
+  pointer-events: none;
+  z-index: 1;
+  line-height: 1;
+}
+
+.station-selector .input-line-badge {
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  border: 1px solid;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 0.7rem;
+  font-weight: 600;
+  min-width: 32px;
+  height: 22px;
+  line-height: 1;
+  vertical-align: middle;
+}
+
+.station-selector .input-line-badge strong {
+  font-weight: 700;
+  line-height: 1;
+  display: inline-block;
+}
+
+.station-selector .input::placeholder {
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--color-muted);
+  opacity: 0.7;
+}
+
+.station-selector .input:focus {
+  outline: none;
+  border: 0.5px solid black;
+  box-shadow: -5px -5px 0px #f97316;
+}
+
+.station-selector .input-container:hover > .icon {
+  animation: iconAnim 1s linear infinite;
+  color: #f97316;
+}
+
+.station-codes-badges {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.station-codes-badges .station-code-badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border: 1px solid;
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+@keyframes iconAnim {
+  0%,
+  100% {
+    transform: translateY(calc(-50% - 0px)) scale(1);
+  }
+  50% {
+    transform: translateY(calc(-50% - 0px)) scale(1.1);
+  }
 }
 
 /* Dark mode adjustments for MeetupFinder */
@@ -1577,6 +1920,26 @@ body.dark-mode .person-card .person-info small {
   color: var(--color-muted) !important;
 }
 
+/* Dark mode input styling */
+body.dark-mode .station-selector .input {
+  border-color: white;
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+body.dark-mode .station-selector .input:focus {
+  border: 0.5px solid white;
+  box-shadow: -5px -5px 0px #f97316;
+}
+
+body.dark-mode .station-selector .icon {
+  color: var(--color-text);
+}
+
+body.dark-mode .station-selector .input-container:hover > .icon {
+  color: #f97316;
+}
+
 body.dark-mode .meetup-results-card {
   background: var(--color-surface);
   border-color: var(--color-border);
@@ -1607,6 +1970,11 @@ body.dark-mode .map-overlay-message {
   background: rgba(21, 24, 33, 0.95);
   color: var(--color-text);
   border-color: var(--color-border);
+}
+
+/* Hide Mapbox cooperative gestures tooltip */
+.mapboxgl-ctrl-cooperative-gesture-hint {
+  display: none !important;
 }
 
 body.dark-mode .map-wrapper {
