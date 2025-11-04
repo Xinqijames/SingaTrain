@@ -138,10 +138,6 @@ onMounted(() => {
   width: 100%;
   min-height: 100vh;
   overflow: hidden;
-  background: #ffffff;
-}
-
-body.dark-mode .background-lines {
   background: #000000;
 }
 
