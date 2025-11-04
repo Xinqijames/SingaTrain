@@ -71,7 +71,7 @@
     <!-- USER DASHBOARD -->
     <div id="dashboard-section" v-if="user">
       <h2 class="mt-5 pt-5">Welcome to SingaTrain!</h2>
-      <p style="color:#111827">You are logged in as: <strong>{{ user.email }}</strong></p>
+      <p>You are logged in as: <strong>{{ user.email }}</strong></p>
 
       <div class="profile-layout">
         <!-- LEFT COLUMN -->

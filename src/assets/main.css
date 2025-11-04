@@ -1646,6 +1646,7 @@ body.dark-mode .fare-input-sheet {
 /* ===== PROFILE / AUTH SECTIONS ===== */
 #profile {
   margin: 3rem auto;
+  min-width: 350px;
 }
 
 #auth-section,
@@ -4184,6 +4185,7 @@ button.outlined:hover,
   width: 100%;
   height: 100%;
   border-radius: var(--border-radius-sm);
+  min-width: 250px;
 }
 
 .flip-card-inner {
@@ -4366,7 +4368,7 @@ button.outlined:hover,
 
   #dashboard-section,
   #auth-section {
-    padding: 1.5rem;
+    padding: 1.5rem !important;
   }
 
   .profile-layout {
@@ -4564,6 +4566,7 @@ button.outlined:hover,
   padding: 3rem;
   margin: 40px auto;
   max-width: 80vw;
+  min-width: 300px;
   text-align: left;
   transition: all 0.3s ease;
 }
