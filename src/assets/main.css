@@ -492,7 +492,6 @@ body.dark-mode .video-overlay {
 
   /* Full-width links */
   .collapse-menu .nav-link {
-    display: block;
     width: 100%;
     padding: 0.75rem 1rem;
     text-align: left;
@@ -553,7 +552,8 @@ body.dark-mode .video-overlay {
 
   /* Full-width links */
   .collapse-menu .nav-link {
-    display: block;
+    display: flex;
+    justify-content: flex-start;
     width: 100%;
     padding: 0.75rem 1rem;
     text-align: left;
@@ -570,9 +570,23 @@ body.dark-mode .video-overlay {
   }
 
   .collapse-menu .nav-link.active {
+    display: flex;
+    justify-content: flex-start;
     background: var(--sg-red);
     color: #fff;
   }
+}
+
+.menu-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 9;
+}
+
+.collapse-menu {
+  position: relative;
+  z-index: 10;
 }
 
 /* --- THEME SWITCH TOGGLE --- */

@@ -335,7 +335,6 @@ async function getCrowdLevel(line) {
 }
 
 async function refreshArrivals() {
-  console.log("Simulator station keys:", Object.keys(simulator.getArrivals()));
   const snapshot = simulator.getArrivals()[ticker.station.station] || {};
   stationArrivals.value = Object.entries(snapshot).map(([line, times]) => ({
     name: line,

@@ -1,4 +1,5 @@
 <template>
+  
   <nav class="premium-navbar">
     <div class="container">
       <!-- Brand -->
@@ -11,14 +12,18 @@
       <ul class="navbar-nav desktop-only">
         <li v-for="tab in tabs" :key="tab.key" class="nav-item">
           <a
-            href="#"
-            class="nav-link"
-            :class="{ active: state.activeTab === tab.key }"
-            @click.prevent="setActiveTab(tab.key)"
-          >
-            <span class="material-icons me-1">{{ tab.icon }}</span>
-            <span>{{ tab.label }}</span>
-          </a>
+  href="#"
+  class="nav-link"
+  :class="{ active: state.activeTab === tab.key }"
+  @click.prevent="
+    setActiveTab(tab.key);
+    closeMenu();
+  "
+>
+  <span class="material-icons me-1">{{ tab.icon }}</span>
+  <span>{{ tab.label }}</span>
+</a>
+
         </li>
       </ul>
 
@@ -66,6 +71,11 @@
       </ul>
     </div>
   </nav>
+  <div 
+  v-if="menuOpen" 
+  class="menu-overlay" 
+  @click="closeMenu">
+  </div>
 </template>
 
 
@@ -94,6 +104,11 @@ const handleResize = () => {
     menuOpen.value = false;
   }
 };
+
+const closeMenu = () => {
+  menuOpen.value = false;
+};
+
 
 onMounted(() => {
   window.addEventListener('resize', handleResize);
