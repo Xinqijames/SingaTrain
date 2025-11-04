@@ -25,7 +25,7 @@
       <!-- Right controls: Desktop theme toggle + Hamburger -->
       <div class="right-controls">
         <!-- Desktop toggle -->
-        <div class="theme-toggle-wrapper">
+        <div class="theme-toggle-wrapper" style="display: none;">
           <label class="theme-switch">
             <input type="checkbox" :checked="state.darkMode" @change="toggleDarkMode" />
             <span class="slider">
