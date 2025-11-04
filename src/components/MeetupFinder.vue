@@ -3,10 +3,10 @@
     <div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-4">
       <div>
         <h2 class="section-title mb-2">Meet-up Point Finder</h2>
-        <p class="mb-0">
-          Enter origin stations for your group and we'll suggest the fairest MRT interchange, minimising total travel
-          time for everyone.
-        </p>
+        <TextGenerateEffect 
+          words="Where are you starting from? Enter your home MRT, and we'll find the fairest meeting point for your group!"
+          :duration="2500"
+        />
       </div>
     </div>
 
@@ -54,7 +54,7 @@
                 v-if="participant.autocompleteSuggestion && participant.searchInput && participant.searchInput.length > 0 && participant.autocompleteSuggestion.toLowerCase().startsWith(participant.searchInput.toLowerCase())"
                 class="input-autocomplete"
               >
-                {{ participant.searchInput }}{{ participant.autocompleteSuggestion.substring(participant.searchInput.length) }}
+                <span class="autocomplete-typed">{{ participant.searchInput }}</span><span class="autocomplete-suggestion">{{ participant.autocompleteSuggestion.substring(participant.searchInput.length) }}</span>
               </span>
             </div>
               <div v-if="participant.station && !participant.searchInput" class="input-badges">
@@ -307,6 +307,7 @@ import mapboxgl from 'mapbox-gl';
 import { useRoutePlanner } from '../composables/useRoutePlanner';
 import { STATION_CODES_BY_LINE } from '../data/stationCoordinates';
 import { TRAIN_STATION_LINES, LINE_COLOR_MAP } from '../data/stations';
+import TextGenerateEffect from './TextGenerateEffect.vue';
 
 // Helper function to get station colors (excluding LRT)
 function getStationColors(stationName) {
@@ -1853,17 +1854,33 @@ body.dark-mode .station-option:active {
 .station-selector .input-autocomplete {
   position: absolute;
   left: 10px;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 10px;
   pointer-events: none;
-  color: var(--color-muted);
-  opacity: 0.5;
   font-size: 14px;
   text-transform: uppercase;
   letter-spacing: 2px;
   white-space: nowrap;
   overflow: hidden;
   max-width: calc(100% - 55px);
+  line-height: 20px;
+  background: transparent;
+  z-index: 1;
+}
+
+.station-selector .input-autocomplete .autocomplete-typed {
+  color: transparent;
+  display: inline;
+}
+
+.station-selector .input-autocomplete .autocomplete-suggestion {
+  color: var(--color-muted);
+  opacity: 0.5;
+  display: inline;
+}
+
+body.dark-mode .station-selector .input-autocomplete .autocomplete-suggestion {
+  color: #9ca3af;
+  opacity: 0.6;
 }
 
 .station-selector .icon {
@@ -2005,9 +2022,17 @@ body.dark-mode .station-selector .icon.icon-active {
 }
 
 /* Dark mode adjustments for MeetupFinder */
+body.dark-mode .section-card {
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  background: rgba(21, 24, 33, 0.95) !important;
+}
+
 body.dark-mode .meetup-container {
-  background: var(--color-bg) !important;
-  border-color: var(--color-border) !important;
+  background: rgba(12, 14, 18, 0.95) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  position: relative;
 }
 
 body.dark-mode .meetup-container::before {
@@ -2015,14 +2040,25 @@ body.dark-mode .meetup-container::before {
 }
 
 body.dark-mode .person-card {
-  background: var(--color-surface);
-  border-color: var(--color-border);
+  background: rgba(21, 24, 33, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   color: var(--color-text);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 1;
 }
 
 body.dark-mode .person-card.active {
-  background: linear-gradient(135deg, var(--color-surface) 0%, rgba(249, 115, 22, 0.12) 100%);
-  border-color: var(--color-primary);
+  background: linear-gradient(135deg, rgba(21, 24, 33, 0.95) 0%, rgba(249, 115, 22, 0.15) 100%);
+  border: 1px solid rgba(249, 115, 22, 0.5);
+  box-shadow: 0 6px 24px rgba(249, 115, 22, 0.3), 0 0 0 1px rgba(249, 115, 22, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+body.dark-mode .person-card:hover {
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transform: translateY(-2px);
 }
 
 body.dark-mode .person-info h6 {
@@ -2052,13 +2088,13 @@ body.dark-mode .person-card .person-info small {
 
 /* Dark mode input styling */
 body.dark-mode .station-selector .input {
-  border-color: #333;
-  background: white;
-  color: #000;
+  border-color: #555;
+  background: var(--color-surface);
+  color: var(--color-text);
 }
 
 body.dark-mode .station-selector .input:focus {
-  border: 0.5px solid #333;
+  border: 0.5px solid #666;
   box-shadow: -5px -5px 0px #f97316;
 }
 
@@ -2071,13 +2107,14 @@ body.dark-mode .station-selector .input-container:hover > .icon {
 }
 
 body.dark-mode .meetup-results-card {
-  background: var(--color-surface);
-  border-color: var(--color-border);
+  background: rgba(21, 24, 33, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   color: var(--color-text);
+  box-shadow: 0 6px 28px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
 body.dark-mode .meetup-results-card .border {
-  border-color: var(--color-border) !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
 }
 
 body.dark-mode .map-loading-overlay {
