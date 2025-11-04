@@ -1485,6 +1485,25 @@ watch(mapLoaded, (value) => {
   .meetup-actions {
     flex-direction: row !important;
     flex-wrap: wrap !important;
+    gap: 10px !important;
+  }
+  
+  .meetup-actions .custom-btn {
+    flex: 1 1 calc(50% - 5px) !important;
+    min-width: 140px;
+  }
+}
+
+@media (max-width: 576px) {
+  .meetup-actions {
+    flex-direction: column !important;
+    gap: 12px !important;
+  }
+  
+  .meetup-actions .custom-btn {
+    width: 100% !important;
+    flex: 1 1 100% !important;
+    min-width: 100% !important;
   }
 }
 
@@ -1776,6 +1795,147 @@ watch(mapLoaded, (value) => {
 
 .pushable-cancel:hover {
   filter: brightness(115%) !important;
+}
+
+/* Responsive styles for iPad and phone */
+@media (max-width: 992px) {
+  /* Results card header - allow wrapping on tablets */
+  .meetup-results-card .mb-3 {
+    flex-wrap: wrap !important;
+    gap: 12px !important;
+  }
+  
+  .meetup-results-card h4 {
+    flex: 1 1 100% !important;
+    min-width: 0 !important;
+  }
+  
+  .pushable-cancel {
+    flex: 0 0 auto !important;
+    max-width: none !important;
+    min-width: 120px !important;
+  }
+  
+  .pushable-cancel .front {
+    padding: 10px 16px !important;
+    font-size: 0.75rem !important;
+  }
+  
+  /* Ensure station badges wrap properly */
+  .meetup-results-card h4 .d-flex {
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Results card header - stack on mobile */
+  .meetup-results-card .mb-3 {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+  }
+  
+  .meetup-results-card h4 {
+    width: 100% !important;
+    flex: none !important;
+    flex-wrap: wrap !important;
+  }
+  
+  .pushable-cancel {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 100% !important;
+    flex: 1 1 100% !important;
+    align-self: stretch !important;
+  }
+  
+  .pushable-cancel .front {
+    padding: 12px 20px !important;
+    font-size: 0.8rem !important;
+    width: 100% !important;
+    text-align: center !important;
+  }
+  
+  /* Station name and badges - ensure they wrap */
+  .meetup-station-name {
+    display: block !important;
+    width: 100% !important;
+    margin-bottom: 8px;
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+  
+  .meetup-results-card h4 .d-flex {
+    width: 100% !important;
+    margin-top: 8px;
+    margin-left: 0 !important;
+  }
+  
+  /* Icon spacing adjustment */
+  .meetup-results-card h4 .material-icons {
+    margin-right: 8px !important;
+    flex-shrink: 0;
+  }
+  
+  /* Results grid - stack on mobile */
+  .meetup-results-card .row {
+    flex-direction: column !important;
+  }
+  
+  .meetup-results-card .col-md-4,
+  .meetup-results-card .col-md-8 {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: 0 0 100% !important;
+  }
+}
+
+@media (max-width: 576px) {
+  /* Further mobile adjustments */
+  .pushable-cancel .front {
+    padding: 14px 20px !important;
+    font-size: 0.85rem !important;
+  }
+  
+  /* Ensure text doesn't overflow */
+  .meetup-station-name strong {
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+  
+  /* Station code badges - smaller on phone */
+  .station-code-badge {
+    font-size: 0.65rem !important;
+    padding: 0.25rem 0.6rem !important;
+  }
+  
+  /* Results card padding */
+  .meetup-results-card {
+    padding: 16px !important;
+  }
+  
+  .meetup-results-card .border {
+    padding: 12px !important;
+  }
+  
+  /* Individual journey rows - stack on very small screens */
+  .meetup-results-card .d-flex.justify-content-between {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+  }
+  
+  /* Time badge positioning */
+  .meetup-time-badge {
+    align-self: flex-start !important;
+  }
+  
+  /* Ensure text in results doesn't overflow */
+  .meetup-results-card .fw-semibold,
+  .meetup-results-card .small {
+    word-break: break-word;
+  }
 }
 
 /* Searchable station dropdown */
