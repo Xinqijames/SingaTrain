@@ -37,19 +37,19 @@
             <div class="input-container">
             <div class="input-with-badges">
             <div class="input-wrapper">
-              <input
+            <input
                 ref="inputRef"
-                :value="participant.searchInput || participant.station || ''"
-                type="text"
+              :value="participant.searchInput || participant.station || ''"
+              type="text"
                 class="input"
                 :class="{ 'has-badges': participant.station && !participant.searchInput }"
-                :placeholder="!participant.station && !participant.searchInput ? '-- Select station --' : ''"
+              :placeholder="!participant.station && !participant.searchInput ? '-- Select station --' : ''"
                 autocomplete="off"
                 @input="(e) => handleInput(participant, e)"
                 @keydown="(e) => handleKeydown(participant, e)"
-                @focus="handleFocus(participant)"
-                @blur="handleBlur(participant)"
-              />
+              @focus="handleFocus(participant)"
+              @blur="handleBlur(participant)"
+            />
               <span 
                 v-if="participant.autocompleteSuggestion && participant.searchInput && participant.searchInput.length > 0 && participant.autocompleteSuggestion.toLowerCase().startsWith(participant.searchInput.toLowerCase())"
                 class="input-autocomplete"
@@ -75,7 +75,7 @@
                 class="icon material-icons"
                 :class="{ 'icon-active': participant.searchInput || participant.station }"
               >place</span>
-            </div>
+              </div>
             </div>
           </div>
         </div>
@@ -353,6 +353,10 @@ let feedbackTimeout = null;
 const stationLookup = new Map();
 const participantMarkers = new Map();
 let meetupMarker = null;
+
+// Track clicked station for animation
+let clickedStationName = null;
+let stationAnimationTimeout = null;
 // Exit markers removed - no exit data storage needed
 
 const mapLoading = computed(() => !mapLoaded.value && !mapLoadError.value);
@@ -655,8 +659,125 @@ function setMapFeedback(message) {
   }, 3500);
 }
 
-function handleMapStationSelection(stationName) {
+function animateStationClick(stationName) {
+  if (!mapInstance.value || !mapLoaded.value || !stationName) return;
+  
+  // Clear any existing animation
+  if (stationAnimationTimeout) {
+    clearTimeout(stationAnimationTimeout);
+    resetStationAnimation();
+  }
+  
+  clickedStationName = stationName.trim().toLowerCase().replace(/\s+/g, ' ');
+  
+  if (!mapInstance.value.getLayer('singatrain-stations')) return;
+  
+  // First expand, then jello animation sequence
+  const animationSteps = [
+    { time: 0, radius: 6, strokeWidth: 2 },      // 0% - start normal
+    { time: 50, radius: 18, strokeWidth: 5 },     // Initial expansion (quick)
+    { time: 140, radius: 20, strokeWidth: 5 },    // 30% - scale3d(1.25, 0.75, 1) - wider from expanded
+    { time: 170, radius: 15, strokeWidth: 5 },    // 40% - scale3d(0.75, 1.25, 1) - taller from expanded
+    { time: 200, radius: 19, strokeWidth: 5 },    // 50% - scale3d(1.15, 0.85, 1) - wider from expanded
+    { time: 245, radius: 17, strokeWidth: 5 },    // 65% - scale3d(0.95, 1.05, 1) - taller from expanded
+    { time: 275, radius: 18, strokeWidth: 5 },    // 75% - scale3d(1.05, 0.95, 1) - wider from expanded
+    { time: 350, radius: 6, strokeWidth: 2 }      // 100% - scale3d(1, 1, 1) - reset to normal
+  ];
+  
+  let currentStep = 0;
+  
+  const animateStep = () => {
+    if (currentStep >= animationSteps.length) {
+      resetStationAnimation();
+      return;
+    }
+    
+    const step = animationSteps[currentStep];
+    
+    // Update radius with jello effect
+    mapInstance.value.setPaintProperty('singatrain-stations', 'circle-radius', [
+      'case',
+      ['==', ['get', 'name_lower'], clickedStationName],
+      step.radius,
+      6   // Normal size for others
+    ]);
+    
+    // Update stroke width for glow effect during animation
+    mapInstance.value.setPaintProperty('singatrain-stations', 'circle-stroke-width', [
+      'case',
+      ['==', ['get', 'name_lower'], clickedStationName],
+      step.strokeWidth,
+      2  // Normal stroke
+    ]);
+    
+    // Make stroke white/bright for glow effect
+    mapInstance.value.setPaintProperty('singatrain-stations', 'circle-stroke-color', [
+      'case',
+      ['==', ['get', 'name_lower'], clickedStationName],
+      '#ffffff', // White glow
+      [
+        'coalesce',
+        ['get', 'secondary_color'],
+        '#fff'
+      ]
+    ]);
+    
+    currentStep++;
+    
+    if (currentStep < animationSteps.length) {
+      const nextStep = animationSteps[currentStep];
+      const delay = nextStep.time - step.time;
+      setTimeout(animateStep, delay);
+    } else {
+      // Final reset
+      stationAnimationTimeout = setTimeout(() => {
+        resetStationAnimation();
+      }, 50);
+    }
+  };
+  
+  // Start animation
+  animateStep();
+}
+
+function resetStationAnimation() {
+  if (!mapInstance.value || !mapLoaded.value) return;
+  
+  clickedStationName = null;
+  
+  // If there's a meetup station highlighted, preserve that state
+  const meetupStation = result.value?.station;
+  
+  if (mapInstance.value.getLayer('singatrain-stations')) {
+    if (meetupStation) {
+      // Restore meetup station highlighting
+      highlightMeetupStation(meetupStation);
+    } else {
+      // Reset to normal size for all stations
+      mapInstance.value.setPaintProperty('singatrain-stations', 'circle-radius', 6);
+      
+      // Reset stroke width
+      mapInstance.value.setPaintProperty('singatrain-stations', 'circle-stroke-width', 2);
+      
+      // Reset stroke color
+      mapInstance.value.setPaintProperty('singatrain-stations', 'circle-stroke-color', [
+        'coalesce',
+        ['get', 'secondary_color'],
+        '#fff'
+      ]);
+      
+      // Reset opacity
+      mapInstance.value.setPaintProperty('singatrain-stations', 'circle-opacity', 1);
+    }
+  }
+}
+
+function handleMapStationSelection(stationName, event) {
   if (!stationName) return;
+  
+  // Animate the station click
+  animateStationClick(stationName);
+  
   const existing = participants.value.findIndex((p) => p.station === stationName);
   if (existing !== -1) {
     participants.value[existing].station = '';
@@ -1067,7 +1188,7 @@ async function initMap() {
       mapInstance.value.on('click', 'singatrain-stations', (event) => {
         const feature = event.features?.[0];
         const stationName = feature?.properties?.name;
-        handleMapStationSelection(stationName);
+        handleMapStationSelection(stationName, event);
       });
 
       // Double-click handler for 3D mode toggle
@@ -1975,6 +2096,10 @@ body.dark-mode .map-overlay-message {
 /* Hide Mapbox cooperative gestures tooltip */
 .mapboxgl-ctrl-cooperative-gesture-hint {
   display: none !important;
+}
+
+.map-wrapper {
+  position: relative;
 }
 
 body.dark-mode .map-wrapper {
