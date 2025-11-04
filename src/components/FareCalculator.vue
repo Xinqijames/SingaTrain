@@ -61,8 +61,10 @@
               prepend-icon="mdi-cash-multiple"
               class="fare-action-btn"
               elevation="2"
+              :loading="isCalculating"
+              :disabled="isCalculating"
             >
-              {{ fareResult ? 'Recalculate' : 'Calculate fare' }}
+              {{ isCalculating ? 'Crunching fares…' : fareResult ? 'Recalculate' : 'Calculate fare' }}
             </VBtn>
             <VBtn
               type="button"
@@ -99,7 +101,41 @@
       </div>
     </form>
 
-    <VSlideYTransition mode="out-in">
+    <div class="fare-output-region" :class="{ 'is-active': fareResult, 'is-loading': isCalculating }">
+      <div class="map-loading-overlay" :class="{ show: isCalculating }">
+        <div class="map-loading-content">
+          <div class="capybaraloader">
+            <div class="capybara">
+              <div class="capy">
+                <div class="capyhead">
+                  <div class="capyear">
+                    <div class="capyear2"></div>
+                  </div>
+                  <div class="capyear">
+                    <div class="capyear2"></div>
+                  </div>
+                  <div class="capymouth">
+                    <div class="capylips"></div>
+                    <div class="capylips"></div>
+                  </div>
+                  <div class="capyeye"></div>
+                  <div class="capyeye"></div>
+                </div>
+                <div class="capyleg">
+                  <div class="capyleg2"></div>
+                  <div class="capyleg2"></div>
+                </div>
+              </div>
+            </div>
+            <div class="loader">
+              <div class="loaderline"></div>
+            </div>
+          </div>
+          <h6 class="mt-3">Crunching new fare paths…</h6>
+          <p class="mb-0">Simulating transfers and refreshing concession comparisons.</p>
+        </div>
+      </div>
+      <VSlideYTransition mode="out-in">
       <div v-if="fareResult" class="mt-4 feature-result-animate">
         <div class="row g-3">
           <div class="col-lg-4">
@@ -164,10 +200,10 @@
           </div>
         </div>
       </div>
-    </VSlideYTransition>
+      </VSlideYTransition>
 
-    <VSlideYTransition mode="out-in">
-      <div v-if="fareResult" class="mt-4">
+      <VSlideYTransition mode="out-in">
+        <div v-if="fareResult" class="mt-4">
         <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
           <h5 class="mb-0">Monthly Pass Companion</h5>
           <VChip color="info" variant="tonal" size="small" prepend-icon="mdi-update">
@@ -251,33 +287,83 @@
 
         <div v-if="passAnalysis" class="row g-3 mt-1">
           <div class="col-lg-4">
-            <VCard class="h-100" elevation="3">
-              <div class="card-body">
-                <h6 class="text-uppercase text-muted mb-3">Recommendation</h6>
-                <p v-if="bestPass" class="fw-semibold mb-2">
-                  <template v-if="bestPass.worth">
-                    The {{ passLabel(bestPass.mode) }} pass could save {{ formatCurrency(bestPass.savings) }} this month.
-                  </template>
-                  <template v-else>
-                    Stick to pay-per-ride — the {{ passLabel(bestPass.mode) }} pass costs
-                    {{ formatCurrency(Math.abs(bestPass.savings)) }} more.
-                  </template>
-                </p>
-                <p class="mb-1">
-                  <strong>Single trip fare:</strong> {{ formatCurrency(passAnalysis.singleFare) }}
-                </p>
-                <p class="mb-3">
-                  <strong>Estimated monthly spend:</strong> {{ formatCurrency(passAnalysis.monthlyTotal) }}
-                </p>
-                <VProgressLinear :model-value="bestPassProgress" :color="bestPassTone" height="10" rounded="pill" />
+            <VCard class="fare-reco-card h-100" elevation="4" :class="bestPassToneClass">
+              <div class="reco-header">
+                <div class="reco-icon">
+                  <VIcon :icon="bestPassIcon" size="28" />
+                </div>
+                <div class="reco-heading">
+                  <span class="reco-eyebrow">Recommendation</span>
+                  <h5 class="reco-title mb-0">{{ bestPassHeadline }}</h5>
+                </div>
+                <VChip
+                  v-if="bestPass"
+                  size="x-small"
+                  variant="flat"
+                  :color="bestPass?.worth ? 'success' : 'error'"
+                  prepend-icon="mdi-star-circle-outline"
+                >
+                  {{ passLabel(bestPass.mode) }}
+                </VChip>
+              </div>
+              <div class="reco-body">
+                <p class="reco-summary mb-3">{{ bestPassSummary }}</p>
+                <div class="reco-metrics">
+                  <div class="reco-metric">
+                    <span class="reco-metric-label">Single fare</span>
+                    <span class="reco-metric-value">{{ formatCurrency(passAnalysis.singleFare) }}</span>
+                  </div>
+                  <div class="reco-metric">
+                    <span class="reco-metric-label">Monthly spend</span>
+                    <span class="reco-metric-value">{{ formatCurrency(passAnalysis.monthlyTotal) }}</span>
+                  </div>
+                  <div class="reco-metric">
+                    <span class="reco-metric-label">Net impact</span>
+                    <span class="reco-metric-value" :class="bestPass?.worth ? 'text-success' : 'text-danger'">
+                      {{ formatSavings(bestPass?.savings ?? 0) }}
+                    </span>
+                  </div>
+                </div>
+                <VProgressLinear
+                  class="reco-progress mt-4"
+                  :model-value="bestPassProgress"
+                  :color="bestPassTone"
+                  height="8"
+                  rounded="pill"
+                />
+                <div class="reco-progress-caption">
+                  Potential savings captured (percentage of projected monthly spend)
+                </div>
               </div>
             </VCard>
           </div>
           <div class="col-lg-8">
-            <VCard class="h-100" elevation="3">
+            <VCard class="fare-chart-card h-100" elevation="4">
               <div class="card-body">
-                <h6 class="text-uppercase text-muted mb-2">Savings vs monthly passes</h6>
-                <div class="chart-wrapper">
+                <div class="chart-header">
+                  <div>
+                    <h6 class="text-uppercase text-muted mb-2">Savings vs monthly passes</h6>
+                    <p class="chart-subtitle mb-0">
+                      Compare how each pass stacks up against your projected rides.
+                    </p>
+                  </div>
+                  <VChip variant="flat" color="primary" size="small" prepend-icon="mdi-counter">
+                    {{ monthlyRides }} rides / month
+                  </VChip>
+                </div>
+                <div class="chart-meta mt-3">
+                  <div class="chart-meta-item">
+                    <span class="chart-meta-label">Best option</span>
+                    <span class="chart-meta-value">{{ bestPass ? passLabel(bestPass.mode) : '—' }}</span>
+                  </div>
+                  <div class="chart-meta-item">
+                    <span class="chart-meta-label">Net impact</span>
+                    <span class="chart-meta-value" :class="bestPass?.worth ? 'positive' : 'negative'">
+                      {{ formatSavings(bestPass?.savings ?? 0) }}
+                    </span>
+                  </div>
+                </div>
+                <div class="chart-wrapper mt-3">
                   <canvas ref="passChartRef"></canvas>
                 </div>
               </div>
@@ -295,8 +381,17 @@
                   </tr>
                 </thead>
                 <tbody class="text-center">
-                  <tr v-for="row in passAnalysis.breakdown" :key="row.mode">
-                    <td>{{ passLabel(row.mode) }}</td>
+                  <tr
+                    v-for="row in passAnalysis.breakdown"
+                    :key="row.mode"
+                    :class="[{ 'table-highlight': row.mode === bestPassMode }, row.worth ? 'pass-worth' : 'pass-loss']"
+                  >
+                    <td>
+                      <div class="table-pass-name">
+                        {{ passLabel(row.mode) }}
+                        <span v-if="row.mode === bestPassMode" class="table-pass-tag">Recommended</span>
+                      </div>
+                    </td>
                     <td>{{ formatCurrency(row.passPrice) }}</td>
                     <td :class="row.worth ? 'text-success fw-semibold' : 'text-danger fw-semibold'">
                       {{ formatSavings(row.savings) }}
@@ -305,7 +400,7 @@
                       <VChip
                         v-if="row.worth"
                         color="success"
-                        variant="tonal"
+                        variant="flat"
                         size="small"
                         prepend-icon="mdi-check-circle-outline"
                       >
@@ -314,7 +409,7 @@
                       <VChip
                         v-else
                         color="error"
-                        variant="tonal"
+                        variant="flat"
                         size="small"
                         prepend-icon="mdi-close-circle-outline"
                       >
@@ -328,7 +423,8 @@
           </div>
         </div>
       </div>
-    </VSlideYTransition>
+      </VSlideYTransition>
+    </div>
 
     <div v-if="errorMessage" class="alert alert-danger mt-4">{{ errorMessage }}</div>
   </section>
@@ -391,6 +487,7 @@ const fareResult = ref(null);
 const passAnalysis = ref(null);
 const errorMessage = ref('');
 const needsRecalculate = ref(false);
+const isCalculating = ref(false);
 
 const dailyTrips = ref(2);
 const workingDays = ref(22);
@@ -428,6 +525,28 @@ const bestPassProgress = computed(() => {
   return Math.min(100, Math.round((savings / base) * 100));
 });
 
+const bestPassMode = computed(() => bestPass.value?.mode ?? null);
+
+const bestPassToneClass = computed(() => (bestPass.value?.worth ? 'is-positive' : 'is-negative'));
+
+const bestPassHeadline = computed(() => {
+  if (!bestPass.value) return 'Compare options';
+  return bestPass.value.worth ? 'Monthly pass pays off' : 'Stick to pay-per-ride';
+});
+
+const bestPassSummary = computed(() => {
+  if (!bestPass.value) {
+    return 'Run a calculation to see personalised advice tailored to your commute.';
+  }
+  const label = passLabel(bestPass.value.mode);
+  if (bestPass.value.worth) {
+    return `The ${label} pass could save ${formatCurrency(bestPass.value.savings)} this month compared to pay-per-ride.`;
+  }
+  return `Pay-per-ride stays cheaper — the ${label} pass would cost ${formatCurrency(Math.abs(bestPass.value.savings))} more.`;
+});
+
+const bestPassIcon = computed(() => (bestPass.value?.worth ? 'mdi-ticket-percent' : 'mdi-cash-minus'));
+
 function formatCurrency(value) {
   return currencyFormatter.format(value);
 }
@@ -454,7 +573,8 @@ function segmentColor(lineCode) {
   return color || '#6b7280';
 }
 
-function calculate() {
+async function calculate() {
+  if (isCalculating.value) return;
   errorMessage.value = '';
   passAnalysis.value = null;
 
@@ -475,27 +595,43 @@ function calculate() {
     return;
   }
 
-  const distanceKm = estimateDistanceKm(path.totalWeight);
-  const minutes = estimateTimeMinutes(path.totalWeight);
-  const segments = summariseSegments(path) ?? [];
-  const totalStops = segments.reduce((sum, segment) => sum + segment.stops, 0);
-  const transfers = Math.max(0, segments.length - 1);
-  const fare = fareByType(distanceKm, commuterType.value);
+  isCalculating.value = true;
+  try {
+    needsRecalculate.value = false;
+    await new Promise((resolve) => setTimeout(resolve, 420));
 
-  fareResult.value = {
-    fare,
-    distanceKm,
-    minutes,
-    segments,
-    totalStops,
-    transfers
-  };
+    const distanceKm = estimateDistanceKm(path.totalWeight);
+    const minutes = estimateTimeMinutes(path.totalWeight);
+    const segments = summariseSegments(path) ?? [];
+    const totalStops = segments.reduce((sum, segment) => sum + segment.stops, 0);
+    const transfers = Math.max(0, segments.length - 1);
+    const fare = fareByType(distanceKm, commuterType.value);
 
-  needsRecalculate.value = false;
-  runPassAnalysis();
+    fareResult.value = {
+      fare,
+      distanceKm,
+      minutes,
+      segments,
+      totalStops,
+      transfers
+    };
+
+    needsRecalculate.value = false;
+    await runPassAnalysis();
+  } catch (err) {
+    console.error(err);
+    fareResult.value = null;
+    passAnalysis.value = null;
+    destroyChart();
+    needsRecalculate.value = false;
+    errorMessage.value =
+      'Unable to calculate fare at the moment. Please try again in a moment.';
+  } finally {
+    isCalculating.value = false;
+  }
 }
 
-function runPassAnalysis() {
+async function runPassAnalysis() {
   if (!fareResult.value) {
     passAnalysis.value = null;
     destroyChart();
@@ -509,9 +645,8 @@ function runPassAnalysis() {
     workingDays: workingDays.value
   });
 
-  nextTick(() => {
-    renderPassChart(passAnalysis.value);
-  });
+  await nextTick();
+  renderPassChart(passAnalysis.value);
 }
 
 function renderPassChart(analysis) {
@@ -607,16 +742,16 @@ watch([startStation, endStation, commuterType], () => {
   }
 });
 
-watch(commuterType, () => {
+watch(commuterType, async () => {
   if (!fareResult.value) return;
-  calculate();
+  await calculate();
 });
 
 watchDebounced(
   [dailyTrips, workingDays],
-  () => {
+  async () => {
     if (!fareResult.value) return;
-    runPassAnalysis();
+    await runPassAnalysis();
   },
   { debounce: 300, maxWait: 800 }
 );
@@ -725,6 +860,219 @@ onBeforeUnmount(() => {
   display: flex;
   flex-wrap: wrap;
   gap: 0.6rem;
+}
+
+.fare-output-region {
+  position: relative;
+}
+
+.fare-output-region.is-active,
+.fare-output-region.is-loading {
+  min-height: 280px;
+}
+
+.fare-reco-card {
+  padding: 20px 22px;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgb(var(--v-theme-surface)) 100%);
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.06);
+}
+
+.fare-reco-card.is-positive {
+  background: linear-gradient(160deg, rgba(16, 185, 129, 0.18) 0%, rgba(16, 185, 129, 0.04) 100%);
+}
+
+.fare-reco-card.is-negative {
+  background: linear-gradient(160deg, rgba(244, 63, 94, 0.16) 0%, rgba(244, 63, 94, 0.05) 100%);
+}
+
+.reco-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.reco-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.65);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.4);
+}
+
+.reco-heading {
+  flex: 1;
+  min-width: 0;
+}
+
+.reco-eyebrow {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(var(--v-theme-on-surface), 0.6);
+}
+
+.reco-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: rgba(var(--v-theme-on-surface), 0.9);
+}
+
+.reco-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.reco-summary {
+  color: rgba(var(--v-theme-on-surface), 0.78);
+  line-height: 1.4;
+}
+
+.reco-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
+}
+
+.reco-metric {
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.38);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.reco-metric-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(var(--v-theme-on-surface), 0.55);
+}
+
+.reco-metric-value {
+  font-weight: 600;
+  color: rgba(var(--v-theme-on-surface), 0.85);
+}
+
+.reco-progress {
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12);
+}
+
+.reco-progress-caption {
+  font-size: 0.75rem;
+  color: rgba(var(--v-theme-on-surface), 0.55);
+}
+
+.fare-chart-card {
+  border: none;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.05);
+}
+
+.chart-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.chart-subtitle {
+  color: rgba(var(--v-theme-on-surface), 0.58);
+  font-size: 0.85rem;
+}
+
+.chart-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.chart-meta-item {
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(var(--v-theme-primary), 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.chart-meta-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: rgba(var(--v-theme-on-surface), 0.55);
+}
+
+.chart-meta-value {
+  font-weight: 600;
+  color: rgba(var(--v-theme-on-surface), 0.85);
+}
+
+.chart-meta-value.positive {
+  color: #15803d;
+}
+
+.chart-meta-value.negative {
+  color: #dc2626;
+}
+
+.table-modern .table-pass-name {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-weight: 600;
+  color: rgba(var(--v-theme-on-surface), 0.85);
+}
+
+.table-modern .table-pass-tag {
+  display: inline-block;
+  align-self: center;
+  padding: 2px 10px;
+  font-size: 0.7rem;
+  border-radius: 999px;
+  background: rgba(59, 130, 246, 0.15);
+  color: rgba(37, 99, 235, 0.95);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.table-modern tr.table-highlight td {
+  background: color-mix(in srgb, rgba(16, 185, 129, 0.2), rgba(255, 255, 255, 0.85));
+}
+
+.table-modern tr.pass-loss.table-highlight td {
+  background: color-mix(in srgb, rgba(244, 63, 94, 0.18), rgba(255, 255, 255, 0.85));
+}
+
+.table-modern tr.table-highlight td,
+.table-modern tr.table-highlight th {
+  border-top: none;
+}
+
+@media (max-width: 992px) {
+  .reco-metrics {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .fare-loading-overlay {
+    border-radius: 18px;
+    padding: 28px 14px;
+  }
+  .chart-meta {
+    flex-direction: column;
+  }
 }
 
 </style>

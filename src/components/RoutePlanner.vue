@@ -5,8 +5,16 @@ import { useDisplay, useTheme } from 'vuetify';
 import { useRouteAnimation } from '../composables/useRouteAnimation';
 import { useRoutePlanner } from '../composables/useRoutePlanner';
 import { useFareCalculator } from '../composables/useFareCalculator';
+import { getLineColor } from '../composables/useTrainAPI';
 
 type StationOption = { id: string; name: string };
+type FareClassBreakdown = {
+  type: string;
+  label: string;
+  amount: number;
+  currency: string;
+  color: string;
+};
 
 defineOptions({ name: 'RoutePlanner' });
 
@@ -29,7 +37,7 @@ const routeSummary = ref<{
   segments: ReturnType<typeof summariseSegments>;
 } | null>(null);
 
-const fareInfo = ref<{ amount: number; currency: string } | null>(null);
+const fareBreakdown = ref<FareClassBreakdown[] | null>(null);
 
 const theme = useTheme();
 const { smAndDown } = useDisplay();
@@ -76,6 +84,18 @@ const {
 } = useRoutePlanner();
 
 const { fareByType } = useFareCalculator();
+
+const ROUTE_FARE_CLASSES: Array<{ type: string; label: string; color: string }> = [
+  { type: 'adult', label: 'Adult', color: '#f97316' },
+  { type: 'senior', label: 'Senior Citizen', color: '#0d9488' },
+  { type: 'disability', label: 'Persons with Disabilities', color: '#6366f1' },
+  { type: 'workfare', label: 'Workfare Concession', color: '#db2777' },
+  { type: 'primary', label: 'Primary Student', color: '#2563eb' },
+  { type: 'secondary', label: 'Secondary Student', color: '#1d4ed8' },
+  { type: 'polytechnic', label: 'Polytechnic Student', color: '#4f46e5' },
+  { type: 'university', label: 'University Student', color: '#0284c7' },
+  { type: 'ns', label: 'National Serviceman', color: '#f97316' }
+];
 
 stations.value = allStations.map((name) => ({ id: name, name }));
 if (!startStation.value && stations.value.length) {
@@ -308,6 +328,11 @@ function updateTrainMarkerPosition() {
   trainMarker.setLngLat([lng, lat]);
 }
 
+function segmentStyle(line: string) {
+  const color = getLineColor(line) || '#f97316';
+  return { '--segment-color': color };
+}
+
 function focusCurrentStop(index: number) {
   if (!railrouterInstance) return;
   const coords = routeCoordinates.value[index];
@@ -410,18 +435,22 @@ async function computeRouteSafe(fromId: string, toId: string) {
   return path.steps.map((step) => step.station);
 }
 
-async function computeFareSafe(fromId: string, toId: string) {
+async function computeFareSafe(_fromId: string, _toId: string) {
   if (!routeSummary.value) return;
-  const amount = fareByType(routeSummary.value.distanceKm, 'adult');
-  fareInfo.value = {
-    amount,
-    currency: 'SGD'
-  };
+  const distance = routeSummary.value.distanceKm;
+  const currency = 'SGD';
+  fareBreakdown.value = ROUTE_FARE_CLASSES.map(({ type, label, color }) => ({
+    type,
+    label,
+    amount: Number(fareByType(distance, type as any)),
+    currency,
+    color
+  }));
 }
 
 async function onPlanRoute() {
   errorMsg.value = null;
-  fareInfo.value = null;
+  fareBreakdown.value = null;
   routeSummary.value = null;
   isPlanning.value = true;
   try {
@@ -701,17 +730,38 @@ onBeforeUnmount(() => {
         </v-sheet>
       </div>
 
-      <div v-if="fareInfo" class="rp-fare">
-        <v-chip size="large" color="orange" variant="flat" prepend-icon="mdi-cash">
-          Estimated Fare: {{ fareInfo.amount.toFixed(2) }} {{ fareInfo.currency }}
-        </v-chip>
+      <div v-if="fareBreakdown?.length" class="rp-fare">
+        <div class="fare-caption">
+          <span class="material-icons">savings</span>
+          <span>Estimated fares by commuter class</span>
+        </div>
+        <div class="fare-chip-grid">
+          <div
+            v-for="fare in fareBreakdown"
+            :key="fare.type"
+            class="fare-chip"
+            :style="{ '--fare-color': fare.color }"
+          >
+            <span class="fare-chip-label">{{ fare.label }}</span>
+            <span class="fare-chip-amount">{{ fare.amount.toFixed(2) }} {{ fare.currency }}</span>
+          </div>
+        </div>
       </div>
 
       <div v-if="routeSummary?.segments?.length" class="rp-segments">
-        <v-sheet v-for="segment in routeSummary.segments" :key="segment.line + segment.from" class="segment-sheet" rounded="lg" elevation="0">
+        <v-sheet
+          v-for="segment in routeSummary.segments"
+          :key="segment.line + segment.from"
+          class="segment-sheet"
+          rounded="lg"
+          elevation="0"
+          :style="segmentStyle(segment.line)"
+        >
           <div class="segment-line">
             <span class="segment-line-name">{{ segment.line }}</span>
-            <small class="segment-stops">{{ segment.stops }} stops</small>
+            <small class="segment-stops">
+              {{ segment.stops === 1 ? '1 stop' : `${segment.stops} stops` }}
+            </small>
           </div>
           <div class="segment-route">
             <span class="segment-station">{{ segment.from }}</span>
@@ -885,6 +935,56 @@ onBeforeUnmount(() => {
 
 .rp-fare {
   margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.fare-caption {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: rgba(var(--v-theme-on-surface), 0.75);
+  font-size: 0.82rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.fare-caption .material-icons {
+  font-size: 18px;
+  color: rgba(var(--v-theme-on-surface), 0.5);
+}
+
+.fare-chip-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+}
+
+.fare-chip {
+  border-radius: 14px;
+  padding: 12px 14px;
+  border: 1px solid color-mix(in srgb, var(--fare-color) 65%, rgba(var(--v-theme-on-surface), 0.08));
+  background: color-mix(in srgb, var(--fare-color) 12%, rgb(var(--v-theme-surface)));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--fare-color) 18%, transparent);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.fare-chip-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--fare-color) 72%, rgba(var(--v-theme-on-surface), 0.7));
+}
+
+.fare-chip-amount {
+  font-size: 1rem;
+  font-weight: 600;
+  color: rgba(var(--v-theme-on-surface), 0.92);
 }
 
 .rp-segments {
@@ -895,29 +995,59 @@ onBeforeUnmount(() => {
 }
 
 .segment-sheet {
-  padding: 12px 16px;
-  border: 1px dashed rgba(var(--v-theme-primary), 0.3);
+  position: relative;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid color-mix(in srgb, var(--segment-color) 65%, rgba(var(--v-theme-on-surface), 0.08));
+  background: color-mix(in srgb, var(--segment-color) 12%, rgb(var(--v-theme-surface)));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--segment-color) 18%, transparent);
 }
 
 .segment-line {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 12px;
   font-weight: 600;
-  color: rgb(var(--v-theme-primary));
+  color: var(--segment-color);
+}
+
+.segment-line-name {
+  position: relative;
+  padding-left: 18px;
+}
+
+.segment-line-name::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--segment-color);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--segment-color) 35%, transparent);
+}
+
+.segment-stops {
+  font-size: 0.8rem;
+  color: rgba(var(--v-theme-on-surface), 0.6);
 }
 
 .segment-route {
   display: flex;
   align-items: center;
   gap: 6px;
-  margin-top: 8px;
+  margin-top: 10px;
+  padding-top: 6px;
   font-weight: 500;
+  border-top: 1px solid color-mix(in srgb, var(--segment-color) 28%, transparent);
 }
 
 .segment-arrow {
   font-size: 18px;
-  color: rgba(var(--v-theme-on-surface), 0.6);
+  color: color-mix(in srgb, var(--segment-color) 70%, rgba(var(--v-theme-on-surface), 0.6));
 }
 
 .segment-station {
@@ -1001,6 +1131,36 @@ onBeforeUnmount(() => {
   }
   .rp-ctrl-right {
     justify-content: space-between;
+  }
+}
+
+@media (max-width: 420px) {
+  .railrouter-shell {
+    height: min(340px, 60vh);
+  }
+  .rp-controls {
+    position: static;
+    margin-top: 12px;
+    padding: 10px 12px;
+    border-radius: 12px;
+  }
+  .rp-ctrl-left,
+  .rp-ctrl-right {
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .ctrl-btn {
+    min-width: unset;
+    width: 100%;
+  }
+  .route-train-marker {
+    width: 36px;
+    height: 36px;
+    transform: translateY(-2px);
+  }
+  .fare-chip-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   }
 }
 </style>
