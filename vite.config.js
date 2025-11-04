@@ -11,4 +11,5 @@ export default defineConfig({
       autoImport: true,
     }),
   ],
+  base: './', // ✅ this ensures relative imports work on Netlify
 });
