@@ -340,7 +340,7 @@
               <div class="card-body">
                 <div class="chart-header">
                   <div>
-                    <h6 class="text-uppercase text-muted mb-2">Savings vs monthly passes</h6>
+                    <h6 class="text-uppercase text-muted mb-2 pl-2">Savings vs monthly passes</h6>
                     <p class="chart-subtitle mb-0">
                       Compare how each pass stacks up against your projected rides.
                     </p>
@@ -1327,5 +1327,92 @@ body.dark-mode .map-loading-content {
     transform: translateX(-70%);
   }
 }
+/* === GENERAL LAYOUT SPACING FIX === */
+.section-card {
+  padding: 2rem 1.5rem; /* restore breathing room */
+}
+
+/* Add consistent vertical rhythm */
+.mt-4 {
+  margin-top: 2rem !important;
+}
+.mb-4 {
+  margin-bottom: 2rem !important;
+}
+
+/* === CARD SPACING === */
+.v-card {
+  padding: 1.5rem 1.75rem !important; /* restore inner padding */
+  border-radius: 16px;
+}
+
+/* Give chart card more breathing space */
+.fare-chart-card .card-body {
+  padding: 2rem 1.75rem !important;
+}
+
+/* Ensure the chart header and chip have enough separation */
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem !important;
+}
+
+.chart-subtitle {
+  font-size: 0.9rem;
+  color: rgba(60, 60, 60, 0.75);
+  margin-bottom: 0.75rem;
+}
+
+/* Add vertical padding between chart and chip row */
+.chart-meta {
+  margin-top: 1rem !important;
+  margin-bottom: 0.75rem !important;
+}
+
+/* Add spacing between the chart itself and its labels */
+.chart-wrapper {
+  margin-top: 1.25rem !important;
+  margin-bottom: 0.5rem !important;
+  height: 320px !important;
+}
+
+/* === FARE RESULT CARD === */
+.fare-result-card {
+  padding: 2rem 2rem !important;
+  gap: 1rem;
+}
+
+/* Give chips some room from top and bottom */
+.fare-stat-chip-group {
+  margin-top: 1rem !important;
+  gap: 0.8rem !important;
+}
+
+/* === MONTHLY PASS COMPANION === */
+.fare-input-sheet {
+  padding: 1.25rem !important;
+  border-radius: 14px;
+}
+
+/* Create room between each slider section */
+.row.g-3 {
+  row-gap: 1.5rem !important;
+}
+
+/* === TABLE SPACING === */
+.table-responsive {
+  margin-top: 1.5rem !important;
+  margin-bottom: 1rem !important;
+}
+
+/* === CHIP TWEAKS === */
+.v-chip {
+  font-size: 0.9rem !important;
+  padding: 0 12px !important;
+  height: 34px !important;
+}
+
 
 </style>
