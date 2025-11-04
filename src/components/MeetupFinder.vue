@@ -3,10 +3,10 @@
     <div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-4">
       <div>
         <h2 class="section-title mb-2">Meet-up Point Finder</h2>
-        <p class="mb-0">
-          Enter origin stations for your group and we'll suggest the fairest MRT interchange, minimising total travel
-          time for everyone.
-        </p>
+        <TextGenerateEffect 
+          words="Where are you starting from? Enter your home MRT, and we'll find the fairest meeting point for your group!"
+          :duration="2500"
+        />
       </div>
     </div>
 
@@ -307,6 +307,7 @@ import mapboxgl from 'mapbox-gl';
 import { useRoutePlanner } from '../composables/useRoutePlanner';
 import { STATION_CODES_BY_LINE } from '../data/stationCoordinates';
 import { TRAIN_STATION_LINES, LINE_COLOR_MAP } from '../data/stations';
+import TextGenerateEffect from './TextGenerateEffect.vue';
 
 // Helper function to get station colors (excluding LRT)
 function getStationColors(stationName) {
@@ -2028,9 +2029,10 @@ body.dark-mode .section-card {
 }
 
 body.dark-mode .meetup-container {
-  background: rgba(15, 17, 21, 0.8) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  box-shadow: 0 6px 28px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  background: rgba(12, 14, 18, 0.95) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  position: relative;
 }
 
 body.dark-mode .meetup-container::before {
@@ -2038,11 +2040,13 @@ body.dark-mode .meetup-container::before {
 }
 
 body.dark-mode .person-card {
-  background: rgba(21, 24, 33, 0.9);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(21, 24, 33, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   color: var(--color-text);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
   transition: all 0.3s ease;
+  position: relative;
+  z-index: 1;
 }
 
 body.dark-mode .person-card.active {
