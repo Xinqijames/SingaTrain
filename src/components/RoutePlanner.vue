@@ -610,48 +610,40 @@ onBeforeUnmount(() => {
             Smart MRT navigation for Singapore
           </p>
         </div>
-        <div class="rp-actions">
-          <v-btn
-            variant="outlined"
-            class="action-btn"
-            prepend-icon="mdi-crosshairs-gps"
-            @click="
-              () => {
-                /* TODO: integrate geolocation if available */
-              }
-            "
-          >
-            Locate me
-          </v-btn>
-        </div>
       </div>
 
       <div class="rp-form" :class="{ stacked: smAndDown }">
-        <v-select
+        <v-autocomplete
           class="rp-input"
           :items="stations"
           item-title="name"
           item-value="id"
           v-model="startStation"
           label="Start station"
+          placeholder="Type to search..."
           variant="outlined"
           density="comfortable"
           hide-details
           :menu-props="{ maxHeight: 320 }"
           prepend-inner-icon="mdi-map-marker"
+          clearable
+          auto-select-first
         />
-        <v-select
+        <v-autocomplete
           class="rp-input"
           :items="stations"
           item-title="name"
           item-value="id"
           v-model="endStation"
           label="End station"
+          placeholder="Type to search..."
           variant="outlined"
           density="comfortable"
           hide-details
           :menu-props="{ maxHeight: 320 }"
           prepend-inner-icon="mdi-flag-checkered"
+          clearable
+          auto-select-first
         />
         <v-btn
           class="rp-plan"
@@ -699,17 +691,12 @@ onBeforeUnmount(() => {
         </div>
         <v-sheet class="rp-controls" rounded="lg" elevation="1">
           <div class="rp-ctrl-left">
-            <v-chip size="small" class="mr-2" color="success" variant="flat" prepend-icon="mdi-clock-outline">
-              <span v-if="lastPlannedAt">Updated {{ new Date(lastPlannedAt).toLocaleTimeString() }}</span>
-              <span v-else>Ready</span>
-            </v-chip>
-            <v-chip size="small" variant="tonal" prepend-icon="mdi-counter">
+            <v-chip size="small" variant="outlined" prepend-icon="mdi-counter">
               {{ progressIndex + 1 }} / {{ Math.max(totalStops, 0) }} stops
             </v-chip>
             <v-chip
               v-if="routeSummary"
               size="small"
-              color="primary"
               variant="outlined"
               prepend-icon="mdi-timer-sand"
             >
@@ -789,6 +776,13 @@ onBeforeUnmount(() => {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.rp-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+  border-color: rgba(249, 115, 22, 0.5);
 }
 
 .rp-header {
@@ -831,6 +825,31 @@ onBeforeUnmount(() => {
 
 .rp-input :deep(.v-field__input) {
   min-height: 48px;
+  padding-left: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  margin-top: 10px !important;
+}
+
+.rp-input :deep(.v-field__input input) {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+}
+
+.rp-input :deep(.v-autocomplete__content) {
+  border: none !important;
+}
+
+.rp-input :deep(.v-field--focused .v-field__input) {
+  border: none !important;
+  outline: none !important;
+}
+
+.rp-input :deep(.v-field__prepend-inner) {
+  padding-right: 8px !important;
 }
 
 .rp-plan {
