@@ -1899,7 +1899,7 @@ body.dark-mode .station-selector .icon.icon-active {
   letter-spacing: 2px;
   background: var(--color-surface);
   color: var(--color-text);
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: text;
   line-height: 20px;
   display: flex;
@@ -2052,13 +2052,13 @@ body.dark-mode .person-card .person-info small {
 
 /* Dark mode input styling */
 body.dark-mode .station-selector .input {
-  border-color: white;
-  background: var(--color-surface);
-  color: var(--color-text);
+  border-color: #333;
+  background: white;
+  color: #000;
 }
 
 body.dark-mode .station-selector .input:focus {
-  border: 0.5px solid white;
+  border: 0.5px solid #333;
   box-shadow: -5px -5px 0px #f97316;
 }
 
