@@ -68,7 +68,13 @@
         <div class="mb-3 d-flex align-items-center gap-3">
           <h4 class="mb-0 d-flex align-items-center flex-wrap gap-2 flex-grow-1" style="color: var(--color-text);">
             <span class="material-icons me-2 text-danger">place</span>
-            <span><strong>Suggested meet-up: {{ (result || hidingResult)?.station || '' }}</strong></span>
+            <span 
+              class="meetup-station-name" 
+              style="cursor: pointer; transition: color 0.2s ease;"
+              @click="zoomToMeetupStation((result || hidingResult)?.station)"
+            >
+              <strong>Suggested meet-up: {{ (result || hidingResult)?.station || '' }}</strong>
+            </span>
             <div class="d-flex align-items-center gap-2 ms-2">
               <span
                 v-for="code in getStationCodes((result || hidingResult)?.station)"
@@ -305,6 +311,7 @@ const { allStations: stations, shortestPath, estimateTimeMinutes, summariseSegme
 
 const MAPBOX_TOKEN = 'pk.eyJ1IjoiY2hlZWF1biIsImEiOiJja2NydG83cWMwaGJsMnBqdjR5aHc3MzdlIn0.YGTZpi7JQMquEOv9E8K_bg';
 const GEOJSON_URL = '/sg-rail.geojson';
+const EXITS_GEOJSON_URL = '/railrouter/sg-rail-walks.geo.89ccbffa.json';
 const MAX_PARTICIPANTS = 10;
 
 let idCounter = 0;
@@ -327,6 +334,7 @@ let feedbackTimeout = null;
 const stationLookup = new Map();
 const participantMarkers = new Map();
 let meetupMarker = null;
+const allExitsData = ref([]); // Store all exits for filtering
 
 const mapLoading = computed(() => !mapLoaded.value && !mapLoadError.value);
 
@@ -608,12 +616,36 @@ function zoomToMeetupStation(stationName) {
   if (!mapInstance.value || !mapLoaded.value || !stationName) return;
   const feature = stationLookup.get(stationName.toLowerCase());
   if (!feature) return;
+  
+  // Get station codes for filtering nearby exits
+  const stationCodes = getStationCodes(stationName).map(c => c.code);
+  console.log('Zooming to station:', stationName, 'with codes:', stationCodes);
+  
+  // Use flyTo with 3D effect
   mapInstance.value.flyTo({
     center: feature.geometry.coordinates,
-    zoom: 16, // Increased zoom for clearer view
+    zoom: 17.5, // Increased zoom for 3D view to see exits clearly
+    pitch: 60, // 3D tilt effect (0-60 degrees)
+    bearing: 0, // Rotation angle (0 = north up)
     essential: true,
-    speed: 0.8
+    speed: 1.2 // Slightly faster for smoother animation
   });
+  
+  // Show all exits when zoomed in - they'll appear in the visible area
+  // Mapbox will automatically show only visible exits based on zoom level
+  setTimeout(() => {
+    if (mapInstance.value.getLayer('singatrain-exits') && allExitsData.value.length > 0) {
+      const source = mapInstance.value.getSource('singatrain-exits');
+      if (source) {
+        // Ensure all exits are loaded (they'll be filtered by zoom/visibility automatically)
+        source.setData({
+          type: 'FeatureCollection',
+          features: allExitsData.value
+        });
+        console.log(`Showing ${allExitsData.value.length} exits at zoom level ${mapInstance.value.getZoom()}`);
+      }
+    }
+  }, 1500); // Wait for animation to complete
 }
 
 function resetMapView() {
@@ -621,6 +653,8 @@ function resetMapView() {
   mapInstance.value.flyTo({
     center: [103.8475, 1.3011], // Initial center
     zoom: 11, // Initial zoom
+    pitch: 0, // Reset pitch to flat view
+    bearing: 0, // Reset rotation
     essential: true,
     speed: 0.8
   });
@@ -635,8 +669,10 @@ async function initMap() {
     style: 'mapbox://styles/mapbox/streets-v11',
     center: [103.8475, 1.3011],
     zoom: 11,
+    pitch: 0, // Start with no pitch
+    bearing: 0, // Start with no rotation
     renderWorldCopies: false,
-    pitchWithRotate: false,
+    pitchWithRotate: true, // Enable 3D rotation and pitch
     attributionControl: false,
     cooperativeGestures: true
   });
@@ -763,6 +799,125 @@ async function initMap() {
         }
       });
 
+      // Load exits data
+      try {
+        const exitsResponse = await fetch(EXITS_GEOJSON_URL);
+        if (exitsResponse.ok) {
+          const exitsData = await exitsResponse.json();
+          console.log('Exits data loaded:', exitsData.features.length, 'features');
+          
+          // Filter exit points (features with exit_name properties)
+          // These represent exits/connection points between stations
+          const exitPoints = exitsData.features.filter(feature => 
+            feature.geometry?.type === 'Point' && 
+            feature.properties &&
+            (feature.properties.exit_name_1 || feature.properties.exit_name_2)
+          );
+
+          console.log('Filtered exit points:', exitPoints.length);
+          
+          // Store all exits for later filtering
+          allExitsData.value = exitPoints;
+          
+          // Log first few exit points for debugging
+          if (exitPoints.length > 0) {
+            console.log('Sample exit points:', exitPoints.slice(0, 3).map(ep => ({
+              coords: ep.geometry.coordinates,
+              exit1: ep.properties.exit_name_1,
+              exit2: ep.properties.exit_name_2,
+              station1: ep.properties.station_codes_1,
+              station2: ep.properties.station_codes_2
+            })));
+          }
+
+          if (exitPoints.length > 0) {
+            // Ensure source doesn't exist before adding
+            if (mapInstance.value.getSource('singatrain-exits')) {
+              mapInstance.value.removeLayer('singatrain-exit-labels');
+              mapInstance.value.removeLayer('singatrain-exits');
+              mapInstance.value.removeSource('singatrain-exits');
+            }
+
+            mapInstance.value.addSource('singatrain-exits', {
+              type: 'geojson',
+              data: {
+                type: 'FeatureCollection',
+                features: exitPoints
+              }
+            });
+
+            mapInstance.value.addLayer({
+              id: 'singatrain-exits',
+              source: 'singatrain-exits',
+              type: 'circle',
+              minzoom: 13, // Show exits starting from zoom 13 (lower threshold)
+              maxzoom: 24,
+              paint: {
+                'circle-radius': [
+                  'interpolate',
+                  ['linear'],
+                  ['zoom'],
+                  13, 6,
+                  15, 10,
+                  17, 14,
+                  19, 18
+                ],
+                'circle-color': '#f97316',
+                'circle-stroke-color': '#ffffff',
+                'circle-stroke-width': 3,
+                'circle-opacity': 1
+              }
+            }, 'singatrain-labels'); // Add before labels so labels appear on top
+
+            // Add exit labels
+            mapInstance.value.addLayer({
+              id: 'singatrain-exit-labels',
+              source: 'singatrain-exits',
+              type: 'symbol',
+              minzoom: 14, // Show labels starting from zoom 14
+              maxzoom: 24,
+              layout: {
+                'text-field': [
+                  'case',
+                  ['has', 'exit_name_2'],
+                  ['concat', ['get', 'exit_name_1'], '/', ['get', 'exit_name_2']],
+                  ['get', 'exit_name_1']
+                ],
+                'text-size': [
+                  'interpolate',
+                  ['linear'],
+                  ['zoom'],
+                  14, 11,
+                  16, 13,
+                  18, 15,
+                  20, 17
+                ],
+                'text-anchor': 'top',
+                'text-offset': [0, 1.5],
+                'text-font': ['Open Sans Regular', 'Arial Unicode MS Bold'],
+                'text-allow-overlap': true,
+                'text-ignore-placement': false
+              },
+              paint: {
+                'text-color': '#ffffff',
+                'text-halo-color': '#f97316',
+                'text-halo-width': 3,
+                'text-halo-blur': 1
+              }
+            });
+            
+            console.log('Exits layer added successfully');
+          } else {
+            console.warn('No exit points found in data');
+          }
+        } else {
+          console.error('Failed to fetch exits data:', exitsResponse.status, exitsResponse.statusText);
+        }
+      } catch (error) {
+        console.error('Failed to load exits data:', error);
+        // Continue without exits - not critical
+      }
+
 
       mapInstance.value.on('mouseenter', 'singatrain-stations', () => {
         mapInstance.value && (mapInstance.value.getCanvas().style.cursor = 'pointer');
@@ -775,6 +930,32 @@ async function initMap() {
         const stationName = feature?.properties?.name;
         handleMapStationSelection(stationName);
       });
+
+      // Add hover interactions for exits
+      if (mapInstance.value.getLayer('singatrain-exits')) {
+        mapInstance.value.on('mouseenter', 'singatrain-exits', () => {
+          mapInstance.value && (mapInstance.value.getCanvas().style.cursor = 'pointer');
+          mapInstance.value.setPaintProperty('singatrain-exits', 'circle-radius', [
+            'interpolate',
+            ['linear'],
+            ['zoom'],
+            15, 6,
+            17, 8,
+            19, 10
+          ]);
+        });
+        mapInstance.value.on('mouseleave', 'singatrain-exits', () => {
+          mapInstance.value && (mapInstance.value.getCanvas().style.cursor = '');
+          mapInstance.value.setPaintProperty('singatrain-exits', 'circle-radius', [
+            'interpolate',
+            ['linear'],
+            ['zoom'],
+            15, 4,
+            17, 6,
+            19, 8
+          ]);
+        });
+      }
 
       mapLoaded.value = true;
       mapLoadError.value = '';
@@ -1483,6 +1664,20 @@ body.dark-mode .alert-warning {
   background-color: rgba(251, 146, 60, 0.15);
   border-color: rgba(251, 146, 60, 0.3);
   color: #fb923c;
+}
+
+/* Clickable meetup station name styling */
+.meetup-station-name {
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.meetup-station-name:hover {
+  color: var(--color-primary) !important;
+}
+
+.meetup-station-name strong {
+  color: inherit;
 }
 
 </style>
