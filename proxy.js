@@ -7,7 +7,7 @@ const app = express();
 app.use(cors());
 
 const API_BASE = "https://datamall2.mytransport.sg/ltaodataservice";
-const ACCOUNT_KEY = "cC6wlxIHROGAyH+80wpqbg=="; // ← replace with your actual key
+const ACCOUNT_KEY = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"; // ← replace with your actual key
 
 app.get("/api/*", async (req, res) => {
   const target = req.params[0];
