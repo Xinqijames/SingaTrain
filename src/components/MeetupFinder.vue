@@ -450,6 +450,9 @@ function clearResults() {
   // Reset map colors to original
   resetMapColors();
   
+  // Reset map view to flat (2D) mode so users can easily click stations again
+  resetMapView();
+  
   // Wait for brush animation to complete (0.8s) before showing person cards
   setTimeout(() => {
     isHiding.value = false;
@@ -774,6 +777,12 @@ function resetStationAnimation() {
 
 function handleMapStationSelection(stationName, event) {
   if (!stationName) return;
+  
+  // Prevent assigning the meetup station when results are shown
+  if (result.value && result.value.station === stationName) {
+    setMapFeedback('Cannot assign the suggested meet-up station. Click Cancel to modify participants.');
+    return;
+  }
   
   // Animate the station click
   animateStationClick(stationName);
