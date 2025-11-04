@@ -1,8 +1,5 @@
 
 <template>
-
-
-
   <section id="profile" class="section-card">
 
       <!-- MESSAGE DISPLAYS -->
@@ -16,10 +13,22 @@
       <h2 class="mt-5 pt-5">Join or Sign In</h2>
 
       <label for="auth-email">Email:</label>
-      <input type="email" id="auth-email" v-model="authEmail" placeholder="Enter your email" />
+      <input 
+        type="email" 
+        id="auth-email" 
+        v-model="authEmail" 
+        placeholder="Enter your email"
+        :class="{ 'has-value': authEmail }"
+      />
 
       <label for="auth-password">Password:</label>
-      <input type="password" id="auth-password" v-model="authPassword" placeholder="Enter your password" />
+      <input 
+        type="password" 
+        id="auth-password" 
+        v-model="authPassword" 
+        placeholder="Enter your password"
+        :class="{ 'has-value': authPassword }"
+      />
 
       <div id="password-requirements" v-if="showPasswordRequirements">
         <p>Password must contain:</p>
@@ -44,8 +53,8 @@
 <!-- RESET PASSWORD MODAL -->
 <div v-if="showResetPassword" class="modal-overlay">
   <div class="modal-content">
-    <h3 style="color: var(--bs-body-color);">Reset Your Password</h3>
-    <p style="color: var(--bs-body-color);">Enter your email to receive a password reset link.</p>
+    <h3>Reset Your Password</h3>
+    <p>Enter your email to receive a password reset link.</p>
     <input type="email" v-model="resetEmail" placeholder="Enter your email" />
 
     <div class="modal-buttons">
@@ -69,14 +78,14 @@
         <div class="left-column">
           <!-- Change Display Name -->
           <div class="card" id="change-name-div">
-            <h3 class="text-dark">Change Display Name</h3>
+            <h3>Change Display Name</h3>
             <input type="text" v-model="profileName" placeholder="Current name" />
             <button @click="saveProfileNameHandler">Save Profile</button>
           </div>
 
           <!-- Add New Favorite Station -->
           <div class="card" id="add-favorite-div">
-            <h3 class="text-dark">Add New Favorite Station</h3>
+            <h3>Add New Favorite Station</h3>
             <label for="favoriteLabel">Label:</label>
             <input type="text" id="favoriteLabel" v-model="favoriteLabel" placeholder="Favorite name" />
 
@@ -116,7 +125,7 @@
                   </div>
                 </div>
               </div>
-                <h3 class="favorites-title text-dark">Your Favorite Stations</h3>
+                <h3 class="favorites-title">Your Favorite Stations</h3>
               <div class="favorites-list">
                 <ul id="favoriteList">
                   <li v-for="(fav, index) in favorites" :key="index">
@@ -139,8 +148,8 @@
      <!-- DELETE ACCOUNT MODAL -->
 <div v-if="showDeleteModal" class="modal-overlay">
   <div class="modal-content">
-    <h3 style="color: var(--bs-body-color);">Confirm Account Deletion</h3>
-    <p style="color: var(--bs-body-color);">Enter your password to confirm deletion. This action cannot be undone.</p>
+    <h3>Confirm Account Deletion</h3>
+    <p>Enter your password to confirm deletion. This action cannot be undone.</p>
     <input type="password" v-model="reauthPassword" placeholder="Password" />
 
     <div style="color: var(--bs-body-color);" v-if="deleteErrorMessage" class="error-message">{{ deleteErrorMessage }}</div>

@@ -4006,16 +4006,15 @@ button.outlined:hover,
 }
 
 .auth-links a,
-register-link {
+.register-link {
   text-decoration: none;
   color: #1e40af;
-  /* deep blue */
   font-weight: 500;
   transition: color 0.2s ease, transform 0.2s ease;
 }
 
 .auth-links a:hover,
-.register-link {
+.register-link:hover {
   color: #0f172a;
   transform: scale(1.03);
 }
@@ -4553,4 +4552,443 @@ register-link {
   margin: 0;
   font-size: 1rem;
   color: var(--neutral-800);
+}
+
+/* ===== DASHBOARD / AUTH CONTAINERS ===== */
+#auth-section,
+#password-reset-section,
+#dashboard-section {
+  background: #fff;
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--card-shadow);
+  padding: 3rem;
+  margin: 40px auto;
+  max-width: 80vw;
+  text-align: left;
+  transition: all 0.3s ease;
+}
+
+body.dark-mode #auth-section,
+body.dark-mode #password-reset-section,
+body.dark-mode #dashboard-section {
+  background: linear-gradient(135deg,
+      rgba(24, 27, 33, 0.98) 0%,
+      rgba(15, 17, 21, 0.95) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+#auth-section h2,
+#password-reset-section h2,
+#dashboard-section h2 {
+  color: var(--sg-red);
+  font-size: var(--text-2xl);
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+body.dark-mode #auth-section h2,
+body.dark-mode #password-reset-section h2,
+body.dark-mode #dashboard-section h2 {
+  color: #ffa726;
+}
+
+#auth-section label,
+#password-reset-section label,
+#dashboard-section label {
+  display: block;
+  font-weight: 600;
+  margin-top: 10px;
+  color: var(--neutral-700);
+}
+
+body.dark-mode #auth-section label,
+body.dark-mode #password-reset-section label,
+body.dark-mode #dashboard-section label {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+#auth-section input,
+#password-reset-section input,
+#dashboard-section input,
+#dashboard-section select {
+  width: 100%;
+  padding: 0.6rem 1rem;
+  margin-top: 6px;
+  border: 1px solid var(--neutral-300);
+  border-radius: var(--border-radius-sm);
+  font-size: var(--text-base);
+  transition: all 0.3s ease;
+  background: #ffffff;
+}
+
+body.dark-mode #auth-section input,
+body.dark-mode #password-reset-section input,
+body.dark-mode #dashboard-section input,
+body.dark-mode #dashboard-section select {
+  background: rgba(15, 17, 21, 0.85);
+  color: rgba(255, 255, 255, 0.95);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Light up effect when input has value in dark mode */
+body.dark-mode #auth-section input:not(:placeholder-shown),
+body.dark-mode #password-reset-section input:not(:placeholder-shown),
+body.dark-mode #dashboard-section input:not(:placeholder-shown),
+body.dark-mode #dashboard-section select:not([value=""]) {
+  background: rgba(255, 167, 38, 0.08);
+  border-color: rgba(255, 167, 38, 0.35);
+  box-shadow: 0 0 12px rgba(255, 167, 38, 0.15);
+}
+
+#auth-section input:focus,
+#password-reset-section input:focus,
+#dashboard-section input:focus,
+#dashboard-section select:focus {
+  border-color: var(--sg-red);
+  box-shadow: 0 0 4px rgba(var(--sg-orange-rgb), 0.3);
+  outline: none;
+}
+
+body.dark-mode #auth-section input:focus,
+body.dark-mode #password-reset-section input:focus,
+body.dark-mode #dashboard-section input:focus,
+body.dark-mode #dashboard-section select:focus {
+  border-color: #ffa726;
+  box-shadow: 0 0 8px rgba(255, 167, 38, 0.4);
+}
+
+/* ===== DARK MODE - MISSING STYLES ===== */
+
+/* Password Requirements */
+body.dark-mode #password-requirements {
+  background: rgba(15, 17, 21, 0.85);
+  border-left-color: #ffa726;
+}
+
+body.dark-mode #password-requirements p {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+body.dark-mode .not-met {
+  color: #ff6b6b;
+}
+
+body.dark-mode .met {
+  color: #51cf66;
+}
+
+/* Message Styles */
+body.dark-mode #success-message {
+  background-color: rgba(34, 197, 94, 0.15);
+  color: #51cf66;
+  border-color: rgba(34, 197, 94, 0.3);
+}
+
+body.dark-mode #error-message {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #ff6b6b;
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+/* Profile Layout Cards */
+body.dark-mode .card {
+  background: linear-gradient(135deg,
+      rgba(24, 27, 33, 0.98) 0%,
+      rgba(15, 17, 21, 0.95) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode .card:hover {
+  box-shadow: 0 12px 40px rgba(255, 167, 38, 0.15);
+}
+
+/* Account Info */
+body.dark-mode .account-row .material-icons {
+  color: #ffa726;
+}
+
+body.dark-mode .account-row .label {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+body.dark-mode .account-row p:last-child {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+/* Flip Card */
+body.dark-mode .flip-card-front,
+body.dark-mode .flip-card-back {
+  background: linear-gradient(135deg,
+      rgba(24, 27, 33, 0.98) 0%,
+      rgba(15, 17, 21, 0.95) 100%);
+}
+
+/* Favorites */
+body.dark-mode .favorites-title {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+body.dark-mode #favoriteList div {
+  background: rgba(15, 17, 21, 0.85);
+  border-color: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Hover Hint */
+body.dark-mode .hover-hint {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Auth Links */
+body.dark-mode .auth-links a,
+body.dark-mode .register-link {
+  color: #64b5f6;
+}
+
+body.dark-mode .auth-links a:hover,
+body.dark-mode .register-link:hover {
+  color: #90caf9;
+}
+
+/* Buttons - Filled */
+body.dark-mode button.filled,
+body.dark-mode #dashboard-section #logout-btn, 
+body.dark-mode #dashboard-section #login-btn {
+  background-color: #ffa726;
+  color: #1a1d24;
+}
+
+body.dark-mode button.filled:hover,
+body.dark-mode #dashboard-section #logout-btn:hover,
+body.dark-mode #dashboard-section #login-btn:hover {
+  background-color: #ff9800;
+}
+
+/* Buttons - Outlined */
+body.dark-mode button.outlined,
+body.dark-mode #change-name-div button,
+body.dark-mode #add-favorite-div button {
+  border-color: #ffa726;
+  color: #ffa726;
+}
+
+body.dark-mode button.outlined:hover,
+body.dark-mode #change-name-div button:hover,
+body.dark-mode #add-favorite-div button:hover {
+  background: #ffa726;
+  color: #1a1d24;
+}
+
+/* Delete Account Button */
+body.dark-mode #dashboard-section #delete-account-btn {
+  background-color: rgba(229, 231, 235, 0.1);
+  border-color: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+body.dark-mode #dashboard-section #delete-account-btn:hover {
+  background-color: rgba(229, 231, 235, 0.15);
+}
+
+body.dark-mode #dashboard-section #delete-account-btn:active {
+  background-color: rgba(156, 163, 175, 0.2);
+}
+
+/* Modal */
+body.dark-mode .modal-overlay {
+  background: rgba(0, 0, 0, 0.75);
+}
+
+body.dark-mode .modal-content {
+  background: linear-gradient(135deg,
+      rgba(24, 27, 33, 0.98) 0%,
+      rgba(15, 17, 21, 0.95) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.95);
+}
+
+body.dark-mode .modal-buttons .confirm {
+  background: #ffa726;
+  color: #1a1d24;
+}
+
+body.dark-mode .modal-buttons .confirm:hover {
+  background: #ff9800;
+}
+
+body.dark-mode .modal-buttons .cancel {
+  background: rgba(156, 163, 175, 0.3);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+body.dark-mode .modal-buttons .cancel:hover {
+  background: rgba(156, 163, 175, 0.4);
+}
+
+/* Overlay Message */
+body.dark-mode .overlay-message.error {
+  background-color: #c92a2a;
+}
+
+body.dark-mode .overlay-message.success {
+  background-color: #2b8a3e;
+}
+
+/* Loading Overlay */
+body.dark-mode .loading-overlay {
+  background: rgba(15, 17, 21, 0.95);
+  backdrop-filter: blur(8px);
+}
+
+body.dark-mode .train-loader {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+body.dark-mode .track {
+  background: linear-gradient(90deg,
+      rgba(255, 255, 255, 0.1),
+      rgba(255, 255, 255, 0.2));
+}
+
+body.dark-mode .engine,
+body.dark-mode .car {
+  background-color: #ffa726;
+}
+
+body.dark-mode .engine::before {
+  background: #ff9800;
+}
+
+body.dark-mode .engine::after,
+body.dark-mode .car::after {
+  background: rgba(255, 167, 38, 0.25);
+}
+
+body.dark-mode .loading-overlay p {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Card Header */
+body.dark-mode .card-header {
+  background: transparent !important;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+/* ===== DARK MODE - MISSING STYLES ===== */
+
+/* Password Requirements */
+body.dark-mode #password-requirements {
+  background: rgba(15, 17, 21, 0.85);
+  border-left-color: #ffa726;
+}
+
+body.dark-mode #password-requirements p {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+body.dark-mode .not-met {
+  color: #ff6b6b;
+}
+
+body.dark-mode .met {
+  color: #51cf66;
+}
+
+/* Message Styles */
+body.dark-mode #success-message {
+  background-color: rgba(34, 197, 94, 0.15);
+  color: #51cf66;
+  border-color: rgba(34, 197, 94, 0.3);
+}
+
+body.dark-mode #error-message {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #ff6b6b;
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+/* Profile Layout Cards */
+body.dark-mode .card {
+  background: linear-gradient(135deg,
+      rgba(24, 27, 33, 0.98) 0%,
+      rgba(15, 17, 21, 0.95) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode .card:hover {
+  box-shadow: 0 12px 40px rgba(255, 167, 38, 0.15);
+}
+
+/* Account Info */
+body.dark-mode .account-row .material-icons {
+  color: #ffa726;
+}
+
+body.dark-mode .account-row .label {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+body.dark-mode .account-row p:last-child {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+/* Flip Card */
+body.dark-mode .flip-card-front,
+body.dark-mode .flip-card-back {
+  background: linear-gradient(135deg,
+      rgba(24, 27, 33, 0.98) 0%,
+      rgba(15, 17, 21, 0.95) 100%);
+}
+
+/* Favorites */
+body.dark-mode .favorites-title {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+/* Favorite Station Dropdown */
+body.dark-mode #favoriteStation {
+  background: rgba(15, 17, 21, 0.85);
+  color: rgba(255, 255, 255, 0.95);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+body.dark-mode #favoriteStation:focus {
+  border-color: #ffa726;
+  box-shadow: 0 0 8px rgba(255, 167, 38, 0.4);
+}
+
+body.dark-mode #favoriteStation option {
+  background: rgba(15, 17, 21, 0.98);
+  color: rgba(255, 255, 255, 0.95);
+}
+
+/* Favorite List Items */
+body.dark-mode #favoriteList li {
+  background: rgba(24, 27, 33, 0.9);
+  border-color: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+body.dark-mode #favoriteList li span,
+body.dark-mode #favoriteList li strong {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+body.dark-mode #favoriteList li button {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.4);
+  color: #ff6b6b;
+}
+
+body.dark-mode #favoriteList li button:hover {
+  background: rgba(239, 68, 68, 0.3);
+  border-color: rgba(239, 68, 68, 0.6);
+}
+
+/* Hover Hint */
+body.dark-mode .hover-hint {
+  color: rgba(255, 255, 255, 0.7) !important;
 }
