@@ -1,27 +1,30 @@
 <template>
-  <TrainReveal />
-  <div>
-    <!-- Background Video -->
-    <div class="video-background">
-      <video autoplay muted loop playsinline class="bg-video">
-        <source src="/MrtFootage.mp4" type="video/mp4">
-      </video>
-      <div class="video-overlay"></div>
+  <LoadingPage v-if="!isAppLoaded" @loaded="handleLoadingComplete" />
+  <div v-if="isAppLoaded">
+    <TrainReveal />
+    <div>
+      <!-- Background Video -->
+      <div class="video-background">
+        <video autoplay muted loop playsinline class="bg-video">
+          <source src="/MrtFootage.mp4" type="video/mp4">
+        </video>
+        <div class="video-overlay"></div>
+      </div>
+      
+      <Navbar />
+      <main class="container main-content">
+        <transition name="fade-slide" mode="out-in">
+          <keep-alive include="RoutePlanner">
+            <component :is="currentTabComponent" :key="state.activeTab" />
+          </keep-alive>
+        </transition>
+      </main>
     </div>
-    
-    <Navbar />
-    <main class="container main-content">
-      <transition name="fade-slide" mode="out-in">
-        <keep-alive include="RoutePlanner">
-          <component :is="currentTabComponent" :key="state.activeTab" />
-        </keep-alive>
-      </transition>
-    </main>
   </div>
 </template>
 
 <script setup>
-import { computed, nextTick, onMounted, watch } from 'vue';
+import { computed, nextTick, onMounted, watch, ref } from 'vue';
 import AOS from 'aos';
 import gsap from 'gsap';
 
@@ -34,9 +37,15 @@ import MeetupFinder from './components/MeetupFinder.vue';
 import Profile from './components/Profile.vue';
 import FirstLastTrain from './components/FirstLastTrain.vue';
 import TrainReveal from './components/TrainReveal.vue';
+import LoadingPage from './components/LoadingPage.vue';
 import { useAppState } from './composables/useAppState';
 
 const { state } = useAppState();
+const isAppLoaded = ref(false);
+
+function handleLoadingComplete() {
+  isAppLoaded.value = true;
+}
 
 const tabComponents = {
   dashboard: Dashboard,
@@ -179,4 +188,5 @@ watch(
   opacity: 0;
   /* Removed transform to prevent layout shifts that break spacing */
 }
+
 </style>
