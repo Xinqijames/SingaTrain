@@ -19,13 +19,13 @@ import {
 
 // --- Firebase config ---
 const firebaseConfig = {
-    apiKey: "AIzaSyBTy0tRrYfIvPYhZ-k49IsU_IS9WuTVxKA",
-    authDomain: "singatrain.firebaseapp.com",
-    projectId: "singatrain",
-    storageBucket: "singatrain.firebasestorage.app",
-    messagingSenderId: "773752736023",
-    appId: "1:773752736023:web:456315abd28b9854058f52",
-    measurementId: "G-ZQHSRHNBCB"
+    apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+    authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+    projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+    storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+    appId: import.meta.env.VITE_FIREBASE_APP_ID,
+    measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 };
 
 // --- Initialize Firebase ---
