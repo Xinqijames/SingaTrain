@@ -22,7 +22,8 @@ This project uses the following open-source libraries:
 - [Aceternity UI](https://ui.aceternity.com/) – Modern UI components and design elements  
 - [Vercel](https://vercel.com/) – Hosting and deployment platform for web applications  
 - [Land Transport Authority (LTA) DataMall](https://datamall.lta.gov.sg/) – Source for public transport and MRT data  
-- [Mapbox](https://www.mapbox.com/) – Mapping and geolocation API for route visualization  
+- [Mapbox](https://www.mapbox.com/) – Mapping and geolocation API for route visualization 
+- [RailRouter](https://github.com/cheeaun/railrouter-sg) 
 
 
 
