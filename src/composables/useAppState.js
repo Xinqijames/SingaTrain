@@ -35,9 +35,11 @@ const defaultUser = {
 
 const persisted = loadPersistedState();
 
+// Force light mode as default - ignore any persisted darkMode preference
+// This ensures new deployments always start in light mode
 const state = reactive({
   activeTab: 'dashboard',
-  darkMode: persisted?.darkMode ?? false,
+  darkMode: false, // Always default to light mode
   favorites: persisted?.favorites ?? [],
   user: { ...defaultUser, ...(persisted?.user || {}) }
 });
