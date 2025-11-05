@@ -37,15 +37,18 @@ const persisted = loadPersistedState();
 
 const state = reactive({
   activeTab: 'dashboard',
-  darkMode: persisted?.darkMode ?? (() => {
-    if (typeof window === 'undefined' || !window.matchMedia) {
-      return false;
-    }
-    return window.matchMedia('(prefers-color-scheme: dark)').matches;
-  })(),
+  darkMode: persisted?.darkMode ?? false,
   favorites: persisted?.favorites ?? [],
   user: { ...defaultUser, ...(persisted?.user || {}) }
 });
+
+function applyColorScheme(enabled) {
+  if (typeof document === 'undefined') {
+    return;
+  }
+  document.body.classList.toggle('dark-mode', enabled);
+  document.documentElement.setAttribute('data-bs-theme', enabled ? 'dark' : 'light');
+}
 
 export function useAppState() {
   const favoritesCount = computed(() => state.favorites.length);
@@ -56,17 +59,10 @@ export function useAppState() {
 
   function setDarkMode(enabled) {
     state.darkMode = enabled;
-    if (typeof document !== 'undefined') {
-      document.body.classList.toggle('dark-mode', enabled);
-    }
   }
 
   function toggleDarkMode() {
     state.darkMode = !state.darkMode;
-    if (typeof document !== 'undefined') {
-      document.body.classList.toggle('dark-mode', state.darkMode);
-    }
-    persistState(state);
   }
 
   function addFavorite(favorite) {
@@ -96,9 +92,7 @@ export function useAppState() {
   watch(
     () => state.darkMode,
     (value) => {
-      if (typeof document !== 'undefined') {
-        document.body.classList.toggle('dark-mode', value);
-      }
+      applyColorScheme(value);
       persistState(state);
     },
     { immediate: true }
