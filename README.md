@@ -36,17 +36,6 @@
 
 **SingaTrain** is a modern, feature-rich web application designed to enhance the Singapore MRT commuting experience. Built with Vue.js and powered by real-time data, it provides comprehensive tools for route planning, fare calculation, train tracking, and meetup coordination across Singapore's extensive rail network.
 
-### Why SingaTrain?
-
-- 🚀 **Fast & Responsive**: Built with Vite for lightning-fast performance
-- 🎨 **Modern UI**: Sleek design with smooth animations and transitions
-- 📱 **Mobile-First**: Fully responsive design for all devices
-- 🗺️ **Interactive Maps**: Powered by Mapbox GL for stunning visualizations
-- 📊 **Real-Time Data**: Live train arrival times and service updates
-- 🎯 **Smart Algorithms**: Optimized pathfinding for the fastest routes
-
----
-
 ## ✨ Features
 
 ### 🗺️ Route Planner
@@ -66,21 +55,15 @@
   - Students (Primary, Secondary, Polytechnic, University)
   - National Serviceman
 - **Visual Fare Breakdown**: Color-coded fare cards for easy comparison
-- **Distance-Based Pricing**: Accurate fare calculation based on journey distance
+- **Distance-Based Pricing**: Estimated fare calculation based on journey distance
 - **Route Details**: View complete route information alongside fare estimates
 
 ### 🚊 Live Train Tracker
-- **Real-Time Arrivals**: Live train arrival times for all MRT stations
+- **Train Information**: Live crowd levels and estimated train arrival times for all MRT stations
 - **Station Selection**: Quick access to any station on the network
 - **Multiple Trains**: View arrival times for multiple upcoming trains
-- **Service Status**: Real-time updates on train services and disruptions
+- **Real Time Service Status**: Real-time updates on train services and disruptions
 - **Color-Coded Lines**: Visual indicators for different MRT lines
-
-### 🕐 First & Last Train Times
-- **Comprehensive Timetables**: View first and last train timings for all stations
-- **Line Selection**: Filter by specific MRT lines
-- **Direction Information**: Separate timings for both directions
-- **Weekend Schedules**: Access to weekend service times
 
 ### 👥 Meetup Finder
 - **Group Planning**: Find optimal meetup locations for multiple people
@@ -91,23 +74,10 @@
 - **Station Autocomplete**: Quick station search with inline suggestions
 
 ### 📊 Dashboard
+- **Interactive MRT Map**: An interactive MRT Map for quick access
+- **Next Train Arrivals**: View randomized train arrival for different stations
 - **User Profiles**: Personalized dashboard for registered users
 - **Favorite Stations**: Save frequently used stations for quick access
-- **Journey History**: Track your past route searches
-- **Usage Statistics**: View your commuting patterns and insights
-
----
-
-## 📸 Screenshots
-
-### Route Planner
-*Plan your MRT journey with an interactive map and detailed route information*
-
-### Fare Calculator
-*Calculate fares for all commuter types with visual breakdowns*
-
-### Meetup Finder
-*Find the perfect meetup location for your group*
 
 ---
 
@@ -194,7 +164,6 @@
 
 ### Mapping & Visualization
 - **Mapbox GL 2.15.0** - Interactive map rendering and visualization
-- **Leaflet 1.9.4** - Additional mapping functionality
 - **Chart.js 4.4.6** - Data visualization and charting
 
 ### UI & Animations
@@ -284,49 +253,6 @@ SingaTrain/
 
 ---
 
-## 🤝 Contributing
-
-We welcome contributions! Here's how you can help:
-
-### Reporting Bugs
-- Use the GitHub issue tracker
-- Describe the bug in detail
-- Include steps to reproduce
-- Add screenshots if applicable
-
-### Feature Requests
-- Open an issue with the `enhancement` label
-- Describe the feature and its benefits
-- Discuss implementation approach
-
-### Pull Requests
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-### Development Guidelines
-- Follow Vue.js style guide
-- Write clear commit messages
-- Add comments for complex logic
-- Test your changes thoroughly
-- Update documentation as needed
-
----
-
-## 🗺️ Roadmap
-
-- [ ] **Mobile App**: Native iOS and Android applications
-- [ ] **Offline Mode**: Cached data for offline route planning
-- [ ] **Bus Integration**: Include bus routes and connections
-- [ ] **Saved Routes**: Bookmark frequently used routes
-- [ ] **Notifications**: Push notifications for service disruptions
-- [ ] **Multi-language**: Support for Chinese, Malay, and Tamil
-- [ ] **Accessibility**: Enhanced accessibility features
-- [ ] **Apple Watch**: Companion watchOS app
-
----
 
 ## 📝 License
 
