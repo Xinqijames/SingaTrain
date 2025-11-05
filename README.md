@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![SingaTrain Logo](public/logo.png)
+![SingaTrain Logo](public/singatrainlogo.png)
 
 **A comprehensive Singapore MRT navigation and planning application**
 
@@ -11,7 +11,7 @@
 [![Vuetify](https://img.shields.io/badge/Vuetify-3.7.3-1867C0?style=flat&logo=vuetify&logoColor=white)](https://vuetifyjs.com/)
 [![Firebase](https://img.shields.io/badge/Firebase-12.4.0-FFCA28?style=flat&logo=firebase&logoColor=black)](https://firebase.google.com/)
 
-[Features](#features) • [Installation](#installation) • [Usage](#usage) • [Tech Stack](#tech-stack) • [Contributing](#contributing)
+[Features](#features) • [Installation](#installation) • [Usage](#usage) • [Tech Stack](#tech-stack) • [Project-Structure](#project-structure) • [Configuration](#configuration)
 
 </div>
 
@@ -21,63 +21,51 @@
 
 - [About](#about)
 - [Features](#features)
-- [Screenshots](#screenshots)
 - [Installation](#installation)
 - [Usage](#usage)
 - [Tech Stack](#tech-stack)
 - [Project Structure](#project-structure)
 - [Configuration](#configuration)
-- [Contributing](#contributing)
 - [License](#license)
+- [Acknowledgments](#acknowledgments)
+- [Contact](#contact)
 
 ---
 
 ## 🎯 About
 
-**SingaTrain** is a modern, feature-rich web application designed to enhance the Singapore MRT commuting experience. Built with Vue.js and powered by real-time data, it provides comprehensive tools for route planning, fare calculation, train tracking, and meetup coordination across Singapore's extensive rail network.
+**SingaTrain** delivers a polished, data-driven experience for navigating Singapore's MRT network. The Vue 3 single-page application combines animated route planning, dynamic fare projections, simulated live train telemetry, and collaborative meetup tooling backed by Firebase and the LTA DataMall API.
+
+---
 
 ## ✨ Features
 
 ### 🗺️ Route Planner
-- **Smart Route Planning**: Find the fastest MRT routes between any two stations
-- **Interactive Map**: Visualize your journey with animated route display
-- **Real-Time Simulation**: Watch a train marker animate along your planned route
-- **Detailed Segments**: View line-by-line journey breakdown with stops and transfers
-- **Time & Distance**: Accurate estimates for travel time and distance
-- **Autocomplete Search**: Type-ahead station search for quick selection
+- **Smart routing** between any pair of MRT stations with station autocomplete
+- **Animated map view** powered by Mapbox GL with live train marker simulation
+- **Journey breakdown** detailing per-line segments, transfers, duration, and distance
+- **Saved context** so the last planned route remains cached during the session
 
-### 💰 Fare Calculator
-- **Comprehensive Fare Types**: Calculate fares for all commuter categories:
-  - Adult (Standard)
-  - Senior Citizen
-  - Persons with Disabilities
-  - Workfare Concession
-  - Students (Primary, Secondary, Polytechnic, University)
-  - National Serviceman
-- **Visual Fare Breakdown**: Color-coded fare cards for easy comparison
-- **Distance-Based Pricing**: Estimated fare calculation based on journey distance
-- **Route Details**: View complete route information alongside fare estimates
+### 💳 Fare Calculator
+- **Commuter profiles** covering adult, concession, student, NS, and Workfare fares
+- **Fare charts** rendered with Chart.js to highlight optimal travel passes
+- **Cost analysis** including distance-based estimates and recommended pass selection
 
-### 🚊 Live Train Tracker
-- **Train Information**: Live crowd levels and estimated train arrival times for all MRT stations
-- **Station Selection**: Quick access to any station on the network
-- **Multiple Trains**: View arrival times for multiple upcoming trains
-- **Real Time Service Status**: Real-time updates on train services and disruptions
-- **Color-Coded Lines**: Visual indicators for different MRT lines
+### 🚉 Live Train Tracker
+- **LTA DataMall integration** for service alerts, coupled with simulated arrival boards
+- **Line-aware crowd levels** with colour-coded status indicators
+- **Favorite stations** with Firebase-backed persistence for authenticated users
+- **First & last train timings** surfaced per line for quick reference
 
-### 👥 Meetup Finder
-- **Group Planning**: Find optimal meetup locations for multiple people
-- **Multiple Participants**: Add unlimited starting locations
-- **Smart Algorithm**: Calculates fairest meetup point based on travel time
-- **Travel Time Breakdown**: See individual journey times for each participant
-- **Interactive Map**: Visualize all participants and the suggested meetup point
-- **Station Autocomplete**: Quick station search with inline suggestions
+### 👥 Meetup Planner
+- **Multi-origin meetups** that evaluate equitable MRT meetup locations
+- **Travel time balancing** with individual journey summaries and line colours
+- **Interactive visualization** that plots all participants and the suggested station
 
-### 📊 Dashboard
-- **Interactive MRT Map**: An interactive MRT Map for quick access
-- **Next Train Arrivals**: View randomized train arrival for different stations
-- **User Profiles**: Personalized dashboard for registered users
-- **Favorite Stations**: Save frequently used stations for quick access
+### 📊 Dashboard & Extras
+- **Personalised landing dashboard** featuring shortcuts to all modules
+- **Immersive loading and reveal animations** built with GSAP and custom Three.js scenes
+- **Responsive Vuetify UI** paired with Bootstrap utility classes for layout polish
 
 ---
 
@@ -85,8 +73,8 @@
 
 ### Prerequisites
 
-- **Node.js** (v16 or higher)
-- **npm** or **yarn**
+- **Node.js 18+** (tested with Node 18 LTS)
+- **npm** (ships with Node) or **yarn**
 - **Git**
 
 ### Steps
@@ -103,81 +91,67 @@
    ```
 
 3. **Configure environment variables**
-   
-   Create a `config.js` file in the root directory:
-   ```javascript
-   export const LTA_API_KEY = 'YOUR_LTA_API_KEY_HERE';
-   ```
-
-   Create a `.env` file for Firebase configuration:
+   Create a `.env` file in the project root:
    ```env
+   VITE_LTA_API_KEY=your_lta_datamall_api_key
    VITE_FIREBASE_API_KEY=your_firebase_api_key
    VITE_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
    VITE_FIREBASE_PROJECT_ID=your_project_id
    VITE_FIREBASE_STORAGE_BUCKET=your_project.appspot.com
    VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
    VITE_FIREBASE_APP_ID=your_app_id
+   VITE_FIREBASE_MEASUREMENT_ID=your_measurement_id   # optional, required if Analytics is enabled
    ```
+   `config.js` automatically reads `VITE_LTA_API_KEY` and warns at runtime if it is missing.
 
-4. **Fix Vite version (if needed)**
-   ```bash
-   npm uninstall vite
-   npm install vite@6.4.1 --save-dev
-   ```
-
-5. **Run the development server**
+4. **Run the development server**
    ```bash
    npm run dev
    ```
 
-6. **Open your browser**
-   
-   Navigate to `http://localhost:5173`
+5. **Open the app**
+   Visit `http://localhost:5173` in your browser.
+
+6. **Build for production (optional)**
+   ```bash
+   npm run build
+   npm run preview
+   ```
 
 ---
 
 ## 📖 Usage
 
-### Getting Started
-
-1. **Select a Feature**: Use the navigation bar to access different tools
-2. **Route Planning**: Choose start and end stations to plan your journey
-3. **Calculate Fares**: View fares for different commuter types
-4. **Track Trains**: Check real-time arrival times at any station
-5. **Find Meetups**: Add multiple starting locations to find optimal meetup points
-
-### Tips
-
-- Use the **autocomplete** feature for faster station selection
-- **Hover** over route segments to see line colors
-- Check the **dashboard** for saved favorites and history
-- Use **keyboard shortcuts** (Tab/Enter) to accept autocomplete suggestions
+- Use the navigation rail to switch between dashboard, live tracker, route planner, fare calculator, meetup finder, profile, and timetable views.
+- Plan a trip by selecting an origin and destination; the map animates the journey and displays transfer details.
+- Calculate fares by selecting a commuter category; tap the recommended pass chip for insight into savings.
+- Monitor live status by choosing a station and line; refresh to fetch new alerts and update simulations.
+- Add multiple participants in the meetup planner to determine the fairest station for everyone.
+- Sign in (if Firebase auth is enabled) to save favourite stations and personalised dashboard preferences.
 
 ---
 
 ## 🛠️ Tech Stack
 
-### Frontend Framework
-- **Vue 3.4.21** - Progressive JavaScript framework with Composition API
-- **Vuetify 3.7.3** - Material Design component framework
-- **Vite 6.4.1** - Next-generation frontend tooling
+### Core
+- **Vue 3.4.21** – Composition API with script setup
+- **Vite 6.4.1** – Lightning-fast dev server and bundler
+- **Vuetify 3.7.3** – Material-inspired component library
+- **Bootstrap 5.3.3** – Utility classes for rapid layout tuning
 
-### Mapping & Visualization
-- **Mapbox GL 2.15.0** - Interactive map rendering and visualization
-- **Chart.js 4.4.6** - Data visualization and charting
+### Data & APIs
+- **Firebase 12.4.0** – Authentication and persistence
+- **LTA DataMall API** – Train service alerts
 
-### UI & Animations
-- **GSAP 3.12.5** - Professional-grade animation library
-- **AOS 2.3.4** - Animate On Scroll library
-- **Three.js 0.162.0** - 3D graphics and animations
+### Mapping & Visualisation
+- **Mapbox GL 2.15.0** – MRT network rendering and route animation
+- **Chart.js 4.4.6** – Fare comparison visuals
+- **Three.js 0.162.0** – Train reveal hero animation
 
-### Backend & Data
-- **Firebase 12.4.0** - Authentication and real-time database
-- **LTA DataMall API** - Real-time train data from Singapore's Land Transport Authority
-
-### Utilities
-- **@vueuse/core 11.4.0** - Collection of Vue Composition utilities
-- **Bootstrap 5.3.3** - CSS framework for responsive design
+### Motion & UX
+- **GSAP 3.12.5** – Micro-interactions and transitions
+- **AOS 2.3.4** – Scroll-based animation primitives
+- **@vueuse/core 11.3.0** – Composable utilities
 
 ---
 
@@ -185,100 +159,94 @@
 
 ```
 SingaTrain/
-├── public/                      # Static assets
-│   ├── sg-rail.geojson         # Singapore MRT network GeoJSON data
-│   └── railrouter/             # RailRouter standalone build
+├── MrtFootage.mp4              # Background video
+├── config.js                   # Reads env variables (VITE_LTA_API_KEY)
+├── public/
+│   ├── railrouter/             # Prebuilt RailRouter assets
+│   ├── sg-rail.geojson         # Singapore MRT network geometry
+│   ├── singatrain.png          # Marketing artwork
+│   └── singatrainlogo.png      # App favicon & README branding
 ├── src/
-│   ├── assets/                 # Images, videos, and styles
-│   │   └── main.css           # Global styles and theme
-│   ├── components/             # Vue components
-│   │   ├── Dashboard.vue      # User dashboard
-│   │   ├── FareCalculator.vue # Fare calculation tool
-│   │   ├── FirstLastTrain.vue # Train timetables
-│   │   ├── HeroSection.vue    # Landing page hero
-│   │   ├── LiveTracker.vue    # Real-time train tracking
-│   │   ├── MeetupFinder.vue   # Group meetup planner
-│   │   ├── Navbar.vue         # Navigation component
-│   │   ├── Profile.vue        # User profile management
-│   │   ├── RoutePlanner.vue   # Route planning tool
-│   │   ├── TextGenerateEffect.vue # Text animation component
-│   │   └── TrainReveal.vue    # Train reveal animation
-│   ├── composables/            # Reusable composition functions
-│   │   ├── useAppState.js     # Global app state management
-│   │   ├── useFareCalculator.js # Fare calculation logic
-│   │   ├── useRouteAnimation.ts # Route animation controls
-│   │   ├── useRoutePlanner.js  # Pathfinding algorithms
-│   │   └── useTrainAPI.js     # Train data API integration
-│   ├── data/                   # Static data and configurations
-│   │   ├── fareTables.js      # Fare pricing data
-│   │   ├── stationCoordinates.js # Station location data
-│   │   ├── stations.js        # MRT station lists and line mappings
-│   │   └── trainTimings.js    # First/last train schedules
-│   ├── styles/                 # Additional stylesheets
-│   │   ├── theme.css          # Theme variables and utilities
-│   │   └── utilities.css      # Utility classes
-│   ├── App.vue                # Root application component
-│   ├── main.js                # Application entry point
-│   ├── firebase.js            # Firebase configuration
-│   └── theme.js               # Theme configuration
-├── config.js                   # API keys configuration
-├── vite.config.js             # Vite build configuration
-├── package.json               # Dependencies and scripts
-└── README.md                  # This file
+│   ├── App.vue                 # Root application shell
+│   ├── main.js                 # Vite entry point
+│   ├── assets/
+│   │   └── main.css            # Global styles
+│   ├── components/
+│   │   ├── Dashboard.vue
+│   │   ├── FareCalculator.vue
+│   │   ├── FirstLastTrain.vue
+│   │   ├── LiveTracker.vue
+│   │   ├── LoadingPage.vue
+│   │   ├── MeetupFinder.vue
+│   │   ├── Navbar.vue
+│   │   ├── Profile.vue
+│   │   ├── RoutePlanner.vue
+│   │   ├── TextGenerateEffect.vue
+│   │   ├── TrainReveal.vue
+│   │   └── ui/
+│   │       └── BackgroundLines.vue
+│   ├── composables/
+│   │   ├── useAppState.js
+│   │   ├── useFareCalculator.js
+│   │   ├── useFirestore.js
+│   │   ├── useRouteAnimation.ts
+│   │   ├── useRoutePlanner.js
+│   │   └── useTrainAPI.js
+│   ├── data/
+│   │   ├── fareTables.js
+│   │   ├── stationCoordinates.js
+│   │   ├── stations.js
+│   │   └── trainTimings.js
+│   ├── firebase.js             # Firebase client bootstrap
+│   ├── styles/
+│   │   ├── theme.css
+│   │   └── utilities.css
+│   └── theme.js                # Dynamic theme definitions
+├── package.json
+├── vite.config.js
+└── README.md
 ```
 
 ---
 
 ## ⚙️ Configuration
 
-### API Keys
+### LTA DataMall
+1. Register at [LTA DataMall](https://datamall.lta.gov.sg/content/datamall/en.html).
+2. Generate an API key.
+3. Place the key in `.env` as `VITE_LTA_API_KEY`. `config.js` will surface a console warning when it is missing.
 
-#### LTA DataMall API
-1. Register at [LTA DataMall](https://datamall.lta.gov.sg/content/datamall/en.html)
-2. Get your API key
-3. Add to `config.js`:
-   ```javascript
-   export const LTA_API_KEY = 'your_api_key_here';
-   ```
+### Mapbox
+1. Create a Mapbox account and obtain an access token.
+2. Update the `MAPBOX_TOKEN` constant in `src/components/MeetupFinder.vue` with your token (environment variable support is planned).
+3. Restart the dev server so the updated token is picked up.
 
-#### Mapbox
-1. Create account at [Mapbox](https://www.mapbox.com/)
-2. Get your access token
-3. Configure in your application settings
-
-#### Firebase
-1. Create project at [Firebase Console](https://console.firebase.google.com/)
-2. Enable Authentication and Firestore
-3. Add configuration to `.env` file
+### Firebase
+1. Create a Firebase project via the [Firebase Console](https://console.firebase.google.com/).
+2. Enable Authentication and Firestore if you intend to use favourites and profiles.
+3. Populate the Firebase values shown in the `.env` template above. Optional analytics requires `VITE_FIREBASE_MEASUREMENT_ID`.
 
 ---
 
-
 ## 📝 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+No explicit licence has been published yet. Please contact the maintainers before redistributing the code.
 
 ---
 
 ## 🙏 Acknowledgments
 
-- **Land Transport Authority (LTA)** for providing real-time train data
+- **Land Transport Authority (LTA)** for transport data access
 - **Mapbox** for mapping infrastructure
-- **Vue.js Community** for excellent documentation and support
-- **All Contributors** who have helped improve this project
+- **Firebase** for the developer tooling ecosystem
+- Everyone who has contributed feedback and improvements to SingaTrain
 
 ---
 
 ## 📧 Contact
 
 - **Project Repository**: [github.com/Xinqijames/SingaTrain](https://github.com/Xinqijames/SingaTrain)
-- **Issue Tracker**: [github.com/Xinqijames/SingaTrain/issues](https://github.com/Xinqijames/SingaTrain/issues)
-
----
-
-## 🌟 Show Your Support
-
-If you find this project helpful, please give it a ⭐️ on GitHub!
+- **Issues**: [github.com/Xinqijames/SingaTrain/issues](https://github.com/Xinqijames/SingaTrain/issues)
 
 ---
 
